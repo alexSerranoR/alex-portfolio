@@ -1,0 +1,627 @@
+/* Cover and progressive disclosure, layered onto the existing portfolio. */
+.portfolio-cover {
+  --cover-progress: 0;
+  --pointer-x: 0px;
+  --pointer-y: 0px;
+  position: relative;
+  min-height: calc(100svh - 76px);
+  overflow: clip;
+  isolation: isolate;
+}
+.cover-composition {
+  min-height: inherit;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  align-items: center;
+  column-gap: 45px;
+  padding-top: 75px;
+  padding-bottom: 32px;
+}
+.cover-identity {
+  position: relative;
+  z-index: 1;
+  transform: translateY(calc(var(--cover-progress) * -80px))
+    scale(calc(1 - var(--cover-progress) * 0.06));
+  transform-origin: left center;
+  opacity: calc(1 - var(--cover-progress) * 0.8);
+}
+.cover-identity h1 {
+  font-size: clamp(90px, 11.6vw, 185px);
+  line-height: 0.86;
+  letter-spacing: -0.07em;
+  font-weight: 600;
+}
+.cover-identity h1 > span {
+  display: block;
+  animation: cover-type-in 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.cover-identity h1 > span + span {
+  margin-top: 0.065em;
+  animation-delay: 80ms;
+}
+@keyframes cover-type-in {
+  from {
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(18px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
+}
+.cover-period {
+  color: var(--accent);
+}
+.cover-role {
+  font-size: clamp(21px, 2.1vw, 30px);
+  color: var(--text);
+  letter-spacing: -0.6px;
+  margin-top: 35px;
+}
+.cover-navigation {
+  position: relative;
+  z-index: 2;
+  margin-top: 85px;
+  transform: translateY(calc(var(--cover-progress) * 35px));
+  opacity: calc(1 - var(--cover-progress));
+}
+.cover-navigation a {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 14px;
+  font-size: clamp(36px, 4.1vw, 61px);
+  line-height: 1.4;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.cover-navigation a > span:first-child {
+  transition:
+    transform 0.25s,
+    color 0.25s;
+}
+.cover-navigation a > svg {
+  color: var(--accent);
+  width: 26px;
+  opacity: 0;
+  transform: translate(-6px, 6px);
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+}
+.cover-navigation a:hover > span:first-child {
+  color: var(--accent);
+  transform: translateX(5px);
+}
+.cover-navigation a:hover > svg,
+.cover-navigation a:focus-visible > svg {
+  opacity: 1;
+  transform: none;
+}
+.cover-link-index {
+  display: none;
+}
+.cover-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-self: end;
+  margin-top: 50px;
+  position: relative;
+  z-index: 2;
+  color: #c2c6bc;
+  font-size: 14px;
+}
+.cover-socials {
+  display: flex;
+  gap: 28px;
+}
+.cover-socials a,
+.cover-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.cover-socials a:hover,
+.cover-scroll:hover {
+  color: var(--accent);
+}
+.cover-scroll svg {
+  color: var(--accent);
+}
+.cover-network {
+  position: absolute;
+  width: min(70vw, 960px);
+  right: -8%;
+  top: 2%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+  transform: translate(var(--pointer-x), var(--pointer-y))
+    scale(calc(1 + var(--cover-progress) * 0.3));
+  transition: transform 0.18s ease-out;
+  mask-image: linear-gradient(
+    110deg,
+    transparent 3%,
+    black 35%,
+    black 80%,
+    transparent 100%
+  );
+}
+.cover-network svg {
+  width: 100%;
+  overflow: visible;
+}
+.cover-network path {
+  stroke: #657b4e;
+  stroke-width: 0.7;
+}
+.cover-network .network-node {
+  fill: var(--accent);
+}
+.cover-network .network-halo {
+  stroke: #7f9b60;
+  stroke-width: 0.7;
+}
+.cover-network .network-orbit {
+  stroke: #607449;
+  stroke-width: 0.6;
+  stroke-dasharray: 1 9;
+}
+.cover-network .outer-orbit {
+  stroke-dasharray: 2 18;
+  opacity: 0.5;
+}
+.cover-network .network-cross {
+  stroke: var(--accent);
+}
+.positioning {
+  padding-top: 105px;
+  padding-bottom: 110px;
+  text-align: center;
+}
+.positioning h2 {
+  font-size: clamp(36px, 4.8vw, 67px);
+  line-height: 1.12;
+  letter-spacing: -0.05em;
+  max-width: 880px;
+  margin: 0 auto;
+}
+.positioning p {
+  max-width: 650px;
+  margin: 25px auto 0;
+  font-size: 20px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.work-intro {
+  padding-top: 45px;
+}
+.toolkit-section .section-heading {
+  display: block;
+}
+.toolkit-section .section-heading .section-label {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.toolkit-section .section-heading h2 {
+  max-width: 800px;
+  font-size: clamp(44px, 6.1vw, 84px);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+.toolkit-section .section-description {
+  margin-top: 22px;
+  max-width: 640px;
+  font-size: 19px;
+}
+.toolkit-grid {
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 65px;
+}
+.toolkit-group {
+  display: grid;
+  grid-template-columns: 1fr 2.2fr;
+  gap: 50px;
+  padding: 26px 0;
+}
+.toolkit-group h3 {
+  font-size: 23px;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+}
+.toolkit-group p {
+  font-size: 23px;
+  line-height: 1.8;
+  margin-top: 0;
+  color: #bac0b3;
+  max-width: none;
+}
+.toolkit-emphasis {
+  color: var(--text);
+}
+.toolkit-separator {
+  color: #748367;
+  padding: 0 3px;
+}
+.education-section .section-heading {
+  display: block;
+}
+.education-section .section-description {
+  margin-top: 18px;
+}
+.education-section .section-heading h2,
+.about-section .section-heading h2 {
+  font-size: clamp(43px, 5.5vw, 76px);
+  letter-spacing: -0.05em;
+}
+.university-grid {
+  gap: 75px;
+  margin-top: 50px;
+}
+.university-grid h3 {
+  font-size: 32px;
+  line-height: 1.2;
+}
+.education-description {
+  font-size: 17px;
+  line-height: 1.75;
+}
+.disclosure {
+  border-top: 1px solid #36412e;
+}
+.disclosure summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  list-style: none;
+  padding: 26px 0;
+  cursor: pointer;
+  font-size: 25px;
+  letter-spacing: -0.6px;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+.disclosure summary::-webkit-details-marker {
+  display: none;
+}
+.disclosure summary::marker {
+  content: "";
+}
+.disclosure summary:hover {
+  color: var(--accent);
+}
+.disclosure-icon {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.disclosure-icon i {
+  position: absolute;
+  width: 18px;
+  height: 1.5px;
+  background: currentColor;
+  left: 2px;
+  top: 10px;
+  transition: transform 0.3s;
+}
+.disclosure-icon i + i {
+  transform: rotate(90deg);
+}
+.disclosure[open] .disclosure-icon i + i {
+  transform: rotate(0);
+}
+.disclosure-content {
+  padding: 4px 0 35px;
+}
+.earlier-education {
+  margin-top: 50px;
+}
+.earlier-education .school-grid {
+  margin: 10px 0 0;
+  gap: 65px;
+  padding-top: 0;
+  border-top: 0;
+}
+.earlier-education .school-item h3 {
+  font-size: 23px;
+}
+.earlier-education .school-item p {
+  font-size: 16px;
+  line-height: 1.75;
+}
+.earlier-education .education-language {
+  margin-top: 30px;
+}
+.about-layout {
+  display: block;
+  margin-top: 35px;
+}
+.about-intro {
+  max-width: 780px;
+}
+.about-intro > p {
+  font-size: 26px;
+  line-height: 1.55;
+}
+.about-intro > p:nth-child(2) {
+  font-size: 19px;
+  line-height: 1.8;
+  margin-top: 22px;
+}
+.about-disclosures {
+  margin-top: 50px;
+}
+.about-disclosures .qualities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 65px;
+  max-width: 960px;
+}
+.about-disclosures .quality h3 {
+  font-size: 21px;
+}
+.about-disclosures .quality p {
+  font-size: 16px;
+}
+.about-disclosures .experience-block {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+.disclosure-intro {
+  margin-bottom: 25px;
+  font-size: 17px;
+  color: var(--muted);
+}
+.experience-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 65px;
+}
+.experience-list article h3 {
+  font-size: 23px;
+}
+.experience-list article p {
+  font-size: 16px;
+}
+.experience-list article .experience-role {
+  margin-top: 4px;
+  color: var(--text);
+  font-size: 18px;
+}
+.experience-list article .experience-date {
+  font-size: 14px;
+}
+.personal-note {
+  font-size: 20px;
+  max-width: 670px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.contact-main p {
+  display: none;
+}
+.contact-section {
+  padding-top: 130px;
+  padding-bottom: 90px;
+}
+.contact-main h2 {
+  font-size: clamp(65px, 9.4vw, 138px);
+  letter-spacing: -0.06em;
+}
+.scene-motion .project-metrics {
+  opacity: clamp(0, calc(var(--scene-progress) * 3.4 - 0.8), 1);
+  transform: translateY(
+    calc((1 - clamp(0, calc(var(--scene-progress) * 3.4 - 0.8), 1)) * 16px)
+  );
+}
+.scene-motion .agent-buyer {
+  opacity: clamp(0.3, calc(var(--scene-progress) * 4), 1);
+}
+.scene-motion .agent-seller {
+  opacity: clamp(0.3, calc(var(--scene-progress) * 3 - 0.35), 1);
+}
+@media (max-width: 1050px) {
+  .cover-composition {
+    column-gap: 25px;
+    grid-template-columns: 1.5fr 1fr;
+  }
+  .cover-navigation a {
+    font-size: 4.4vw;
+  }
+  .cover-navigation a > svg {
+    width: 20px;
+  }
+  .toolkit-group {
+    grid-template-columns: 1fr 1.8fr;
+    gap: 30px;
+  }
+  .toolkit-group p {
+    font-size: 21px;
+  }
+}
+@media (max-width: 760px) {
+  .portfolio-cover {
+    min-height: calc(100svh - 70px);
+  }
+  .cover-composition {
+    grid-template-columns: 1fr;
+    padding-top: 50px;
+    padding-bottom: 25px;
+    align-content: space-between;
+  }
+  .cover-identity h1 {
+    font-size: clamp(80px, 17vw, 128px);
+    line-height: 0.9;
+    letter-spacing: -0.065em;
+  }
+  .cover-role {
+    font-size: 21px;
+    margin-top: 22px;
+  }
+  .cover-navigation {
+    margin-top: 45px;
+  }
+  .cover-navigation a {
+    font-size: clamp(31px, 7.8vw, 46px);
+    line-height: 1.35;
+    gap: 14px;
+  }
+  .cover-navigation a > svg {
+    opacity: 0.6;
+    transform: none;
+    width: 20px;
+  }
+  .cover-network {
+    width: 105%;
+    right: -35%;
+    top: 13%;
+    opacity: 0.35;
+  }
+  .cover-footer {
+    font-size: 13px;
+    margin-top: 38px;
+  }
+  .cover-socials {
+    gap: 19px;
+  }
+  .cover-scroll {
+    gap: 5px;
+  }
+  .positioning {
+    padding-top: 75px;
+    padding-bottom: 65px;
+  }
+  .positioning h2 {
+    font-size: 38px;
+  }
+  .positioning p {
+    font-size: 18px;
+  }
+  .work-intro {
+    padding-top: 30px;
+  }
+  .toolkit-grid {
+    margin-top: 35px;
+  }
+  .toolkit-group {
+    display: block;
+    padding: 18px 0;
+  }
+  .toolkit-group h3 {
+    font-size: 21px;
+  }
+  .toolkit-group p {
+    font-size: 20px;
+    margin-top: 10px;
+    line-height: 1.75;
+  }
+  .toolkit-section .section-heading h2 {
+    font-size: 45px;
+  }
+  .toolkit-section .section-description {
+    font-size: 17px;
+  }
+  .university-grid {
+    gap: 35px;
+    margin-top: 35px;
+  }
+  .university-grid h3 {
+    font-size: 28px;
+  }
+  .education-description {
+    font-size: 17px;
+  }
+  .disclosure summary {
+    font-size: 21px;
+    padding: 23px 0;
+    gap: 18px;
+  }
+  .earlier-education {
+    margin-top: 35px;
+  }
+  .earlier-education .school-grid {
+    gap: 28px;
+  }
+  .earlier-education .school-item h3 {
+    font-size: 22px;
+  }
+  .about-intro > p {
+    font-size: 22px;
+  }
+  .about-intro > p:nth-child(2) {
+    font-size: 17px;
+  }
+  .about-disclosures {
+    margin-top: 35px;
+  }
+  .about-disclosures .qualities,
+  .experience-list {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .personal-note {
+    font-size: 18px;
+  }
+  .contact-section {
+    padding-top: 85px;
+    padding-bottom: 55px;
+  }
+  .contact-main h2 {
+    font-size: clamp(54px, 12.6vw, 88px);
+  }
+  html[lang="es"] .contact-main h2 {
+    font-size: clamp(42px, 10.5vw, 68px);
+  }
+}
+@media (max-width: 390px) {
+  .cover-composition {
+    padding-top: 38px;
+  }
+  .cover-footer {
+    align-items: flex-end;
+  }
+  .cover-scroll {
+    max-width: 118px;
+    text-align: right;
+  }
+  .cover-identity h1 {
+    font-size: 17.8vw;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cover-identity h1 > span {
+    animation: none;
+  }
+  .scene-motion .agent-buyer,
+  .scene-motion .agent-seller {
+    opacity: 1;
+  }
+  .cover-identity,
+  .cover-navigation,
+  .cover-network,
+  .scene-motion .project-metrics {
+    transform: none;
+    opacity: 1;
+  }
+  .cover-network {
+    opacity: 0.4;
+  }
+  .cover-navigation a > span:first-child,
+  .cover-navigation a > svg,
+  .disclosure-icon i {
+    transition: none;
+  }
+}

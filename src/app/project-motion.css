@@ -1,0 +1,175 @@
+.scroll-scene {
+  --scene-progress: 1;
+}
+.scene-motion .graph-point {
+  opacity: clamp(
+    0.15,
+    calc(var(--scene-progress) * 3 - var(--step-index) * 0.11),
+    1
+  );
+  transform: scale(
+    clamp(0.65, calc(var(--scene-progress) * 2 - var(--step-index) * 0.035), 1)
+  );
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.scene-motion .graph-relationship {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(
+    1 - clamp(0, calc(var(--scene-progress) * 2 - var(--step-index) * 0.04), 1)
+  );
+}
+.scene-motion .traversal-edge {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(
+    1 -
+      clamp(0, calc(var(--scene-progress) * 2.8 - var(--step-index) * 0.14), 1)
+  );
+}
+.scene-motion .traversal-node {
+  opacity: clamp(
+    0.25,
+    calc(var(--scene-progress) * 2.8 - var(--step-index) * 0.18),
+    1
+  );
+}
+.scene-motion .flow-step > div {
+  opacity: clamp(
+    0.28,
+    calc(var(--scene-progress) * 3.4 - var(--step-index) * 0.5),
+    1
+  );
+  transform: translateY(
+    calc(
+      (
+          1 -
+            clamp(
+              0,
+              calc(var(--scene-progress) * 3.4 - var(--step-index) * 0.5),
+              1
+            )
+        ) *
+        12px
+    )
+  );
+}
+.scene-motion .flow-step svg {
+  color: var(--accent);
+}
+.scene-motion .voting-equation {
+  opacity: clamp(
+    0.3,
+    calc(var(--scene-progress) * 3 - var(--step-index) * 0.65),
+    1
+  );
+}
+.scene-motion .vote-squares i {
+  opacity: clamp(
+    0.15,
+    calc(var(--scene-progress) * 3 - var(--step-index) * 0.1),
+    1
+  );
+  transform: scale(
+    clamp(0.5, calc(var(--scene-progress) * 2 - var(--step-index) * 0.035), 1)
+  );
+}
+.scene-motion .socket-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - clamp(0, calc(var(--scene-progress) * 1.6), 1));
+}
+.scene-motion .client-node {
+  opacity: clamp(
+    0.25,
+    calc(var(--scene-progress) * 2.5 - var(--step-index) * 0.3),
+    1
+  );
+}
+.scene-motion .network-packet {
+  opacity: 1;
+  offset-distance: calc(var(--scene-progress) * 100%);
+}
+.packet-one {
+  offset-path: path("M110 65 Q185 65 300 165");
+  offset-rotate: 0deg;
+}
+.packet-two {
+  offset-path: path("M300 165 Q415 270 490 270");
+  offset-rotate: 0deg;
+}
+.scene-motion .host-halo {
+  opacity: clamp(0.2, calc(var(--scene-progress) * 1.5), 1);
+}
+.scene-motion .agent-engine {
+  opacity: clamp(0.45, calc(var(--scene-progress) * 2), 1);
+}
+.scene-motion .intelligence-block {
+  opacity: clamp(0.3, calc(var(--scene-progress) * 2.5 - 0.3), 1);
+}
+.scene-visible .connector::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  left: 0;
+  top: 50%;
+  animation: information-pass 2.8s ease-in-out infinite;
+}
+.scene-visible .connector:nth-of-type(2)::after {
+  animation-delay: 1.4s;
+}
+.scene-visible .feedback-line svg {
+  animation: feedback-highlight 2.8s ease-in-out infinite;
+}
+@keyframes information-pass {
+  0% {
+    transform: translate(-5px, -50%);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(26px, -50%);
+    opacity: 0;
+  }
+}
+@keyframes feedback-highlight {
+  0%,
+  100% {
+    color: #a0b883;
+  }
+  50% {
+    color: #d9f7a8;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-scene {
+    --scene-progress: 1 !important;
+  }
+  .scroll-scene .graph-point,
+  .scroll-scene .traversal-node,
+  .scroll-scene .flow-step > div,
+  .scroll-scene .voting-equation,
+  .scroll-scene .vote-squares i,
+  .scroll-scene .client-node,
+  .scroll-scene .host-halo,
+  .scroll-scene .agent-engine,
+  .scroll-scene .intelligence-block {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .scroll-scene .graph-relationship,
+  .scroll-scene .traversal-edge,
+  .scroll-scene .socket-path {
+    stroke-dashoffset: 0 !important;
+  }
+  .scroll-scene .network-packet,
+  .scroll-scene .connector::after {
+    display: none !important;
+  }
+}
