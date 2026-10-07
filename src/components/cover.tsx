@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { profile } from "@/data/portfolio";
 import { dictionaries } from "@/i18n/copy";
 import type { Locale } from "@/i18n/routes";
+import { SpotlightHeading } from "./spotlight-heading";
 
 // A re-interpretation of the original engineering map: the same connected
 // foundation, reduced to geometry for the cover rather than explanatory labels.
@@ -45,7 +46,7 @@ export function Cover({ locale }: { locale: Locale }) {
     const svg = networkRef.current!;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const desktop = window.matchMedia(
-      "(hover: hover) and (pointer: fine) and (min-width: 761px)",
+      "(any-hover: hover) and (any-pointer: fine)",
     );
     const groups = svg.querySelectorAll<SVGGElement>("g");
     const paths = svg.querySelectorAll<SVGPathElement>(".network-edge");
@@ -66,6 +67,9 @@ export function Cover({ locale }: { locale: Locale }) {
         position.y = nodes[i][1];
         position.proximity = 0;
         groups[i].removeAttribute("transform");
+        groups[i]
+          .querySelector(".network-halo")
+          ?.setAttribute("r", String(i === 7 ? 18 : 9));
       });
       paths.forEach((path, i) => {
         const [a, b] = edges[i];
@@ -93,15 +97,15 @@ export function Cover({ locale }: { locale: Locale }) {
           const dx = cursor ? x - cursor.x : 0;
           const dy = cursor ? y - cursor.y : 0;
           const distance = Math.hypot(dx, dy);
-          const proximity = cursor ? Math.max(0, 1 - distance / 95) : 0;
-          const push = proximity * proximity * 7;
+          const proximity = cursor ? Math.max(0, 1 - distance / 180) : 0;
+          const push = proximity * proximity * 38;
           const targetX =
             x +
-            Math.sin(elapsed / 9000 + i) * 0.6 +
+            Math.sin(elapsed / 3500 + i) * 3 +
             (dx / (distance || 1)) * push;
           const targetY =
             y +
-            Math.cos(elapsed / 11000 + i) * 0.6 +
+            Math.cos(elapsed / 4200 + i) * 3 +
             (dy / (distance || 1)) * push;
           position.x += (targetX - position.x) * ease;
           position.y += (targetY - position.y) * ease;
@@ -110,13 +114,19 @@ export function Cover({ locale }: { locale: Locale }) {
             "transform",
             `translate(${position.x - x} ${position.y - y})`,
           );
+          groups[i]
+            .querySelector(".network-halo")
+            ?.setAttribute(
+              "r",
+              String((i === 7 ? 18 : 9) + position.proximity * 12),
+            );
         });
         paths.forEach((path, i) => {
           const [a, b] = edges[i].map((index) => positions[index]);
           path.setAttribute("d", `M${a.x} ${a.y} L${b.x} ${b.y}`);
           path.style.stroke = "var(--accent)";
           path.style.strokeOpacity = String(
-            0.3 + Math.max(a.proximity, b.proximity) * 0.25,
+            0.55 + Math.max(a.proximity, b.proximity) * 0.45,
           );
         });
         cross.setAttribute(
@@ -234,12 +244,7 @@ export function Cover({ locale }: { locale: Locale }) {
       </div>
       <div className="container cover-composition">
         <div className="cover-identity">
-          <h1 id="cover-name">
-            <span>ALEX</span>
-            <span>
-              SERRANO<span className="cover-period">.</span>
-            </span>
-          </h1>
+          <SpotlightHeading />
           <p className="cover-role">{t.hero.role.join(" ")}</p>
         </div>
         <nav className="cover-navigation" aria-label={t.cover.navigation}>

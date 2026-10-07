@@ -393,6 +393,108 @@ test("cover transition and disclosures animate, reverse and respect reduced moti
   await accessible(page);
 });
 
+test("cover network visibly reacts to the mouse and respects reduced motion", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/es");
+  const group = page.locator(".cover-network g").last();
+  await expect(group).toHaveAttribute("transform", /translate/);
+  const target = await page.locator(".cover-network svg").evaluate((svg) => {
+    const matrix = (svg as SVGSVGElement).getScreenCTM()!;
+    const point = new DOMPoint(285, 215).matrixTransform(matrix);
+    return { x: point.x, y: point.y };
+  });
+  await page.mouse.move(target.x, target.y);
+  await expect
+    .poll(() =>
+      group.evaluate((node) => {
+        const matrix = (node as SVGGElement).transform.baseVal.consolidate()!
+          .matrix;
+        return Math.hypot(matrix.e, matrix.f);
+      }),
+    )
+    .toBeGreaterThan(15);
+  await expect
+    .poll(() => group.locator(".network-halo").getAttribute("r").then(Number))
+    .toBeGreaterThan(24);
+  await page.mouse.move(10, 10);
+  await expect
+    .poll(() =>
+      group.evaluate((node) => {
+        const matrix = (node as SVGGElement).transform.baseVal.consolidate()!
+          .matrix;
+        return Math.hypot(matrix.e, matrix.f);
+      }),
+    )
+    .toBeLessThan(6);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(group).not.toHaveAttribute("transform");
+  await expect(group.locator(".network-halo")).toHaveAttribute("r", "18");
+});
+
+test("name spotlight follows the pointer, fades out and stays static with reduced motion and touch", async ({
+  page,
+  browser,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/es");
+  const heading = page.locator("#cover-name");
+  const bounds = (await heading.boundingBox())!;
+  const opacity = () =>
+    heading
+      .locator(".name-reveal")
+      .first()
+      .evaluate((node) => Number(getComputedStyle(node).opacity));
+  await expect.poll(opacity).toBe(0);
+  await page.mouse.move(bounds.x + 110, bounds.y + 65);
+  await expect.poll(opacity).toBeGreaterThan(0.95);
+  const firstPosition = await heading
+    .locator(":scope > span")
+    .first()
+    .evaluate((node) => node.style.getPropertyValue("--name-x"));
+  await page.mouse.move(bounds.x + 410, bounds.y + bounds.height - 35);
+  await expect
+    .poll(() =>
+      heading
+        .locator(":scope > span")
+        .first()
+        .evaluate((node) =>
+          parseFloat(node.style.getPropertyValue("--name-x")),
+        ),
+    )
+    .toBeGreaterThan(parseFloat(firstPosition) + 250);
+  const shift = await heading.evaluate((node) =>
+    ["--name-shift-x", "--name-shift-y"].map((key) =>
+      Math.abs(parseFloat(node.style.getPropertyValue(key))),
+    ),
+  );
+  expect(Math.max(...shift)).toBeLessThanOrEqual(2.5);
+  await page.screenshot({ path: "qa-artifacts/name-spotlight-active.png" });
+  await page.mouse.move(10, 10);
+  await expect.poll(opacity).toBe(0);
+  expect(await heading.boundingBox()).toEqual(bounds);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.mouse.move(bounds.x + 110, bounds.y + 65);
+  await expect.poll(opacity).toBe(0);
+  await expect(heading).toHaveAccessibleName("ALEX SERRANO.");
+  const touch = await browser.newContext({
+    hasTouch: true,
+    isMobile: true,
+    viewport: { width: 390, height: 844 },
+  });
+  const mobile = await touch.newPage();
+  await mobile.goto("http://localhost:3000/es");
+  expect(
+    await mobile
+      .locator("#cover-name .name-reveal")
+      .first()
+      .evaluate((node) => getComputedStyle(node).display),
+  ).toBe("none");
+  await touch.close();
+});
+
 test("both languages work without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();

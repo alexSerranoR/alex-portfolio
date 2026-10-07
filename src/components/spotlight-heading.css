@@ -1,0 +1,29 @@
+/* Isolated name experiment: the original text remains the selectable base. */
+.spotlight-heading > [data-spotlight-text] {
+  position: relative;
+}
+.spotlight-heading .name-reveal {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  color: var(--accent);
+  opacity: var(--name-strength, 0);
+  text-shadow: 0 0 9px color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: translate(var(--name-shift-x, 0px), var(--name-shift-y, 0px));
+  mask-image: radial-gradient(
+    circle 150px at var(--name-x, -200px) var(--name-y, -200px),
+    black 0%,
+    black 25%,
+    rgb(0 0 0 / 75%) 48%,
+    transparent 100%
+  );
+}
+@media (prefers-reduced-motion: reduce),
+  (hover: none),
+  (pointer: coarse),
+  (max-width: 760px) {
+  .spotlight-heading .name-reveal {
+    display: none;
+  }
+}
