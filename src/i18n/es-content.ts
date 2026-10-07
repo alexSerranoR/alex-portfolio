@@ -26,7 +26,7 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     contribution:
       "Mi trabajo incluye explorar y procesar grandes conjuntos de datos, desarrollar pipelines, definir relaciones medibles entre DAOs, construir grafos y realizar validaciones y comprobaciones de coherencia. También documento los hallazgos y las decisiones técnicas para poder revisar y reproducir el análisis.",
     learnings:
-      "Una exploración en curso de cómo la calidad de los datos, la definición de las relaciones y la validación influyen en un modelo de grafos. Hacer explícitas las suposiciones es tan importante como construir el pipeline.",
+      "Estoy aprendiendo cómo la calidad de los datos, la definición de las relaciones y la validación afectan a un modelo de grafos. Además de construir el pipeline, documento las suposiciones del análisis.",
     steps: [
       "Datos de gobernanza",
       "Procesamiento y validación",
@@ -43,11 +43,11 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     problem:
       "¿Cómo deben negociar los agentes autónomos cuando las mejores decisiones dependen de un mercado que cambia? Durante el hackathon de Claude Code, descubrimos que responder más rápido no resolvía el verdadero cuello de botella: los agentes necesitaban mejor información.",
     approach:
-      "Construimos un sistema multiagente para negociar con compradores y vendedores, analizar la actividad del mercado y compartir información. El enfoque evolucionó hacia decisiones adaptativas basadas en datos de mercado y negociaciones previas, situando la inteligencia compartida en el centro del sistema.",
+      "Construimos un sistema multiagente para negociar con compradores y vendedores, analizar la actividad del mercado y compartir información. Durante el desarrollo, los agentes pasaron a usar datos de mercado y negociaciones previas para ajustar sus decisiones, apoyándose en la información compartida entre ellos.",
     contribution:
       "Desarrollo colaborativo en un equipo de tres personas durante un hackathon de 48 horas. Iteramos sobre el comportamiento de negociación, el análisis del mercado y el intercambio de información, adaptando el sistema conforme entendíamos mejor el mercado.",
     learnings:
-      "La mejora más útil fue un cambio de razonamiento: entender qué limita un sistema antes de optimizarlo. En este caso, una estrategia informada importaba más que la velocidad. Los tests también nos permitieron iterar con un plazo muy ajustado.",
+      "Aprendimos a identificar qué limitaba el sistema antes de optimizarlo. Una mejor información de mercado importaba más que responder más rápido. Los tests nos ayudaron a comprobar los cambios con un plazo muy ajustado.",
     steps: [
       "Agentes compradores",
       "Motor de negociación",
@@ -59,16 +59,16 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     label: "De la aplicación a la infraestructura",
     category: "Cloud · Despliegue de aplicaciones",
     summary:
-      "Aprender flujos reales de despliegue llevando aplicaciones en contenedores a AWS.",
+      "Aprender flujos de despliegue ejecutando aplicaciones en contenedores en AWS.",
     metricLabels: [],
     problem:
       "Escribir una aplicación es solo una parte de entregar software. Empaquetarla, gestionar su imagen de contenedor y ejecutarla en infraestructura cloud exige otro conjunto de decisiones de ingeniería.",
     approach:
-      "Un laboratorio práctico para explorar el despliegue de aplicaciones en contenedores en AWS. El recorrido conecta el código de aplicación, el empaquetado con Docker, las imágenes en ECR y las cargas de trabajo en ECS con la infraestructura cloud.",
+      "Estoy desarrollando un laboratorio para desplegar aplicaciones en contenedores en AWS: empaquetar el código con Docker, almacenar imágenes en ECR y ejecutar cargas de trabajo en ECS.",
     contribution:
       "Desarrollo del laboratorio para aprender infraestructura cloud y flujos DevOps mediante despliegues prácticos, con Python, Docker, ECR y ECS.",
     learnings:
-      "Un trabajo en curso para entender cómo el código se convierte en una aplicación en ejecución, incluidas las fronteras entre desarrollo, contenedores y servicios cloud.",
+      "Estoy aprendiendo cómo el código se convierte en una aplicación en ejecución y qué responsabilidades corresponden a la aplicación, al contenedor y a los servicios cloud que utiliza.",
     steps: [
       "GitHub / Aplicación",
       "Docker",
@@ -78,7 +78,7 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     ],
   },
   "algorithmic-techniques": {
-    label: "Los fundamentos, implementados",
+    label: "Algoritmos y estructuras de datos en C++",
     category: "Fundamentos de ingeniería · Algoritmos",
     summary:
       "Implementaciones en C++ de grafos, programación dinámica, estrategias voraces y estructuras de datos.",
@@ -90,11 +90,11 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     contribution:
       "Implementación y estudio de algoritmos clásicos y estructuras de datos en C++, con atención al razonamiento que hay detrás de cada solución.",
     learnings:
-      "Reforzar los fundamentos del software: elegir una representación, razonar sobre una solución y comprender las ventajas y limitaciones de los distintos enfoques algorítmicos.",
+      "Estoy aprendiendo a elegir representaciones de datos, explicar por qué funciona una solución y comparar las ventajas y limitaciones de los distintos enfoques algorítmicos.",
     steps: ["Problema", "Estructura de datos", "Algoritmo", "Solución"],
   },
   "quadratic-voting-dao": {
-    label: "Un coste diferente para expresar una preferencia más fuerte",
+    label: "Más votos, un coste cuadrático mayor",
     category: "Contratos inteligentes · Gobernanza",
     summary:
       "Un sistema de gobernanza on-chain que explora la votación cuadrática mediante contratos en Solidity y tokens ERC-20.",
@@ -102,11 +102,11 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     problem:
       "¿Cómo puede la gobernanza basada en tokens expresar la intensidad de una preferencia mientras aumenta el coste de los votos adicionales? La votación cuadrática ofrece un mecanismo para explorar este equilibrio mediante software.",
     approach:
-      "Proyecto completado de gobernanza on-chain que implementa un mecanismo de votación cuadrática con Solidity y tokens ERC-20. El flujo conceptual conecta tokens, coste cuadrático, asignación de votos y gobernanza mediante contratos inteligentes.",
+      "Implementé votación cuadrática on-chain con Solidity y tokens ERC-20. Los contratos aplican un coste cuadrático en tokens para determinar la asignación de votos en el sistema de gobernanza.",
     contribution:
       "Desarrollo del proyecto Quadratic Voting DAO, implementando el mecanismo de votación mediante contratos inteligentes y gobernanza basada en tokens. La implementación completa está disponible en el repositorio.",
     learnings:
-      "Convertir una regla de gobernanza en comportamiento de un contrato conecta el diseño de software con restricciones económicas explícitas. El proyecto reforzó mis fundamentos de desarrollo de contratos inteligentes y mi experiencia completando una implementación de principio a fin.",
+      "Aprendí a expresar reglas de gobernanza y restricciones económicas en contratos inteligentes, y practiqué el desarrollo de una implementación desde el diseño hasta su finalización.",
     steps: [
       "Tokens del usuario",
       "Coste cuadrático · v²",
@@ -127,7 +127,7 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     contribution:
       "Participación en este proyecto colaborativo de Ingeniería del Software, adquiriendo experiencia con Java, diseño orientado a objetos y desarrollo de aplicaciones en red.",
     learnings:
-      "Una base temprana para separar las responsabilidades de interfaz, lógica de juego y comunicación en red, y convertir un diseño de software en una aplicación multijugador funcional.",
+      "Aprendí a separar la interfaz, la lógica de juego y la comunicación en red, y a convertir un diseño de software en una aplicación multijugador funcional.",
     steps: [
       "Cliente del jugador",
       "Conexión por sockets",
@@ -148,7 +148,7 @@ export const spanishEducation = [
     institution: "UDIMA",
     degree: "Grado en Empresa y Tecnología",
     detail:
-      "Cursado simultáneamente. Fundamentos de empresa, gestión e innovación digital, conectando tecnología, productos y organizaciones.",
+      "Lo curso junto con Ingeniería del Software. Incluye fundamentos de empresa, gestión e innovación digital, y el uso de la tecnología en productos y organizaciones.",
   },
   {
     institution: "CEU Claudio Coello",
@@ -191,7 +191,7 @@ export const spanishQualities = [
     text: "Enseñar programación y trabajar con clientes internacionales me ha dado práctica para explicar ideas a públicos distintos.",
   },
   {
-    title: "Mantener la curiosidad. Asumir responsabilidades.",
+    title: "Aprender con proyectos",
     text: "Desde algoritmos en C++ hasta despliegues en AWS, aprendo construyendo, investigando sistemas desconocidos y trabajando en los detalles.",
   },
   {

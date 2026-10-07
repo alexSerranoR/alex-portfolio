@@ -3,7 +3,7 @@ import { dictionaries } from "@/i18n/copy";
 import type { Locale } from "@/i18n/routes";
 
 export const alt =
-  "Alex Serrano — Software Engineer. Strong foundations. Software that connects the dots.";
+  "Alex Serrano | Software Engineer. Projects in algorithms, AI, cloud, data and blockchain.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

@@ -274,7 +274,7 @@ export function Contact({ locale }: { locale: Locale }) {
             aria-label={dictionaries[locale].hero.cvEn}
           >
             <Download size={16} />
-            CV — EN
+            CV · EN
           </a>
           <a
             href={profile.cv.es}
@@ -282,7 +282,7 @@ export function Contact({ locale }: { locale: Locale }) {
             aria-label={dictionaries[locale].hero.cvEs}
           >
             <Download size={16} />
-            CV — ES
+            CV · ES
           </a>
         </div>
       </Reveal>

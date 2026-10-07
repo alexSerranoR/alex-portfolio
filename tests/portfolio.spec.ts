@@ -268,7 +268,7 @@ for (const locale of locales) {
     const other = locale === "en" ? "es" : "en";
     await page
       .getByRole("group", { name: t.nav.language })
-      .getByRole("link", { name: new RegExp(`^${other.toUpperCase()} —`) })
+      .getByRole("link", { name: new RegExp(`^${other.toUpperCase()}:`) })
       .click();
     await expect(page).toHaveURL(new RegExp(`/${other}#contact$`));
     await expect(page.locator("html")).toHaveAttribute("lang", other);
@@ -276,7 +276,7 @@ for (const locale of locales) {
       await page.goto(`/${locale}/projects/${slug}#contribution`);
       await page
         .getByRole("group", { name: t.nav.language })
-        .getByRole("link", { name: new RegExp(`^${other.toUpperCase()} —`) })
+        .getByRole("link", { name: new RegExp(`^${other.toUpperCase()}:`) })
         .click();
       await expect(page).toHaveURL(
         new RegExp(`/${other}/projects/${slug}#contribution$`),
@@ -413,7 +413,7 @@ test("both languages work without JavaScript", async ({ browser }) => {
     await page
       .getByRole("group", { name: dictionaries[locale].nav.language })
       .getByRole("link", {
-        name: new RegExp(`^${locale === "en" ? "ES" : "EN"} —`),
+        name: new RegExp(`^${locale === "en" ? "ES" : "EN"}:`),
       })
       .click();
     await expect(page.locator("html")).toHaveAttribute(

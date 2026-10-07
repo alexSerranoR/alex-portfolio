@@ -89,7 +89,7 @@ export function ProjectCard({
                 className="text-link repository-link"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${project.name} — GitHub`}
+                aria-label={`${project.name}: GitHub`}
               >
                 <Github size={17} />
                 GitHub

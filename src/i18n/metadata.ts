@@ -15,7 +15,7 @@ export function localizedMetadata(
   description?: string,
 ): Metadata {
   const t = dictionaries[locale].seo;
-  const socialTitle = title ? `${title} — Alex Serrano` : t.title;
+  const socialTitle = title ? `${title} | Alex Serrano` : t.title;
   return {
     metadataBase: new URL(siteOrigin || "http://localhost:3000"),
     title: title || { default: t.title, template: "%s | Alex Serrano" },

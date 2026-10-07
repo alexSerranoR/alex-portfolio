@@ -23,7 +23,7 @@ export function Header({ locale = "en" }: { locale?: Locale }) {
       <div className="container header-inner">
         <Link href={localePath(locale)} className="brand">
           <span className="brand-mark" aria-hidden="true">
-            as<span>↗</span>
+            as
           </span>
           <span>
             Alex Serrano
@@ -68,8 +68,8 @@ export function Header({ locale = "en" }: { locale?: Locale }) {
                   aria-current={locale === language ? "page" : undefined}
                   aria-label={
                     language === "en"
-                      ? "EN — Switch to English"
-                      : "ES — Cambiar a español"
+                      ? "EN: Switch to English"
+                      : "ES: Cambiar a español"
                   }
                   onClick={(event) => {
                     event.currentTarget.href = `${switchLocalePath(pathname, language)}${window.location.search}${window.location.hash}`;

@@ -1,8 +1,6 @@
 /* Cover and progressive disclosure, layered onto the existing portfolio. */
 .portfolio-cover {
   --cover-progress: 0;
-  --pointer-x: 0px;
-  --pointer-y: 0px;
   position: relative;
   min-height: calc(100svh - 76px);
   overflow: clip;
@@ -140,9 +138,8 @@
   align-items: center;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.55;
-  transform: translate(var(--pointer-x), var(--pointer-y))
-    scale(calc(1 + var(--cover-progress) * 0.3));
+  opacity: calc(0.55 * max(0, 1 - var(--cover-progress) * 1.5));
+  transform: scale(calc(1 + var(--cover-progress) * 0.3));
   transition: transform 0.18s ease-out;
   mask-image: linear-gradient(
     110deg,
@@ -488,7 +485,7 @@
     width: 105%;
     right: -35%;
     top: 13%;
-    opacity: 0.35;
+    opacity: calc(0.35 * max(0, 1 - var(--cover-progress) * 1.5));
   }
   .cover-footer {
     font-size: 13px;

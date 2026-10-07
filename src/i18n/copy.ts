@@ -20,20 +20,20 @@ const en = {
   hero: {
     location: "Madrid, Spain · Final-year student",
     role: ["Software", "Engineer"],
-    tagline: ["Strong foundations.", "Software that connects the dots."],
+    tagline: ["Algorithms, backend and systems.", "Applied to my projects."],
     description:
-      "Building across AI, cloud, data and blockchain—with algorithms, backend and systems at the core.",
+      "I build projects in AI, cloud, data and blockchain, using what I study in algorithms, backend development and systems.",
     explore: "Explore my work",
     cv: "Download CV",
-    cvEn: "Download English CV — EN",
-    cvEs: "Download Spanish CV — ES",
+    cvEn: "Download English CV (EN)",
+    cvEs: "Download Spanish CV (ES)",
     scroll: "Explore the projects",
     foundations: "Algorithms / Backend / Systems",
   },
   work: {
     label: "Projects",
-    title: "Ideas, turned into systems.",
-    intro: "Different domains. The same engineering mindset.",
+    title: "What I’ve been building.",
+    intro: "Projects in algorithms, AI, cloud, data and blockchain.",
     detail: "Explore case study",
     github: "GitHub",
     ongoing: "In progress",
@@ -43,7 +43,7 @@ const en = {
   },
   toolkit: {
     label: "Engineering toolkit",
-    title: "Foundations before frameworks.",
+    title: "Tools and fundamentals I use.",
     intro:
       "The tools and concepts I use to turn a problem into working software.",
     categories: [
@@ -55,8 +55,9 @@ const en = {
   },
   education: {
     label: "Education",
-    title: "An engineering trajectory.",
-    intro: "Two degrees. An international academic path.",
+    title: "My studies.",
+    intro:
+      "Two degrees, with studies in Spain and a Dual U.S. High School Diploma.",
     university: "University studies",
     earlier: "Earlier education",
     primary: "Primary degree",
@@ -69,15 +70,15 @@ const en = {
     title: "About Alex.",
     how: "How I work",
     intro:
-      "I’m Alejandro—usually Alex. A final-year Software Engineering student in Madrid, also studying Business & Technology.",
+      "I’m Alejandro, usually Alex. I’m a final-year Software Engineering student in Madrid, also studying Business & Technology.",
     description:
-      "I’m interested in designing, building and improving software systems, and in applying those foundations to unfamiliar domains. I’m still exploring; the common thread is making things work and understanding why.",
+      "I like designing, building and improving software systems, then applying what I learn to areas I haven’t worked in before. I’m still exploring which areas to focus on. I want to understand how the software I build works and why.",
     beyond: "Outside engineering",
     sport:
-      "Most of my time outside engineering goes into sport—football, running and strength training.",
+      "Most of my time outside engineering goes into sport: football, running and strength training.",
     experience: "Experience while studying",
     experienceIntro:
-      "Work that shaped how I communicate, adapt and take responsibility.",
+      "Teaching and customer-facing work helped me communicate clearly, adapt to different people and take responsibility.",
   },
   contact: {
     label: "What’s next",
@@ -88,7 +89,7 @@ const en = {
     location: "Madrid, Spain",
   },
   footer: {
-    message: "Built with intent. Always learning.",
+    message: "Built by Alex. Learning as I go.",
     top: "Back to top",
   },
   case: {
@@ -114,16 +115,16 @@ const en = {
     back: "Back to portfolio",
   },
   seo: {
-    title: "Alex Serrano — Software Engineer",
+    title: "Alex Serrano | Software Engineer",
     description:
       "Software Engineering student in Madrid building projects across algorithms, AI, cloud, data and blockchain.",
     person: "Final-year Software Engineering student in Madrid.",
-    social: "Strong foundations. Software that connects the dots.",
+    social: "Projects in algorithms, AI, cloud, data and blockchain.",
   },
   system: {
     title: "Software Engineering",
     foundation: "The foundation",
-    caption: "Strong foundations. Connected possibilities.",
+    caption: "Algorithms, backend and systems across my projects.",
     nodes: [
       {
         title: "Algorithms",
@@ -171,7 +172,7 @@ const en = {
       seller: "Seller agents",
       engine: "Negotiation",
       intelligence: "Shared market intelligence",
-      caption: "Better evidence. Better decisions.",
+      caption: "Market data informs agent negotiations.",
     },
     cloud: {
       aria: "Application delivery through GitHub, Docker, ECR and ECS on AWS",
@@ -232,20 +233,20 @@ const es: Dictionary = {
   hero: {
     location: "Madrid, España · Último curso",
     role: ["Ingeniero", "de software"],
-    tagline: ["Fundamentos sólidos.", "Software que conecta las piezas."],
+    tagline: ["Algoritmos, backend y sistemas.", "Aplicados a mis proyectos."],
     description:
       "Desarrollo proyectos de IA, cloud, datos y blockchain, con algoritmos, backend y sistemas como base.",
     explore: "Explorar proyectos",
     cv: "Descargar CV",
-    cvEn: "Descargar CV en inglés — EN",
-    cvEs: "Descargar CV en español — ES",
+    cvEn: "Descargar CV en inglés (EN)",
+    cvEs: "Descargar CV en español (ES)",
     scroll: "Explora los proyectos",
     foundations: "Algoritmos / Backend / Sistemas",
   },
   work: {
     label: "Proyectos",
-    title: "Ideas que se convierten en sistemas.",
-    intro: "Distintos ámbitos. La misma forma de hacer ingeniería.",
+    title: "Lo que estoy desarrollando.",
+    intro: "Proyectos de algoritmos, IA, cloud, datos y blockchain.",
     detail: "Explorar el proyecto",
     github: "GitHub",
     ongoing: "En desarrollo",
@@ -255,7 +256,7 @@ const es: Dictionary = {
   },
   toolkit: {
     label: "Herramientas de ingeniería",
-    title: "Primero, los fundamentos.",
+    title: "Herramientas y fundamentos que uso.",
     intro:
       "Las herramientas y los conceptos con los que convierto un problema en software funcional.",
     categories: [
@@ -267,8 +268,9 @@ const es: Dictionary = {
   },
   education: {
     label: "Formación",
-    title: "Una trayectoria de ingeniería.",
-    intro: "Dos grados. Un recorrido académico internacional.",
+    title: "Mis estudios.",
+    intro:
+      "Dos grados, con estudios en España y un Diploma Dual de Bachillerato de EE. UU.",
     university: "Estudios universitarios",
     earlier: "Formación previa",
     primary: "Grado principal",
@@ -281,15 +283,15 @@ const es: Dictionary = {
     title: "Sobre Alex.",
     how: "Cómo trabajo",
     intro:
-      "Soy Alejandro, aunque suelo usar Alex. Estudiante de último curso de Ingeniería del Software en Madrid, también estudio Empresa y Tecnología.",
+      "Soy Alejandro, aunque suelo usar Alex. Estoy en el último curso de Ingeniería del Software en Madrid y también estudio Empresa y Tecnología.",
     description:
-      "Me interesa diseñar, construir y mejorar sistemas de software, y aplicar esos fundamentos a ámbitos que todavía no conozco. Sigo explorando; el hilo conductor es hacer que las cosas funcionen y entender por qué.",
+      "Me gusta diseñar, desarrollar y mejorar sistemas de software, y aplicar lo que aprendo a ámbitos en los que aún no he trabajado. Todavía estoy explorando en qué áreas centrarme. Quiero entender cómo funciona el software que construyo y por qué.",
     beyond: "Fuera de la ingeniería",
     sport:
       "Fuera de la ingeniería, dedico gran parte de mi tiempo al deporte: fútbol, running y entrenamiento de fuerza.",
     experience: "Experiencia durante mis estudios",
     experienceIntro:
-      "Experiencias que han influido en cómo comunico, me adapto y asumo responsabilidades.",
+      "La enseñanza y la atención al cliente me ayudaron a explicar ideas con claridad, adaptarme a distintas personas y asumir responsabilidades.",
   },
   contact: {
     label: "Lo próximo",
@@ -300,7 +302,7 @@ const es: Dictionary = {
     location: "Madrid, España",
   },
   footer: {
-    message: "Construido con intención. Siempre aprendiendo.",
+    message: "Hecho por Alex. Aprendo con cada proyecto.",
     top: "Volver arriba",
   },
   case: {
@@ -326,16 +328,16 @@ const es: Dictionary = {
     back: "Volver al portfolio",
   },
   seo: {
-    title: "Alex Serrano — Ingeniero de Software",
+    title: "Alex Serrano | Ingeniero de Software",
     description:
       "Estudiante de Ingeniería del Software en Madrid con proyectos de algoritmos, IA, cloud, datos y blockchain.",
     person: "Estudiante de último curso de Ingeniería del Software en Madrid.",
-    social: "Fundamentos sólidos. Software que conecta las piezas.",
+    social: "Proyectos de algoritmos, IA, cloud, datos y blockchain.",
   },
   system: {
     title: "Ingeniería del Software",
     foundation: "La base",
-    caption: "Fundamentos sólidos. Posibilidades conectadas.",
+    caption: "Algoritmos, backend y sistemas en mis proyectos.",
     nodes: [
       {
         title: "Algoritmos",
@@ -384,7 +386,7 @@ const es: Dictionary = {
       seller: "Vendedores",
       engine: "Negociación",
       intelligence: "Inteligencia de mercado compartida",
-      caption: "Mejor información. Mejores decisiones.",
+      caption: "Los agentes negocian con datos de mercado.",
     },
     cloud: {
       aria: "Despliegue de aplicaciones mediante GitHub, Docker, ECR y ECS en AWS",

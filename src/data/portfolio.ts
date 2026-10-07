@@ -58,11 +58,11 @@ export const projects: Project[] = [
     problem:
       "How should autonomous agents negotiate when better decisions depend on an evolving market? During the Claude Code hackathon, the team found that faster responses alone did not solve the real bottleneck: agents needed better information.",
     approach:
-      "We built a multi-agent system to negotiate with buyers and sellers, analyze market activity and share information. The approach evolved toward market evidence, previous negotiations and adaptive decisions, making shared intelligence central to the system.",
+      "We built a multi-agent system to negotiate with buyers and sellers, analyze market activity and share information. As we developed it, agents used market data and previous negotiations to adjust their decisions, relying on information shared across the system.",
     contribution:
       "Built collaboratively in a three-person team during a 48-hour hackathon. We iterated on negotiation behavior, market analysis and information sharing, adapting the system as we learned more about the market.",
     learnings:
-      "The most useful improvement was a change in reasoning: understand what limits a system before optimizing it. In this case, informed strategy mattered more than raw speed. Testing also gave the team a way to iterate under a tight deadline.",
+      "We learned to identify what was limiting the system before optimizing it. Better market information mattered more than faster responses. Tests helped us check changes under a tight deadline.",
     steps: [
       "Buyer agents",
       "Negotiation engine",
@@ -102,7 +102,7 @@ export const projects: Project[] = [
     contribution:
       "My work includes dataset exploration, large-dataset processing, pipeline development, defining measurable DAO relationships, graph construction, validation and sanity checks. I also document findings and technical decisions so that the analysis can be revisited and reproduced.",
     learnings:
-      "An ongoing exploration of how data quality, relationship definitions and validation influence a graph model. The engineering work is as much about making assumptions explicit as it is about building a pipeline.",
+      "I’m learning how data quality, relationship definitions and validation affect a graph model. Alongside building the pipeline, I document the assumptions behind the analysis.",
     steps: [
       "Governance datasets",
       "Processing & validation",
@@ -113,7 +113,7 @@ export const projects: Project[] = [
   {
     slug: "quadratic-voting-dao",
     name: "Quadratic Voting DAO",
-    label: "A different cost for a stronger voice",
+    label: "More votes, quadratically higher cost",
     status: "Completed",
     period: "2025–2026",
     category: "Smart contracts · Governance",
@@ -132,11 +132,11 @@ export const projects: Project[] = [
     problem:
       "How can token-based governance express preference strength while increasing the cost of additional votes? Quadratic voting offers a mechanism to explore this tradeoff through software.",
     approach:
-      "A completed on-chain governance project implementing a quadratic voting mechanism with Solidity and ERC-20 tokens. The conceptual flow connects tokens, quadratic cost, vote allocation and smart-contract governance.",
+      "I implemented quadratic voting on-chain with Solidity and ERC-20 tokens. The contracts use a quadratic token cost to determine how votes are allocated in the governance system.",
     contribution:
       "Developed the quadratic voting DAO project, implementing the voting mechanism through smart contracts and token-based governance. The completed implementation is available in the repository.",
     learnings:
-      "Turning a governance rule into contract behavior connects software design with explicit economic constraints. The project strengthened my smart-contract development foundations and experience completing an end-to-end implementation.",
+      "I learned to express governance rules and economic constraints in smart contracts, and gained practice taking a contract implementation from design to completion.",
     steps: [
       "User tokens",
       "Quadratic cost · v²",
@@ -147,7 +147,7 @@ export const projects: Project[] = [
   {
     slug: "algorithmic-techniques",
     name: "Algorithmic Techniques",
-    label: "The foundations, implemented",
+    label: "Algorithms and data structures in C++",
     status: "Ongoing",
     period: "2026",
     category: "Core engineering · Algorithms",
@@ -170,7 +170,7 @@ export const projects: Project[] = [
     contribution:
       "Implementing and studying classic algorithms and data structures in C++, with a focus on the reasoning behind each solution.",
     learnings:
-      "Strengthening the core foundations behind software: choosing a representation, reasoning about a solution and understanding the tradeoffs between algorithmic approaches.",
+      "I’m learning to choose data representations, explain why a solution works and compare the tradeoffs between algorithmic approaches.",
     steps: ["Problem", "Data structure", "Algorithm", "Solution"],
   },
   {
@@ -181,7 +181,7 @@ export const projects: Project[] = [
     period: "2026",
     category: "Cloud · Application delivery",
     summary:
-      "Learning real deployment workflows by taking containerized applications onto AWS.",
+      "Learning deployment workflows by running containerized applications on AWS.",
     repository: "https://github.com/alexSerranoR/aws-cloud-devops-lab",
     technologies: [
       "AWS",
@@ -197,11 +197,11 @@ export const projects: Project[] = [
     problem:
       "Writing an application is one part of delivering software. Packaging it, managing its container image and running it on cloud infrastructure require a different set of engineering decisions.",
     approach:
-      "A hands-on lab exploring containerized application deployment on AWS. The learning path connects application code, Docker packaging, ECR images and ECS workloads with cloud infrastructure.",
+      "I’m building a lab to deploy containerized applications on AWS: packaging application code with Docker, storing images in ECR and running workloads on ECS.",
     contribution:
       "Building the lab to learn cloud infrastructure and DevOps workflows through practical deployment work, using Python, Docker, ECR and ECS.",
     learnings:
-      "An ongoing effort to understand how code becomes a running application, including the boundaries between application development, containers and cloud services.",
+      "I’m learning how code becomes a running application and which responsibilities belong to the application, its container and the cloud services it uses.",
     steps: [
       "GitHub / Application",
       "Docker",
@@ -237,7 +237,7 @@ export const projects: Project[] = [
     contribution:
       "Worked on this collaborative Software Engineering project, building experience with Java, object-oriented design and networked application development.",
     learnings:
-      "An earlier foundation in separating interface, game behavior and networking responsibilities, and translating a software design into a working multiplayer application.",
+      "I learned to separate the interface, game logic and networking, and to turn a software design into a working multiplayer application.",
     steps: ["Player client", "Socket connection", "Game host", "Other players"],
   },
 ];
@@ -247,7 +247,7 @@ export const education = [
     institution: "Complutense University of Madrid",
     short: "UCM",
     degree: "BSc in Software Engineering",
-    dates: "Sep 2023 — Jul 2027 (expected)",
+    dates: "Sep 2023 – Jul 2027 (expected)",
     detail:
       "My primary degree. Most coursework completed in English, spanning programming paradigms, algorithms, data structures, databases, software architecture, application development and blockchain.",
     primary: true,
@@ -256,16 +256,16 @@ export const education = [
     institution: "UDIMA",
     short: "UDIMA",
     degree: "BSc in Business & Technology",
-    dates: "Sep 2024 — Present",
+    dates: "Sep 2024 – Present",
     detail:
-      "Studied concurrently. Business fundamentals, management and digital innovation—connecting technology with products and organizations.",
+      "Studied alongside Software Engineering. Covers business fundamentals, management and digital innovation, including how technology is used in products and organizations.",
     primary: false,
   },
   {
     institution: "CEU Claudio Coello",
     short: "CEU",
     degree: "Technical High School",
-    dates: "Sep 2021 — Jun 2023",
+    dates: "Sep 2021 – Jun 2023",
     detail:
       "Bachillerato Tecnológico, with a focus on mathematics, physics, economics and analytical reasoning.",
     primary: false,
@@ -274,7 +274,7 @@ export const education = [
     institution: "Academica International Studies",
     short: "AIS",
     degree: "Dual U.S. High School Diploma",
-    dates: "Sep 2019 — Jul 2022",
+    dates: "Sep 2019 – Jul 2022",
     detail:
       "Completed alongside Spanish education, entirely in English. Honor Roll Certificate for academic excellence.",
     primary: false,
@@ -285,14 +285,14 @@ export const experience = [
   {
     role: "Brand Representative",
     company: "Wilde & Partners",
-    dates: "Jul 2024 — Feb 2026",
+    dates: "Jul 2024 – Feb 2026",
     detail:
       "Worked alongside university studies in hospitality and luxury customer experience, representing Louis Vuitton, Tiffany & Co. and Prada. Supported international clients in Spanish and English.",
   },
   {
     role: "Robotics & Programming Teacher",
     company: "Camp Tecnológico",
-    dates: "Sep 2022 — Jun 2023",
+    dates: "Sep 2022 – Jun 2023",
     detail:
       "Taught robotics and programming to primary and secondary students in Spanish and English, making technical ideas accessible to different ages.",
   },
@@ -350,7 +350,7 @@ export const qualities = [
     text: "Teaching programming and working with international clients have given me practice explaining ideas to different audiences.",
   },
   {
-    title: "Stay curious. Take ownership.",
+    title: "Learn through projects",
     text: "From C++ algorithms to AWS deployments, I learn by building, investigating unfamiliar systems and working through the details.",
   },
   {

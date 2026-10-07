@@ -38,11 +38,94 @@ const edges = [
 
 export function Cover({ locale }: { locale: Locale }) {
   const ref = useRef<HTMLElement>(null);
+  const networkRef = useRef<SVGSVGElement>(null);
   const t = dictionaries[locale];
   useEffect(() => {
     const node = ref.current!;
+    const svg = networkRef.current!;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const desktop = window.matchMedia(
+      "(hover: hover) and (pointer: fine) and (min-width: 761px)",
+    );
+    const groups = svg.querySelectorAll<SVGGElement>("g");
+    const paths = svg.querySelectorAll<SVGPathElement>(".network-edge");
+    const cross = svg.querySelector<SVGPathElement>(".network-cross")!;
+    const positions = nodes.map(([x, y]) => ({ x, y, proximity: 0 }));
+    let cursor: { x: number; y: number } | null = null;
     let frame = 0;
+    let animationFrame = 0;
+    let previousTime = 0;
+    let elapsed = 0;
+    let running = false;
+    const reset = () => {
+      cursor = null;
+    };
+    const restore = () => {
+      positions.forEach((position, i) => {
+        position.x = nodes[i][0];
+        position.y = nodes[i][1];
+        position.proximity = 0;
+        groups[i].removeAttribute("transform");
+      });
+      paths.forEach((path, i) => {
+        const [a, b] = edges[i];
+        path.setAttribute(
+          "d",
+          `M${nodes[a][0]} ${nodes[a][1]} L${nodes[b][0]} ${nodes[b][1]}`,
+        );
+        path.style.removeProperty("stroke");
+        path.style.removeProperty("stroke-opacity");
+      });
+      cross.removeAttribute("transform");
+    };
+    const animate = (time: number) => {
+      animationFrame = 0;
+      if (!running) return;
+      // Limit SVG updates to 30 fps; interpolation remains time-based.
+      const delta = previousTime ? time - previousTime : 1000 / 30;
+      if (delta >= 1000 / 30) {
+        previousTime = time;
+        const step = Math.min(delta, 64);
+        elapsed += step;
+        const ease = 1 - Math.exp(-step / 180);
+        positions.forEach((position, i) => {
+          const [x, y] = nodes[i];
+          const dx = cursor ? x - cursor.x : 0;
+          const dy = cursor ? y - cursor.y : 0;
+          const distance = Math.hypot(dx, dy);
+          const proximity = cursor ? Math.max(0, 1 - distance / 95) : 0;
+          const push = proximity * proximity * 7;
+          const targetX =
+            x +
+            Math.sin(elapsed / 9000 + i) * 0.6 +
+            (dx / (distance || 1)) * push;
+          const targetY =
+            y +
+            Math.cos(elapsed / 11000 + i) * 0.6 +
+            (dy / (distance || 1)) * push;
+          position.x += (targetX - position.x) * ease;
+          position.y += (targetY - position.y) * ease;
+          position.proximity += (proximity - position.proximity) * ease;
+          groups[i].setAttribute(
+            "transform",
+            `translate(${position.x - x} ${position.y - y})`,
+          );
+        });
+        paths.forEach((path, i) => {
+          const [a, b] = edges[i].map((index) => positions[index]);
+          path.setAttribute("d", `M${a.x} ${a.y} L${b.x} ${b.y}`);
+          path.style.stroke = "var(--accent)";
+          path.style.strokeOpacity = String(
+            0.3 + Math.max(a.proximity, b.proximity) * 0.25,
+          );
+        });
+        cross.setAttribute(
+          "transform",
+          `translate(${positions[7].x - nodes[7][0]} ${positions[7].y - nodes[7][1]})`,
+        );
+      }
+      animationFrame = requestAnimationFrame(animate);
+    };
     const render = () => {
       frame = 0;
       const rect = node.getBoundingClientRect();
@@ -50,37 +133,58 @@ export function Cover({ locale }: { locale: Locale }) {
         ? 0
         : Math.min(1, Math.max(0, -rect.top / rect.height));
       node.style.setProperty("--cover-progress", progress.toFixed(3));
+      running =
+        desktop.matches &&
+        !preference.matches &&
+        !document.hidden &&
+        rect.bottom > 0 &&
+        rect.top < window.innerHeight &&
+        progress < 2 / 3;
+      if (running && !animationFrame) {
+        previousTime = 0;
+        animationFrame = requestAnimationFrame(animate);
+      } else if (!running) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+        reset();
+        if (preference.matches || !desktop.matches) restore();
+      }
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(render);
     };
     const pointer = (event: PointerEvent) => {
-      if (preference.matches || event.pointerType !== "mouse") return;
-      const rect = node.getBoundingClientRect();
-      node.style.setProperty(
-        "--pointer-x",
-        `${(event.clientX / rect.width - 0.5) * 12}px`,
-      );
-      node.style.setProperty(
-        "--pointer-y",
-        `${((event.clientY - rect.top) / rect.height - 0.5) * 12}px`,
+      if (!running || event.pointerType !== "mouse") return;
+      const matrix = svg.getScreenCTM();
+      if (!matrix) return;
+      cursor = new DOMPoint(event.clientX, event.clientY).matrixTransform(
+        matrix.inverse(),
       );
     };
-    const reset = () => {
-      node.style.setProperty("--pointer-x", "0px");
-      node.style.setProperty("--pointer-y", "0px");
+    const scroll = () => {
+      reset();
+      schedule();
     };
-    window.addEventListener("scroll", schedule, { passive: true });
+    const visibility = () => {
+      cancelAnimationFrame(frame);
+      render();
+    };
+    window.addEventListener("scroll", scroll, { passive: true });
     window.addEventListener("resize", schedule);
-    preference.addEventListener("change", render);
+    preference.addEventListener("change", schedule);
+    desktop.addEventListener("change", schedule);
+    document.addEventListener("visibilitychange", visibility);
     node.addEventListener("pointermove", pointer);
     node.addEventListener("pointerleave", reset);
     render();
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", scroll);
       window.removeEventListener("resize", schedule);
-      preference.removeEventListener("change", render);
+      preference.removeEventListener("change", schedule);
+      desktop.removeEventListener("change", schedule);
+      document.removeEventListener("visibilitychange", visibility);
       node.removeEventListener("pointermove", pointer);
       node.removeEventListener("pointerleave", reset);
     };
@@ -93,7 +197,7 @@ export function Cover({ locale }: { locale: Locale }) {
       aria-labelledby="cover-name"
     >
       <div className="cover-network" aria-hidden="true">
-        <svg viewBox="0 0 500 400" fill="none">
+        <svg ref={networkRef} viewBox="0 0 500 400" fill="none">
           <circle className="network-orbit" cx="250" cy="195" r="135" />
           <circle
             className="network-orbit outer-orbit"
@@ -104,6 +208,7 @@ export function Cover({ locale }: { locale: Locale }) {
           {edges.map(([a, b], i) => (
             <path
               key={i}
+              className="network-edge"
               pathLength="1"
               d={`M${nodes[a][0]} ${nodes[a][1]} L${nodes[b][0]} ${nodes[b][1]}`}
             />
