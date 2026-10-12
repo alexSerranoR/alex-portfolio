@@ -40,6 +40,7 @@ const en = {
     completed: "Completed",
     count: "of",
     technologies: "Technologies",
+    awards: "Awards",
   },
   toolkit: {
     label: "Engineering toolkit",
@@ -174,6 +175,14 @@ const en = {
       intelligence: "Shared market intelligence",
       caption: "Market data informs agent negotiations.",
     },
+    embarca: {
+      aria: "A company need becomes an AI-drafted challenge that students solve remotely, earning a stamp in their talent passport",
+      company: "Company need",
+      challenge: "AI challenge",
+      students: "Students",
+      passport: "Passport",
+      caption: "AI prepares. A person reviews.",
+    },
     cloud: {
       aria: "Application delivery through GitHub, Docker, ECR and ECS on AWS",
       caption: "From application to AWS infrastructure",
@@ -253,6 +262,7 @@ const es: Dictionary = {
     completed: "Completado",
     count: "de",
     technologies: "Tecnologías",
+    awards: "Premios",
   },
   toolkit: {
     label: "Herramientas de ingeniería",
@@ -387,6 +397,14 @@ const es: Dictionary = {
       engine: "Negociación",
       intelligence: "Inteligencia de mercado compartida",
       caption: "Los agentes negocian con datos de mercado.",
+    },
+    embarca: {
+      aria: "La necesidad de una empresa se convierte en un reto generado con IA que los estudiantes resuelven en remoto y que suma un sello a su pasaporte de talento",
+      company: "Empresa",
+      challenge: "Reto con IA",
+      students: "Estudiantes",
+      passport: "Pasaporte",
+      caption: "La IA prepara. Valora una persona.",
     },
     cloud: {
       aria: "Despliegue de aplicaciones mediante GitHub, Docker, ECR y ECS en AWS",

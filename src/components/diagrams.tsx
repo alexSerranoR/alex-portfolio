@@ -4,11 +4,15 @@ import {
   ArrowRight,
   ArrowUpDown,
   Boxes,
+  Building2,
   Database,
   GitBranch,
+  GraduationCap,
   Layers,
   Network,
   Server,
+  Sparkles,
+  Stamp,
   Users,
 } from "lucide-react";
 import { dictionaries } from "@/i18n/copy";
@@ -247,17 +251,25 @@ export function ProjectDiagram({
         <p className="diagram-caption-text">{t.wheel.caption}</p>
       </div>
     );
-  const steps = [
-    { label: "GitHub", icon: GitBranch },
-    { label: "Docker", icon: Boxes },
-    { label: "ECR", icon: Layers },
-    { label: "ECS", icon: Server },
-  ];
+  const embarca = slug === "embarca";
+  const steps = embarca
+    ? [
+        { label: t.embarca.company, icon: Building2 },
+        { label: t.embarca.challenge, icon: Sparkles },
+        { label: t.embarca.students, icon: GraduationCap },
+        { label: t.embarca.passport, icon: Stamp },
+      ]
+    : [
+        { label: "GitHub", icon: GitBranch },
+        { label: "Docker", icon: Boxes },
+        { label: "ECR", icon: Layers },
+        { label: "ECS", icon: Server },
+      ];
   return (
     <div
       className="project-diagram flow-diagram"
       role="img"
-      aria-label={t.cloud.aria}
+      aria-label={embarca ? t.embarca.aria : t.cloud.aria}
     >
       <div className="flow-steps">
         {steps.map(({ label, icon: Icon }, index) => (
@@ -272,7 +284,9 @@ export function ProjectDiagram({
           </div>
         ))}
       </div>
-      <p className="diagram-caption-text">{t.cloud.caption}</p>
+      <p className="diagram-caption-text">
+        {embarca ? t.embarca.caption : t.cloud.caption}
+      </p>
     </div>
   );
 }

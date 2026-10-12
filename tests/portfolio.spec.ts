@@ -89,7 +89,9 @@ for (const locale of locales) {
     await expect(page.locator(".cover-role")).toHaveText(t.hero.role.join(" "));
     await expect(page.locator(".portfolio-cover p")).toHaveCount(1);
     await expect(page.locator(".brand")).toHaveAccessibleName("Alex Serrano");
-    await expect(page.locator(".work-journey .project-story")).toHaveCount(6);
+    await expect(page.locator(".work-journey .project-story")).toHaveCount(
+      projectOrder.length,
+    );
     expect(
       await page
         .locator(".project-story")
@@ -137,7 +139,7 @@ for (const locale of locales) {
     expect(errors).toEqual([]);
   });
 
-  test(`${locale}: all six engineering case studies are translated and accessible`, async ({
+  test(`${locale}: all engineering case studies are translated and accessible`, async ({
     page,
     request,
   }) => {
@@ -506,7 +508,9 @@ test("both languages work without JavaScript", async ({ browser }) => {
         exact: true,
       }),
     ).toBeVisible();
-    await expect(page.locator(".project-story")).toHaveCount(6);
+    await expect(page.locator(".project-story")).toHaveCount(
+      projectOrder.length,
+    );
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await page.locator(".earlier-education summary").click();
     await expect(page.locator(".school-item").first()).toBeVisible();

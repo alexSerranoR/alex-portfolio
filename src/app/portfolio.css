@@ -232,6 +232,283 @@
 .completed {
   color: #c2c8bb;
 }
+.project-event {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -8px 0 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: var(--accent);
+}
+.project-event > svg {
+  flex-shrink: 0;
+}
+.case-heading .project-event {
+  margin: 22px 0 0;
+}
+.award-medals {
+  --medal-size: 76px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.case-heading .award-medals {
+  justify-content: flex-start;
+  margin-top: 26px;
+}
+/* On wide screens the case study's medals hang from the top-right corner. */
+@media (min-width: 1100px) {
+  .case-study {
+    position: relative;
+  }
+  .case-heading .award-medals {
+    --medal-size: 92px;
+    position: absolute;
+    top: 0;
+    right: 48px;
+    margin: 0;
+  }
+  .case-heading .medal-ribbon {
+    height: 150px;
+  }
+}
+.medal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 128px;
+  text-align: center;
+}
+.medal-hang {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+}
+.medal-ribbon {
+  position: relative;
+  width: calc(var(--medal-size) * 0.56);
+  height: calc(var(--medal-size) * 0.66);
+  clip-path: polygon(0 0, 100% 0, 76% 100%, 24% 100%);
+  background: linear-gradient(
+    90deg,
+    #26301e 0 30%,
+    var(--accent) 30% 70%,
+    #26301e 70%
+  );
+}
+.medal-second .medal-ribbon {
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0 30%,
+    #26301e 30% 70%,
+    var(--accent) 70%
+  );
+}
+.medal-disc {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--medal-size);
+  height: var(--medal-size);
+  margin-top: -6px;
+  overflow: hidden;
+  border-radius: 50%;
+  color: #5b3f0c;
+  background: radial-gradient(
+    circle at 32% 28%,
+    #fff5cc 0,
+    #f2d06c 24%,
+    #c9952f 64%,
+    #8a6420 100%
+  );
+  box-shadow:
+    inset 0 0 0 4px rgb(255 255 255 / 0.2),
+    inset 0 0 0 6px rgb(0 0 0 / 0.16),
+    0 12px 26px rgb(0 0 0 / 0.45);
+}
+.medal-second .medal-disc {
+  color: #353b42;
+  background: radial-gradient(
+    circle at 32% 28%,
+    #ffffff 0,
+    #e1e5ea 24%,
+    #a6adb6 64%,
+    #6b727b 100%
+  );
+}
+.medal-disc::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgb(255 255 255 / 0.75) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+}
+.medal-rank {
+  font-size: calc(var(--medal-size) * 0.46);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.medal-hang::before {
+  content: "";
+  position: absolute;
+  bottom: calc(var(--medal-size) * -0.25);
+  left: 50%;
+  width: calc(var(--medal-size) * 1.5);
+  height: calc(var(--medal-size) * 1.5);
+  border-radius: 50%;
+  background: radial-gradient(rgb(242 208 108 / 0.22), transparent 65%);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.medal-second .medal-hang::before {
+  background: radial-gradient(rgb(225 229 234 / 0.16), transparent 65%);
+}
+.medal-sparkle {
+  position: absolute;
+  right: calc(50% - var(--medal-size) * 0.55);
+  bottom: calc(var(--medal-size) * 0.72);
+  width: 14px;
+  height: 14px;
+  background: #fffbe8;
+  clip-path: polygon(
+    50% 0,
+    61% 39%,
+    100% 50%,
+    61% 61%,
+    50% 100%,
+    39% 61%,
+    0 50%,
+    39% 39%
+  );
+  opacity: 0;
+}
+.medal-title {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+}
+@keyframes medal-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-34px) rotate(16deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0) rotate(-12deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  68% {
+    transform: rotate(-4deg);
+  }
+  84% {
+    transform: rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(0);
+  }
+}
+@keyframes medal-swing {
+  0% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(14deg);
+  }
+  45% {
+    transform: rotate(-9deg);
+  }
+  68% {
+    transform: rotate(4deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+@keyframes medal-sway {
+  0%,
+  100% {
+    transform: rotate(-1.5deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
+  }
+}
+@keyframes medal-shine {
+  0%,
+  70% {
+    transform: translateX(-120%);
+  }
+  86%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+@keyframes medal-twinkle {
+  0%,
+  72%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0);
+  }
+  82% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}
+/* Cards animate when their scene is visible; the case study animates on load.
+   Reduced motion keeps the medals still. */
+.scene-visible .medal-hang {
+  animation:
+    medal-drop 1.3s cubic-bezier(0.3, 0.7, 0.4, 1)
+      calc(0.15s + var(--medal-index) * 0.22s) both,
+    medal-sway 4.5s ease-in-out calc(1.5s + var(--medal-index) * 0.22s) infinite;
+}
+.scene-visible .medal-disc::after {
+  animation: medal-shine 5s ease-in-out calc(1.3s + var(--medal-index) * 0.7s)
+    infinite;
+}
+.scene-visible .medal-sparkle {
+  animation: medal-twinkle 5s ease-in-out calc(1.5s + var(--medal-index) * 0.7s)
+    infinite;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .case-heading .medal-hang {
+    animation:
+      medal-drop 1.3s cubic-bezier(0.3, 0.7, 0.4, 1)
+        calc(0.3s + var(--medal-index) * 0.22s) both,
+      medal-sway 4.5s ease-in-out calc(1.6s + var(--medal-index) * 0.22s)
+        infinite;
+  }
+  .case-heading .medal-disc::after {
+    animation: medal-shine 5s ease-in-out calc(1.4s + var(--medal-index) * 0.7s)
+      infinite;
+  }
+  .case-heading .medal-sparkle {
+    animation: medal-twinkle 5s ease-in-out
+      calc(1.6s + var(--medal-index) * 0.7s) infinite;
+  }
+  .medal:hover .medal-hang {
+    animation: medal-swing 1.1s ease-out both;
+  }
+}
 .story-copy h3 {
   font-size: clamp(40px, 4.1vw, 62px);
   line-height: 1.08;
@@ -288,6 +565,8 @@
 .project-metrics > div {
   display: flex;
   flex-direction: column-reverse;
+  /* Keep values on one line when labels wrap to different heights. */
+  justify-content: flex-end;
   gap: 7px;
   min-width: 0;
 }
