@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, Award, Github, Trophy } from "lucide-react";
+import type { CSSProperties } from "react";
+import { ArrowUpRight, Github, Mic, Trophy } from "lucide-react";
 import type { Project } from "@/data/portfolio";
 import { dictionaries } from "@/i18n/copy";
 import { localePath, type Locale } from "@/i18n/routes";
@@ -38,35 +39,49 @@ export function ProjectMetrics({ project }: { project: Project }) {
   );
 }
 
-export function ProjectEvent({
+export function ProjectEvent({ project }: { project: Project }) {
+  if (!project.event) return null;
+  return (
+    <p className="project-event">
+      <Trophy size={15} aria-hidden="true" />
+      {project.event.name}
+    </p>
+  );
+}
+
+// Medals hang from their ribbons and swing in when the scene comes into view.
+export function AwardMedals({
   project,
   locale = "en",
 }: {
   project: Project;
   locale?: Locale;
 }) {
-  if (!project.event) return null;
-  const { name, awards } = project.event;
+  const awards = project.event?.awards;
+  if (!awards?.length) return null;
   return (
-    <div className="project-event">
-      <p className="project-event-name">
-        <Trophy size={15} aria-hidden="true" />
-        {name}
-      </p>
-      {awards && awards.length > 0 && (
-        <ul
-          className="project-awards"
-          aria-label={dictionaries[locale].work.awards}
+    <ul className="award-medals" aria-label={dictionaries[locale].work.awards}>
+      {awards.map((award, index) => (
+        <li
+          key={award.title}
+          className={`medal medal-${award.medal}`}
+          style={{ "--medal-index": index } as CSSProperties}
         >
-          {awards.map((award) => (
-            <li key={award}>
-              <Award size={14} aria-hidden="true" />
-              {award}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+          <span className="medal-hang" aria-hidden="true">
+            <span className="medal-ribbon" />
+            <span className="medal-disc">
+              {award.medal === "pitch" ? (
+                <Mic size="38%" strokeWidth={1.8} />
+              ) : (
+                <span className="medal-rank">2</span>
+              )}
+            </span>
+            <span className="medal-sparkle" />
+          </span>
+          <span className="medal-title">{award.title}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -100,7 +115,7 @@ export function ProjectCard({
               <Status status={project.status} locale={locale} />
               <span>{project.period}</span>
             </div>
-            <ProjectEvent project={project} locale={locale} />
+            <ProjectEvent project={project} />
             <h3 id={`title-${project.slug}`}>
               <Link href={localePath(locale, `/projects/${project.slug}`)}>
                 {project.name}
@@ -135,6 +150,7 @@ export function ProjectCard({
           <div className="story-visual">
             <ProjectDiagram slug={project.slug} locale={locale} />
             <ProjectMetrics project={project} />
+            <AwardMedals project={project} locale={locale} />
           </div>
         </div>
       </ScrollScene>

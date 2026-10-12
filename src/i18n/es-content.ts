@@ -61,16 +61,14 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     category: "Hackathon de un día · Equipo de 5",
     event: {
       name: "Hackathon Iberoamérica 2030 · Club Hispanidad Futura",
-      awards: ["Premio al Mejor Pitch", "2.º puesto general"],
+      awards: [
+        { title: "Premio al Mejor Pitch", medal: "pitch" },
+        { title: "2.º puesto general", medal: "second" },
+      ],
     },
     summary:
       "Las empresas publican retos reales, los estudiantes los resuelven en remoto y cada entrega valorada queda en su pasaporte de talento, aunque no ganen.",
-    metricLabels: [
-      "de desarrollo",
-      "commits",
-      "líneas de TypeScript",
-      "personas, cada una con su agente de IA",
-    ],
+    metricLabels: [],
     problem:
       "El reto era crear más oportunidades para el talento joven entre países iberoamericanos. Las ofertas junior piden una experiencia que los jóvenes todavía no pueden tener, y un título no viaja bien entre países. Una valoración de una empresa real, sí.",
     approach:

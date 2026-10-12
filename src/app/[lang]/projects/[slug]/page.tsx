@@ -9,6 +9,7 @@ import { isLocale, localePath } from "@/i18n/routes";
 import { localizedMetadata } from "@/i18n/metadata";
 import { ProjectDiagram } from "@/components/diagrams";
 import {
+  AwardMedals,
   ProjectEvent,
   ProjectMetrics,
   Status,
@@ -66,7 +67,8 @@ export default async function ProjectPage({
           <span>.</span>
         </h1>
         <p className="case-label">{project.label}</p>
-        <ProjectEvent project={project} locale={lang} />
+        <ProjectEvent project={project} />
+        <AwardMedals project={project} locale={lang} />
         <p className="case-summary">{project.summary}</p>
         <a
           href={project.repository}

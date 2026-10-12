@@ -17,7 +17,10 @@ export type Project = {
   status: "Ongoing" | "Completed";
   period: string;
   category: string;
-  event?: { name: string; awards?: string[] };
+  event?: {
+    name: string;
+    awards?: { title: string; medal: "pitch" | "second" }[];
+  };
   summary: string;
   repository: string;
   technologies: string[];
@@ -81,7 +84,10 @@ export const projects: Project[] = [
     category: "One-day hackathon · Team of 5",
     event: {
       name: "Iberoamérica 2030 Hackathon · Club Hispanidad Futura",
-      awards: ["Best Pitch Award", "2nd place overall"],
+      awards: [
+        { title: "Best Pitch Award", medal: "pitch" },
+        { title: "2nd place overall", medal: "second" },
+      ],
     },
     summary:
       "Companies post real challenges, students solve them remotely, and every reviewed submission goes into their talent passport, even if they don’t win.",
@@ -96,12 +102,7 @@ export const projects: Project[] = [
       "Vercel",
       "AI",
     ],
-    metrics: [
-      { value: "~5h", label: "build window" },
-      { value: "89", label: "commits" },
-      { value: "~7.4K", label: "lines of TypeScript" },
-      { value: "5", label: "people, one AI agent each" },
-    ],
+    metrics: [],
     problem:
       "The challenge was to create more opportunities for young talent across Ibero-American countries. Junior roles ask for experience that young people can’t get yet, and a degree doesn’t travel well between countries. A review from a real company does.",
     approach:

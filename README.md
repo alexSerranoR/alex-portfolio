@@ -89,7 +89,7 @@ Edit **`src/data/portfolio.ts`** for English project facts, technologies, metric
 To add a project:
 
 1. Add an entry to `projects`, satisfying the `Project` type. Use a stable, unique URL slug.
-2. Add only verifiable metrics and technology claims. An empty `metrics` array is supported. Hackathon projects can set an optional `event` (name and awards), shown on the homepage card and the case study.
+2. Add only verifiable metrics and technology claims. An empty `metrics` array is supported. Hackathon projects can set an optional `event` (name and awards), shown on the homepage card and the case study; awards render as animated medals that stay still with reduced motion.
 3. Add its Spanish translation to `src/i18n/es-content.ts`.
 4. Add its slug to `projectOrder` in `src/i18n/routes.ts`. Homepage numbering and both languages' case-study routes are derived from that order on the next build.
 5. Add an accurate conceptual diagram branch in `diagrams.tsx`, with both languages' labels in `copy.ts`.
