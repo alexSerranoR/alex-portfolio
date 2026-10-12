@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight, Award, Github, Trophy } from "lucide-react";
 import type { Project } from "@/data/portfolio";
 import { dictionaries } from "@/i18n/copy";
 import { localePath, type Locale } from "@/i18n/routes";
@@ -38,14 +38,48 @@ export function ProjectMetrics({ project }: { project: Project }) {
   );
 }
 
+export function ProjectEvent({
+  project,
+  locale = "en",
+}: {
+  project: Project;
+  locale?: Locale;
+}) {
+  if (!project.event) return null;
+  const { name, awards } = project.event;
+  return (
+    <div className="project-event">
+      <p className="project-event-name">
+        <Trophy size={15} aria-hidden="true" />
+        {name}
+      </p>
+      {awards && awards.length > 0 && (
+        <ul
+          className="project-awards"
+          aria-label={dictionaries[locale].work.awards}
+        >
+          {awards.map((award) => (
+            <li key={award}>
+              <Award size={14} aria-hidden="true" />
+              {award}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 // The existing card API now renders a full chapter in the project journey.
 export function ProjectCard({
   project,
   number,
+  total,
   locale,
 }: {
   project: Project;
   number: number;
+  total: number;
   locale: Locale;
 }) {
   const t = dictionaries[locale].work;
@@ -60,11 +94,13 @@ export function ProjectCard({
           <div className="story-copy">
             <div className="story-meta">
               <span className="project-number">
-                {String(number).padStart(2, "0")} <span>/ 06</span>
+                {String(number).padStart(2, "0")}{" "}
+                <span>/ {String(total).padStart(2, "0")}</span>
               </span>
               <Status status={project.status} locale={locale} />
               <span>{project.period}</span>
             </div>
+            <ProjectEvent project={project} locale={locale} />
             <h3 id={`title-${project.slug}`}>
               <Link href={localePath(locale, `/projects/${project.slug}`)}>
                 {project.name}

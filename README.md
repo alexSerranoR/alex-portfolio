@@ -1,6 +1,6 @@
 # Alex Serrano — Software Engineer
 
-A project-led personal portfolio for Alejandro “Alex” Serrano Ruibal, a final-year Software Engineering student in Madrid. One scrolling journey through six engineering projects, explanatory system diagrams, academic background and real English/Spanish CV downloads. The full site is available in English and Spanish, with shared components and content. Built in the repository root for deployment on Vercel.
+A project-led personal portfolio for Alejandro “Alex” Serrano Ruibal, a final-year Software Engineering student in Madrid. One scrolling journey through seven engineering projects, explanatory system diagrams, academic background and real English/Spanish CV downloads. The full site is available in English and Spanish, with shared components and content. Built in the repository root for deployment on Vercel.
 
 ## Stack
 
@@ -41,7 +41,7 @@ npm run test:e2e
 npm run format:check
 ```
 
-Playwright starts the server automatically when port 3000 is free. Stop any development server first when testing the production build. The 20-test suite checks both languages and all six case studies, same-project language switching, legacy redirects, original facts and repository links, PDF integrity, comparable project section sizes, mobile navigation, keyboard behavior, cover and diagram scroll progress, disclosure animation and reversal, reduced motion, no-JavaScript disclosures, horizontal overflow at five viewport widths and WCAG AA accessibility with axe. Screenshots are saved to the ignored `qa-artifacts/` directory.
+Playwright starts the server automatically when port 3000 is free. Stop any development server first when testing the production build. The 20-test suite checks both languages and all case studies, same-project language switching, legacy redirects, original facts and repository links, PDF integrity, comparable project section sizes, mobile navigation, keyboard behavior, cover and diagram scroll progress, disclosure animation and reversal, reduced motion, no-JavaScript disclosures, horizontal overflow at five viewport widths and WCAG AA accessibility with axe. Screenshots are saved to the ignored `qa-artifacts/` directory.
 
 Use `npm run format` to format source changes. The full dependency audit currently reports five development-only advisories in the Next.js ESLint glob dependency chain. The production-only audit reports zero vulnerabilities; do not apply the suggested forced Next.js lint-config downgrade.
 
@@ -89,7 +89,7 @@ Edit **`src/data/portfolio.ts`** for English project facts, technologies, metric
 To add a project:
 
 1. Add an entry to `projects`, satisfying the `Project` type. Use a stable, unique URL slug.
-2. Add only verifiable metrics and technology claims. An empty `metrics` array is supported.
+2. Add only verifiable metrics and technology claims. An empty `metrics` array is supported. Hackathon projects can set an optional `event` (name and awards), shown on the homepage card and the case study.
 3. Add its Spanish translation to `src/i18n/es-content.ts`.
 4. Add its slug to `projectOrder` in `src/i18n/routes.ts`. Homepage numbering and both languages' case-study routes are derived from that order on the next build.
 5. Add an accurate conceptual diagram branch in `diagrams.tsx`, with both languages' labels in `copy.ts`.
@@ -125,7 +125,7 @@ The origin config enables canonical URLs, absolute social metadata and the bilin
 
 Semantic landmarks, a skip link, visible focus rings, keyboard-accessible disclosures, an Escape-dismissable mobile menu, download labels and responsive diagrams. `ScrollScene` updates CSS progress through a passive scroll listener and animation frames only while its diagram is in view. Progress reveals graph relationships, cloud delivery stages, traversal, quadratic costs and socket connections. Reduced-motion mode shows the complete diagrams without animated signals; content also remains visible with JavaScript disabled. Typography uses local system fonts to avoid font downloads and layout shifts. Public contact uses `mailto:`; no phone number is rendered on the site.
 
-The cover reinterprets the existing system map as an abstract connected foundation. Scrolling moves the name and navigation gently while expanding the network; desktop pointer movement is limited to a few pixels. A short positioning statement connects it to the unchanged six-project journey. Toolkit stays open; university education stays visible. Earlier education, working qualities, experience while studying and personal interests use native `<details>` disclosures, enhanced with measured-height, opacity and translate animations. They remain functional without JavaScript, support Enter/Space, and open immediately in reduced-motion mode.
+The cover reinterprets the existing system map as an abstract connected foundation. Scrolling moves the name and navigation gently while expanding the network; desktop pointer movement is limited to a few pixels. A short positioning statement connects it to the seven-project journey. Toolkit stays open; university education stays visible. Earlier education, working qualities, experience while studying and personal interests use native `<details>` disclosures, enhanced with measured-height, opacity and translate animations. They remain functional without JavaScript, support Enter/Space, and open immediately in reduced-motion mode.
 
 ## Content maintenance
 

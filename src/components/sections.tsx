@@ -68,11 +68,12 @@ export function Work({ locale }: { locale: Locale }) {
         </Reveal>
       </div>
       <span id="building" className="anchor-alias" aria-hidden="true" />
-      {getProjects(locale).map((project, index) => (
+      {getProjects(locale).map((project, index, all) => (
         <ProjectCard
           key={project.slug}
           project={project}
           number={index + 1}
+          total={all.length}
           locale={locale}
         />
       ))}

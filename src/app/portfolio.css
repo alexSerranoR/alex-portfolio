@@ -232,6 +232,51 @@
 .completed {
   color: #c2c8bb;
 }
+.project-event {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: -8px 0 22px;
+}
+.project-event-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: var(--accent);
+}
+.project-event-name > svg,
+.project-awards svg {
+  flex-shrink: 0;
+}
+.project-awards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.project-awards li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border: 1px solid #4a5a37;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text);
+  background: #1b2216;
+}
+.case-heading .project-event {
+  margin: 22px 0 0;
+}
 .story-copy h3 {
   font-size: clamp(40px, 4.1vw, 62px);
   line-height: 1.08;
@@ -288,6 +333,8 @@
 .project-metrics > div {
   display: flex;
   flex-direction: column-reverse;
+  /* Keep values on one line when labels wrap to different heights. */
+  justify-content: flex-end;
   gap: 7px;
   min-width: 0;
 }
@@ -1813,16 +1860,19 @@ html[lang="es"] .contact-main h2 {
   .project-metrics dt {
     font-size: 12px;
   }
-  .story-la-abuelita .project-metrics {
+  .story-la-abuelita .project-metrics,
+  .story-embarca .project-metrics {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
   }
-  .story-la-abuelita .project-metrics dd {
+  .story-la-abuelita .project-metrics dd,
+  .story-embarca .project-metrics dd {
     font-size: 27px;
     letter-spacing: -1px;
   }
-  .story-la-abuelita .project-metrics dt {
+  .story-la-abuelita .project-metrics dt,
+  .story-embarca .project-metrics dt {
     font-size: 12px;
     line-height: 1.45;
   }

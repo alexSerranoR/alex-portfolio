@@ -17,6 +17,7 @@ export type Project = {
   status: "Ongoing" | "Completed";
   period: string;
   category: string;
+  event?: { name: string; awards?: string[] };
   summary: string;
   repository: string;
   technologies: string[];
@@ -36,6 +37,7 @@ export const projects: Project[] = [
     status: "Completed",
     period: "October 2026",
     category: "48-hour hackathon · Team of 3",
+    event: { name: "Claude Hackathon Madrid" },
     summary:
       "Autonomous agents that negotiate with market evidence and shared intelligence. Built in 48 hours.",
     repository: "https://github.com/Bellaposa/La-Abuelita-Hackathon",
@@ -68,6 +70,51 @@ export const projects: Project[] = [
       "Negotiation engine",
       "Seller agents",
       "Shared market intelligence",
+    ],
+  },
+  {
+    slug: "embarca",
+    name: "Embarca",
+    label: "Real company challenges for young talent",
+    status: "Completed",
+    period: "October 2026",
+    category: "One-day hackathon · Team of 5",
+    event: {
+      name: "Iberoamérica 2030 Hackathon · Club Hispanidad Futura",
+      awards: ["Best Pitch Award", "2nd place overall"],
+    },
+    summary:
+      "Companies post real challenges, students solve them remotely, and every reviewed submission goes into their talent passport, even if they don’t win.",
+    repository: "https://github.com/aaangelmartin/ClubHispanidadFutura",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Claude API",
+      "Supabase",
+      "React",
+      "Tailwind CSS",
+      "Vercel",
+      "AI",
+    ],
+    metrics: [
+      { value: "~5h", label: "build window" },
+      { value: "89", label: "commits" },
+      { value: "~7.4K", label: "lines of TypeScript" },
+      { value: "5", label: "people, one AI agent each" },
+    ],
+    problem:
+      "The challenge was to create more opportunities for young talent across Ibero-American countries. Junior roles ask for experience that young people can’t get yet, and a degree doesn’t travel well between countries. A review from a real company does.",
+    approach:
+      "We built Embarca, a working prototype for Spain and Colombia. A company describes what it needs, AI turns it into a short challenge with a public rubric, students solve it remotely and the company reviews every submission. AI prepares the challenge and summarizes submissions, but a person sets the score.",
+    contribution:
+      "I built the part where a company describes what it needs in its own words and AI turns it into a ready-to-publish challenge: brief, deliverable, deadline and rubric, which the company can edit before publishing. I also worked on the 90-day pilot plan for the pitch. Each of the five team members built their own piece, coordinating through GitHub Issues.",
+    learnings:
+      "Mentor feedback changed our idea quite a bit: we narrowed it to a niche, looked for the root cause and made the difference from existing platforms clear. Splitting the app into independent parts let five people work in parallel without blocking each other.",
+    steps: [
+      "Company need",
+      "AI-drafted challenge",
+      "Students solve remotely",
+      "Talent passport",
     ],
   },
   {

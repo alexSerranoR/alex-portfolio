@@ -10,6 +10,7 @@ type ProjectTranslation = Pick<
   | "contribution"
   | "learnings"
   | "steps"
+  | "event"
 > & { metricLabels: string[] };
 
 export const spanishProjects: Record<string, ProjectTranslation> = {
@@ -53,6 +54,36 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
       "Motor de negociación",
       "Agentes vendedores",
       "Inteligencia de mercado compartida",
+    ],
+  },
+  embarca: {
+    label: "Retos reales de empresas para el talento joven",
+    category: "Hackathon de un día · Equipo de 5",
+    event: {
+      name: "Hackathon Iberoamérica 2030 · Club Hispanidad Futura",
+      awards: ["Premio al Mejor Pitch", "2.º puesto general"],
+    },
+    summary:
+      "Las empresas publican retos reales, los estudiantes los resuelven en remoto y cada entrega valorada queda en su pasaporte de talento, aunque no ganen.",
+    metricLabels: [
+      "de desarrollo",
+      "commits",
+      "líneas de TypeScript",
+      "personas, cada una con su agente de IA",
+    ],
+    problem:
+      "El reto era crear más oportunidades para el talento joven entre países iberoamericanos. Las ofertas junior piden una experiencia que los jóvenes todavía no pueden tener, y un título no viaja bien entre países. Una valoración de una empresa real, sí.",
+    approach:
+      "Construimos Embarca, un prototipo funcional para España y Colombia. Una empresa describe lo que necesita, la IA lo convierte en un reto corto con una rúbrica pública, los estudiantes lo resuelven en remoto y la empresa valora todas las entregas. La IA prepara el reto y resume las entregas, pero la nota la pone una persona.",
+    contribution:
+      "Desarrollé la parte en la que una empresa describe con sus palabras lo que necesita y la IA lo convierte en un reto listo para publicar: enunciado, entregable, plazo y rúbrica, que la empresa puede editar antes de publicarlo. También trabajé en el plan de piloto de 90 días para el pitch. Cada una de las cinco personas del equipo construyó su parte, coordinándonos mediante GitHub Issues.",
+    learnings:
+      "El feedback de los mentores cambió bastante nuestra idea: la acotamos a un nicho, buscamos la causa raíz y dejamos clara la diferencia con las plataformas existentes. Dividir la app en partes independientes permitió que cinco personas trabajaran en paralelo sin bloquearse.",
+    steps: [
+      "Necesidad de la empresa",
+      "Reto generado con IA",
+      "Estudiantes en remoto",
+      "Pasaporte de talento",
     ],
   },
   "aws-cloud-devops-lab": {

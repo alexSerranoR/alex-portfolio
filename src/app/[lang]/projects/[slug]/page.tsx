@@ -8,7 +8,11 @@ import { dictionaries } from "@/i18n/copy";
 import { isLocale, localePath } from "@/i18n/routes";
 import { localizedMetadata } from "@/i18n/metadata";
 import { ProjectDiagram } from "@/components/diagrams";
-import { ProjectMetrics, Status } from "@/components/project-card";
+import {
+  ProjectEvent,
+  ProjectMetrics,
+  Status,
+} from "@/components/project-card";
 import { Reveal, ScrollScene } from "@/components/ui";
 
 export const dynamicParams = true;
@@ -62,6 +66,7 @@ export default async function ProjectPage({
           <span>.</span>
         </h1>
         <p className="case-label">{project.label}</p>
+        <ProjectEvent project={project} locale={lang} />
         <p className="case-summary">{project.summary}</p>
         <a
           href={project.repository}
