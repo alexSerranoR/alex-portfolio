@@ -2,19 +2,21 @@ import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { diary } from "../src/data/diary";
 import {
-  projects,
-  profile,
   education,
   experience,
+  profile,
+  projects,
 } from "../src/data/portfolio";
 import { dictionaries } from "../src/i18n/copy";
-import { getProjects, getToolkit } from "../src/i18n/content";
+import { getProjects } from "../src/i18n/content";
 import { locales, projectOrder } from "../src/i18n/routes";
 
 async function accessible(page: Page) {
   const result = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .exclude(".library-canvas")
     .analyze();
   expect(
     result.violations.map((v) => ({
@@ -24,12 +26,27 @@ async function accessible(page: Page) {
   ).toEqual([]);
 }
 
-test("original facts, skills, downloads and legacy URLs are preserved", async ({
+async function noHorizontalScroll(page: Page) {
+  // Lists what sticks out, so a failure says where to look. Polled, since a
+  // resized viewport needs a frame before the layout settles.
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const width = window.innerWidth;
+        if (document.documentElement.scrollWidth <= width) return [];
+        return [...document.querySelectorAll("body *")]
+          .filter((node) => node.getBoundingClientRect().right > width + 0.5)
+          .slice(0, 5)
+          .map((node) => `${node.tagName.toLowerCase()}.${node.className}`);
+      }),
+    )
+    .toEqual([]);
+}
+
+test("facts, translations, downloads and legacy URLs hold", async ({
   request,
 }) => {
-  const root = await request.get("/", { maxRedirects: 0 });
-  expect(root.status()).toBe(308);
-  expect(root.headers().location).toBe("/en");
+  expect([...projectOrder].sort()).toEqual(projects.map((p) => p.slug).sort());
   for (const project of projects) {
     const legacy = await request.get(`/projects/${project.slug}`, {
       maxRedirects: 0,
@@ -41,20 +58,21 @@ test("original facts, skills, downloads and legacy URLs are preserved", async ({
         (p) => p.slug === project.slug,
       )!;
       expect(translated.repository).toBe(project.repository);
-      expect(translated.technologies).toEqual(project.technologies);
+      expect(translated.technologies).toHaveLength(project.technologies.length);
       expect(translated.status).toBe(project.status);
-      expect(
-        translated.metrics.map((m) => m.value.replace("Millones", "Millions")),
-      ).toEqual(project.metrics.map((m) => m.value));
+      expect(translated.years).toEqual(project.years);
+      expect(translated.metrics).toHaveLength(project.metrics.length);
+      expect(translated.steps).toHaveLength(project.steps.length);
+      expect(translated.event?.seals?.length).toBe(
+        project.event?.seals?.length,
+      );
+      for (const metric of translated.metrics)
+        expect(metric.label).toBeTruthy();
       if (locale === "en") expect(translated).toEqual(project);
     }
   }
   expect(education).toHaveLength(4);
   expect(experience).toHaveLength(2);
-  const originalSkills = new Set(
-    (await import("../src/data/portfolio")).toolkit.flatMap((g) => g.items),
-  );
-  expect(new Set(getToolkit().flat())).toEqual(originalSkills);
   for (const locale of locales) {
     const response = await request.get(profile.cv[locale]);
     expect(response.status()).toBe(200);
@@ -72,100 +90,130 @@ test("original facts, skills, downloads and legacy URLs are preserved", async ({
   }
 });
 
+test("the library entrance works without JavaScript", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  const response = await page.goto("/");
+  expect(response?.status()).toBe(200);
+  const es = page.getByRole("link", { name: "Abrir el portfolio en español" });
+  const en = page.getByRole("link", { name: "Open the portfolio in English" });
+  await expect(es).toHaveAttribute("href", "/es");
+  await expect(en).toHaveAttribute("href", "/en");
+  await es.click();
+  await expect(page).toHaveURL(/\/es$/);
+  await context.close();
+});
+
+test("the library opens a book and lands in that edition", async ({ page }) => {
+  test.setTimeout(60_000);
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const en = page.locator(".book-links").getByRole("link", {
+    name: "Open the portfolio in English",
+  });
+  await expect(en).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator(".skip-intro")).toHaveCount(0);
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: "qa-artifacts/library-desktop.png" });
+  await accessible(page);
+  await en.click();
+  await expect(page).toHaveURL(/\/en$/, { timeout: 10_000 });
+  expect(errors).toEqual([]);
+});
+
 for (const locale of locales) {
   const t = dictionaries[locale];
-  test(`${locale}: homepage hierarchy, translations, equal project importance and navigation`, async ({
+
+  test(`${locale}: title page, prologue and contents with filters`, async ({
     page,
   }) => {
-    await page.emulateMedia({ reducedMotion: "reduce" });
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`/${locale}`);
     await expect(page).toHaveTitle(t.seo.title);
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
-    await expect(page.locator("h1")).toContainText("ALEX");
-    await expect(page.locator("h1")).toContainText("SERRANO");
-    await expect(page.locator(".cover-role")).toHaveText(t.hero.role.join(" "));
-    await expect(page.locator(".portfolio-cover p")).toHaveCount(1);
-    await expect(page.locator(".brand")).toHaveAccessibleName("Alex Serrano");
-    await expect(page.locator(".work-journey .project-story")).toHaveCount(
+    await expect(page.locator("h1")).toHaveText("Alex Serrano");
+    await expect(
+      page.getByRole("heading", { name: t.prologue.heading }),
+    ).toBeVisible();
+    const entries = page.locator(".toc-entry");
+    await expect(entries).toHaveCount(projectOrder.length);
+    const localized = getProjects(locale);
+    for (const [index, project] of localized.entries())
+      await expect(entries.nth(index)).toContainText(project.name);
+
+    const filters = page.getByRole("group", { name: t.index.filters });
+    await filters
+      .getByRole("button", { name: new RegExp(`^${t.index.kinds.awarded}`) })
+      .click();
+    await expect(page.locator(".toc-entry:visible")).toHaveCount(
+      localized.filter((p) => p.event?.seals?.length).length,
+    );
+    await filters
+      .getByRole("button", { name: new RegExp(`^${t.index.kinds.hackathon}`) })
+      .click();
+    await expect(page.locator(".toc-entry:visible")).toHaveCount(
+      localized.filter((p) => p.kind === "hackathon").length,
+    );
+    await filters.getByRole("button", { name: "2024", exact: true }).click();
+    await expect(page.locator(".toc-entry:visible")).toHaveCount(0);
+    await page.getByRole("button", { name: t.index.reset }).click();
+    await expect(page.locator(".toc-entry:visible")).toHaveCount(
       projectOrder.length,
     );
-    expect(
-      await page
-        .locator(".project-story")
-        .evaluateAll((nodes) => nodes.map((n) => n.id.replace("project-", ""))),
-    ).toEqual([...projectOrder]);
-    const sizes = await page
-      .locator(".project-story")
-      .evaluateAll((nodes) =>
-        nodes.map((node) => node.getBoundingClientRect().height),
-      );
-    expect(Math.max(...sizes) / Math.min(...sizes)).toBeLessThan(1.35);
-    await expect(page.locator(".toolkit-group")).toHaveCount(4);
-    await expect(
-      page.locator(".tags,.toolkit-items,.project-card,.earlier-work"),
-    ).toHaveCount(0);
-    await expect(page.locator(".education-item")).toHaveCount(2);
-    await expect(page.locator(".school-item")).toHaveCount(2);
-    expect(
-      await page
-        .locator("#education")
-        .evaluate((node) => node.getBoundingClientRect().top),
-    ).toBeLessThan(
-      await page
-        .locator(".experience-block")
-        .evaluate((node) => node.getBoundingClientRect().top),
-    );
-    await page
-      .locator(".cover-navigation")
-      .getByRole("link", { name: t.nav.projects, exact: true })
-      .click();
-    await expect(page).toHaveURL(new RegExp(`/${locale}#work$`));
-    await expect(
-      page.getByRole("heading", { name: t.work.title, exact: true }),
-    ).toBeInViewport();
-    for (const disclosure of await page.locator(".disclosure").all()) {
-      await expect(disclosure).not.toHaveAttribute("open", "");
-      await disclosure.locator("summary").click();
-      await expect(disclosure).toHaveAttribute("open", "");
-    }
-    await expect(page.locator(".school-item").first()).toBeVisible();
-    await expect(page.locator(".qualities")).toBeVisible();
-    await expect(page.locator(".experience-list")).toBeVisible();
-    await expect(page.locator(".personal-note")).toBeVisible();
     await accessible(page);
+    await page.screenshot({
+      path: `qa-artifacts/${locale}-home-desktop.png`,
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await noHorizontalScroll(page);
+    await page.getByRole("button", { name: t.nav.open }).click();
+    await expect(
+      page
+        .getByRole("navigation", { name: t.nav.label })
+        .getByRole("link", { name: t.nav.diary }),
+    ).toBeVisible();
+    await page.keyboard.press("Escape");
+    await page.screenshot({
+      path: `qa-artifacts/${locale}-home-mobile.png`,
+      fullPage: true,
+    });
     expect(errors).toEqual([]);
   });
 
-  test(`${locale}: all engineering case studies are translated and accessible`, async ({
+  test(`${locale}: every chapter is complete, translated and accessible`, async ({
     page,
     request,
   }) => {
+    test.setTimeout(120_000);
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const project of getProjects(locale)) {
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.goto(`/${locale}/projects/${project.slug}`);
       await expect(page.locator("html")).toHaveAttribute("lang", locale);
-      await expect(page.locator("h1")).toContainText(project.name);
-      await expect(page.locator(".case-summary")).toHaveText(project.summary);
+      await expect(page.locator("h1")).toHaveAccessibleName(project.name);
+      await expect(page.locator(".chapter-summary")).toHaveText(
+        project.summary,
+      );
       await expect(page.locator("#contribution > p")).toHaveText(
         project.contribution,
       );
-      await expect(
-        page.getByRole("link", { name: t.case.repository, exact: true }),
-      ).toHaveAttribute("href", project.repository);
-      await expect(
-        page.getByRole("heading", { name: t.case.problem, exact: true }),
-      ).toBeVisible();
+      await expect(page.locator(".plate").first()).toBeVisible();
+      if (project.repository)
+        await expect(
+          page.getByRole("link", { name: t.chapter.repository, exact: true }),
+        ).toHaveAttribute("href", project.repository);
+      for (const seal of project.event?.seals ?? [])
+        await expect(page.locator(".seals")).toContainText(seal.title);
       await expect(page.locator("meta[name=description]")).toHaveAttribute(
         "content",
         project.summary,
-      );
-      await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute(
-        "content",
-        locale === "es" ? "es_ES" : "en_US",
       );
       await expect(page.locator('link[hreflang="es"]')).toHaveAttribute(
         "href",
@@ -177,355 +225,53 @@ for (const locale of locales) {
         fullPage: true,
       });
       await page.setViewportSize({ width: 390, height: 844 });
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth <= window.innerWidth,
-        ),
-      ).toBe(true);
-      await accessible(page);
+      await noHorizontalScroll(page);
       await page.screenshot({
         path: `qa-artifacts/${locale}-${project.slug}-mobile.png`,
         fullPage: true,
       });
     }
-    const missing = await request.get(
-      `/${locale}/projects/nonexistent-project`,
-    );
+    const missing = await request.get(`/${locale}/projects/nonexistent`);
     expect(missing.status()).toBe(404);
-    await page.goto(`/${locale}/projects/nonexistent-project`);
-    await expect(
-      page.getByRole("heading", { name: t.error.title }),
-    ).toBeVisible();
-    await expect(page.locator("html")).toHaveAttribute("lang", locale);
   });
 
-  for (const width of [360, 390, 768, 1024, 1440]) {
-    test(`${locale}: complete homepage at ${width}px`, async ({ page }) => {
-      await page.emulateMedia({ reducedMotion: "reduce" });
+  test(`${locale}: diary, about and contact pages`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto(`/${locale}`);
-      await page.screenshot({
-        path: `qa-artifacts/${locale}-hero-${width}.png`,
-      });
-      for (const id of [
-        "work",
-        ...projectOrder.map((slug) => `project-${slug}`),
-        "toolkit",
-        "education",
-        "about",
-        "contact",
-      ]) {
-        await page.locator(`#${id}`).scrollIntoViewIfNeeded();
-        expect(
-          await page.evaluate(
-            () => document.documentElement.scrollWidth <= window.innerWidth,
-          ),
-          `${id} overflow at ${width}`,
-        ).toBe(true);
-      }
-      const fonts = await page
-        .locator(".story-description")
-        .evaluateAll((nodes) =>
-          nodes.map((node) => parseFloat(getComputedStyle(node).fontSize)),
-        );
-      expect(Math.min(...fonts)).toBeGreaterThanOrEqual(17);
+      await page.goto(`/${locale}/diary/${diary[0].slug}`);
+      await expect(page.locator("h1")).toHaveText(diary[0].title[locale]);
+      await expect(page.locator(".entry-body p").first()).toHaveText(
+        diary[0].body[locale][0],
+      );
+      await expect(page.locator(".photo img")).toHaveCount(2);
+      await noHorizontalScroll(page);
       await accessible(page);
       await page.screenshot({
-        path: `qa-artifacts/${locale}-home-${width}.png`,
+        path: `qa-artifacts/${locale}-diary-${width}.png`,
         fullPage: true,
       });
-      if (width === 390 || width === 1440) {
-        await page.locator("#project-la-abuelita").scrollIntoViewIfNeeded();
+      for (const path of ["/diary", "/about", "/contact"]) {
+        await page.goto(`/${locale}${path}`);
+        await noHorizontalScroll(page);
+        await accessible(page);
         await page.screenshot({
-          path: `qa-artifacts/${locale}-story-${width}.png`,
-        });
-        await page.locator("#education").scrollIntoViewIfNeeded();
-        await page.screenshot({
-          path: `qa-artifacts/${locale}-education-${width}.png`,
+          path: `qa-artifacts/${locale}${path.replace("/", "-")}-${width}.png`,
+          fullPage: true,
         });
       }
-    });
-  }
+    }
+    await expect(
+      page.getByRole("link", { name: profile.email, exact: true }),
+    ).toHaveAttribute("href", `mailto:${profile.email}`);
+  });
 
-  test(`${locale}: mobile controls, language switching and keyboard navigation`, async ({
+  test(`${locale}: language switch keeps the current page`, async ({
     page,
   }) => {
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(`/${locale}`);
-    const toggle = page.getByRole("button", { name: t.nav.open });
-    await toggle.click();
-    await expect(
-      page.getByRole("button", { name: t.nav.close }),
-    ).toHaveAttribute("aria-expanded", "true");
-    await page.keyboard.press("Escape");
-    await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await toggle.click();
-    await page
-      .getByRole("navigation", { name: t.nav.label })
-      .getByRole("link", { name: t.nav.contact, exact: true })
-      .click();
-    await expect(page).toHaveURL(new RegExp(`/${locale}#contact$`));
-    await expect(toggle).toHaveAttribute("aria-expanded", "false");
     const other = locale === "en" ? "es" : "en";
-    await page
-      .getByRole("group", { name: t.nav.language })
-      .getByRole("link", { name: new RegExp(`^${other.toUpperCase()}:`) })
-      .click();
-    await expect(page).toHaveURL(new RegExp(`/${other}#contact$`));
-    await expect(page.locator("html")).toHaveAttribute("lang", other);
-    for (const slug of projectOrder) {
-      await page.goto(`/${locale}/projects/${slug}#contribution`);
-      await page
-        .getByRole("group", { name: t.nav.language })
-        .getByRole("link", { name: new RegExp(`^${other.toUpperCase()}:`) })
-        .click();
-      await expect(page).toHaveURL(
-        new RegExp(`/${other}/projects/${slug}#contribution$`),
-      );
-      await expect(page.locator("html")).toHaveAttribute("lang", other);
-    }
-    await page.goto(`/${locale}`);
-    await page.keyboard.press("Tab");
-    await expect(page.getByRole("link", { name: t.nav.skip })).toBeFocused();
-    await page.keyboard.press("Enter");
-    const how = page.locator(".about-disclosures .disclosure").first();
-    await how.locator("summary").focus();
-    await page.keyboard.press("Enter");
-    await expect(how).toHaveAttribute("open", "");
-    await page.keyboard.press("Space");
-    await expect(how).not.toHaveAttribute("open", "");
-    await expect(page.locator(".qualities")).not.toBeVisible();
-    expect(
-      await page.evaluate(
-        () => getComputedStyle(document.documentElement).scrollBehavior,
-      ),
-    ).toBe("auto");
+    await page.goto(`/${locale}/projects/phonendo`);
+    await page.locator(`.lang-switch a[hreflang="${other}"]`).click();
+    await expect(page).toHaveURL(new RegExp(`/${other}/projects/phonendo$`));
   });
 }
-
-test("scroll progress explains the scenes and reduced motion restores complete diagrams", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/en");
-  const scene = page.locator("#project-aws-cloud-devops-lab .scroll-scene");
-  await scene.scrollIntoViewIfNeeded();
-  await expect(scene).toHaveClass(/scene-motion/);
-  await scene.evaluate((node) =>
-    window.scrollTo(
-      0,
-      window.scrollY +
-        node.getBoundingClientRect().top -
-        window.innerHeight * 0.75,
-    ),
-  );
-  const early = await scene.evaluate((node) =>
-    parseFloat(node.style.getPropertyValue("--scene-progress")),
-  );
-  await scene.evaluate((node) =>
-    window.scrollTo(0, window.scrollY + node.getBoundingClientRect().top + 100),
-  );
-  await expect
-    .poll(() =>
-      scene.evaluate((node) =>
-        parseFloat(node.style.getPropertyValue("--scene-progress")),
-      ),
-    )
-    .toBeGreaterThan(early);
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(scene).not.toHaveClass(/scene-motion/);
-  expect(
-    await scene.evaluate((node) =>
-      getComputedStyle(node).getPropertyValue("--scene-progress").trim(),
-    ),
-  ).toBe("1");
-  expect(
-    await scene
-      .locator(".flow-step>div")
-      .first()
-      .evaluate((node) => getComputedStyle(node).opacity),
-  ).toBe("1");
-});
-
-test("cover transition and disclosures animate, reverse and respect reduced motion", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/en");
-  const identity = page.locator(".cover-identity");
-  const initial = await identity.evaluate(
-    (node) => getComputedStyle(node).transform,
-  );
-  await page.evaluate(() => window.scrollTo(0, 350));
-  await expect
-    .poll(() => identity.evaluate((node) => getComputedStyle(node).transform))
-    .not.toBe(initial);
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(identity).toHaveCSS("transform", "none");
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  const disclosure = page.locator(".about-disclosures .disclosure").first();
-  const summary = disclosure.locator("summary");
-  await summary.scrollIntoViewIfNeeded();
-  const height = await disclosure.evaluate(
-    (node) => node.getBoundingClientRect().height,
-  );
-  await summary.click();
-  await expect(disclosure).toHaveAttribute("open", "");
-  await expect
-    .poll(() => disclosure.evaluate((node) => node.getAnimations().length))
-    .toBe(0);
-  expect(
-    await disclosure.evaluate((node) => node.getBoundingClientRect().height),
-  ).toBeGreaterThan(height + 150);
-  await summary.click();
-  await expect(disclosure).not.toHaveAttribute("open", "");
-  // A reversal during the height transition must not leave a clipped panel.
-  await summary.click();
-  await summary.click();
-  await expect(disclosure).not.toHaveAttribute("open", "");
-  await summary.focus();
-  await page.keyboard.press("Enter");
-  await expect
-    .poll(() => disclosure.evaluate((node) => node.getAnimations().length))
-    .toBe(0);
-  await expect(disclosure.locator(".qualities")).toBeVisible();
-  // Audit the complete, settled diagram state rather than offscreen scroll fades.
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await accessible(page);
-});
-
-test("cover network visibly reacts to the mouse and respects reduced motion", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/es");
-  const group = page.locator(".cover-network g").last();
-  await expect(group).toHaveAttribute("transform", /translate/);
-  const target = await page.locator(".cover-network svg").evaluate((svg) => {
-    const matrix = (svg as SVGSVGElement).getScreenCTM()!;
-    const point = new DOMPoint(285, 215).matrixTransform(matrix);
-    return { x: point.x, y: point.y };
-  });
-  await page.mouse.move(target.x, target.y);
-  await expect
-    .poll(() =>
-      group.evaluate((node) => {
-        const matrix = (node as SVGGElement).transform.baseVal.consolidate()!
-          .matrix;
-        return Math.hypot(matrix.e, matrix.f);
-      }),
-    )
-    .toBeGreaterThan(15);
-  await expect
-    .poll(() => group.locator(".network-halo").getAttribute("r").then(Number))
-    .toBeGreaterThan(24);
-  await page.mouse.move(10, 10);
-  await expect
-    .poll(() =>
-      group.evaluate((node) => {
-        const matrix = (node as SVGGElement).transform.baseVal.consolidate()!
-          .matrix;
-        return Math.hypot(matrix.e, matrix.f);
-      }),
-    )
-    .toBeLessThan(6);
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(group).not.toHaveAttribute("transform");
-  await expect(group.locator(".network-halo")).toHaveAttribute("r", "18");
-});
-
-test("name spotlight follows the pointer, fades out and stays static with reduced motion and touch", async ({
-  page,
-  browser,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/es");
-  const heading = page.locator("#cover-name");
-  const bounds = (await heading.boundingBox())!;
-  const opacity = () =>
-    heading
-      .locator(".name-reveal")
-      .first()
-      .evaluate((node) => Number(getComputedStyle(node).opacity));
-  await expect.poll(opacity).toBe(0);
-  await page.mouse.move(bounds.x + 110, bounds.y + 65);
-  await expect.poll(opacity).toBeGreaterThan(0.95);
-  const firstPosition = await heading
-    .locator(":scope > span")
-    .first()
-    .evaluate((node) => node.style.getPropertyValue("--name-x"));
-  await page.mouse.move(bounds.x + 410, bounds.y + bounds.height - 35);
-  await expect
-    .poll(() =>
-      heading
-        .locator(":scope > span")
-        .first()
-        .evaluate((node) =>
-          parseFloat(node.style.getPropertyValue("--name-x")),
-        ),
-    )
-    .toBeGreaterThan(parseFloat(firstPosition) + 250);
-  const shift = await heading.evaluate((node) =>
-    ["--name-shift-x", "--name-shift-y"].map((key) =>
-      Math.abs(parseFloat(node.style.getPropertyValue(key))),
-    ),
-  );
-  expect(Math.max(...shift)).toBeLessThanOrEqual(2.5);
-  await page.screenshot({ path: "qa-artifacts/name-spotlight-active.png" });
-  await page.mouse.move(10, 10);
-  await expect.poll(opacity).toBe(0);
-  expect(await heading.boundingBox()).toEqual(bounds);
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.mouse.move(bounds.x + 110, bounds.y + 65);
-  await expect.poll(opacity).toBe(0);
-  await expect(heading).toHaveAccessibleName("ALEX SERRANO.");
-  const touch = await browser.newContext({
-    hasTouch: true,
-    isMobile: true,
-    viewport: { width: 390, height: 844 },
-  });
-  const mobile = await touch.newPage();
-  await mobile.goto("http://localhost:3000/es");
-  expect(
-    await mobile
-      .locator("#cover-name .name-reveal")
-      .first()
-      .evaluate((node) => getComputedStyle(node).display),
-  ).toBe("none");
-  await touch.close();
-});
-
-test("both languages work without JavaScript", async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
-  const page = await context.newPage();
-  for (const locale of locales) {
-    await page.goto(`http://localhost:3000/${locale}`);
-    await expect(
-      page.getByRole("heading", {
-        name: dictionaries[locale].work.title,
-        exact: true,
-      }),
-    ).toBeVisible();
-    await expect(page.locator(".project-story")).toHaveCount(
-      projectOrder.length,
-    );
-    await expect(page.locator("html")).toHaveAttribute("lang", locale);
-    await page.locator(".earlier-education summary").click();
-    await expect(page.locator(".school-item").first()).toBeVisible();
-    await page.locator(".about-disclosures summary").first().click();
-    await expect(page.locator(".qualities")).toBeVisible();
-    await page
-      .getByRole("group", { name: dictionaries[locale].nav.language })
-      .getByRole("link", {
-        name: new RegExp(`^${locale === "en" ? "ES" : "EN"}:`),
-      })
-      .click();
-    await expect(page.locator("html")).toHaveAttribute(
-      "lang",
-      locale === "en" ? "es" : "en",
-    );
-  }
-  await context.close();
-});

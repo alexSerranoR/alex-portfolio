@@ -15,9 +15,11 @@ export function switchLocalePath(pathname: string, locale: Locale) {
 }
 
 export const projectOrder = [
-  "mapping-blockchain-ecosystem",
+  "phonendo",
+  "algas",
   "embarca",
   "la-abuelita",
+  "mapping-blockchain-ecosystem",
   "aws-cloud-devops-lab",
   "algorithmic-techniques",
   "quadratic-voting-dao",

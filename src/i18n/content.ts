@@ -25,6 +25,22 @@ export function localizeDate(date: string, locale: Locale) {
     .replace(/expected/g, "previsto");
 }
 
+const spanishValues: Record<string, string> = {
+  Millions: "Millones",
+  "9.9 KB": "9,9 KB",
+  "€2,500": "2.500 €",
+};
+
+// Tool names stay as written; only plain-language skills are translated.
+const spanishTechnologies: Record<string, string> = {
+  Gasification: "Gasificación",
+  "Renewable energy": "Energía renovable",
+  "Circular economy": "Economía circular",
+  "Problem tree": "Árbol de problemas",
+  Pitching: "Pitch",
+  Branding: "Marca",
+};
+
 export function getProjects(locale: Locale) {
   return projectOrder.map((slug) => {
     const project = projects.find((item) => item.slug === slug)!;
@@ -34,8 +50,11 @@ export function getProjects(locale: Locale) {
       ...project,
       ...translated,
       period: localizeDate(project.period, locale),
+      technologies: project.technologies.map(
+        (item) => spanishTechnologies[item] ?? item,
+      ),
       metrics: project.metrics.map((metric, index) => ({
-        value: metric.value === "Millions" ? "Millones" : metric.value,
+        value: spanishValues[metric.value] ?? metric.value,
         label: metricLabels[index],
       })),
     };

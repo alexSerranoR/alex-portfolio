@@ -1,186 +1,177 @@
 import type { Locale } from "./routes";
 
 const en = {
-  cover: {
-    navigation: "Explore the portfolio",
-    scroll: "Scroll to explore",
-    positioning: "Software Engineering at the core.",
-  },
   nav: {
-    projects: "Projects",
-    education: "Education",
+    prologue: "Prologue",
+    chapters: "Projects",
+    diary: "Diary",
     about: "About",
     contact: "Contact",
+    library: "Library",
+    libraryLabel: "Back to the library",
     label: "Main navigation",
     open: "Open navigation",
     close: "Close navigation",
     language: "Site language",
     skip: "Skip to content",
   },
-  hero: {
-    location: "Madrid, Spain · Final-year student",
-    role: ["Software", "Engineer"],
-    tagline: ["Algorithms, backend and systems.", "Applied to my projects."],
-    description:
-      "I build projects in AI, cloud, data and blockchain, using what I study in algorithms, backend development and systems.",
-    explore: "Explore my work",
+  book: {
+    edition: "English edition",
+    running: "Alex Serrano · Portfolio",
+  },
+  title: {
+    exLibris: "Ex libris",
+    role: "Software Engineer",
+    tagline: "Backend, AI, data and blockchain, built end to end.",
+    location: "Madrid · Final-year student",
+    read: "Start reading",
+  },
+  prologue: {
+    heading: "Prologue",
+    paragraphs: [
+      "I’m Alejandro Serrano, Alex. I’m in the final year of Software Engineering at the Complutense University of Madrid, and I also study Business & Technology at UDIMA.",
+      "I like building complete systems and seeing them through: from the cryptographic circuit to the contract that pays, from raw data to the graph that explains it. In 2026 I led Phonendo, a finalist at HackMeridian Lisbon; we won funding with AlGas at Fundación EDP and Ashoka’s Escuela de la Energía; and Embarca took the Best Pitch Award and 2nd place overall.",
+      "This book collects those projects as chapters, each with the problem, what we built, my part and what I learned. I’m looking for my first software engineering internship, in backend, AI, data or blockchain.",
+    ],
+    signature: "Alex",
     cv: "Download CV",
-    cvEn: "Download English CV (EN)",
-    cvEs: "Download Spanish CV (ES)",
-    scroll: "Explore the projects",
-    foundations: "Algorithms / Backend / Systems",
+  },
+  index: {
+    heading: "Contents",
+    intro: "Every project is a full chapter. Filter by kind or year.",
+    filters: "Filter chapters",
+    kinds: {
+      all: "All",
+      awarded: "Awarded",
+      hackathon: "Hackathons",
+      impact: "Social impact",
+      research: "Research",
+      engineering: "Engineering",
+    },
+    years: "Year",
+    anyYear: "Any year",
+    chapter: "Chapter",
+    chapters: "Chapters",
+    empty: "No chapter matches these filters.",
+    reset: "Show all chapters",
+    appendices: "Appendices",
+    latest: "From the diary",
   },
   work: {
-    label: "Projects",
-    title: "What I’ve been building.",
-    intro: "Projects in algorithms, AI, cloud, data and blockchain.",
-    detail: "Explore case study",
-    github: "GitHub",
     ongoing: "In progress",
     completed: "Completed",
-    count: "of",
-    technologies: "Technologies",
-    awards: "Awards",
+    technologies: "Tools",
+    seals: "Distinctions",
   },
-  toolkit: {
-    label: "Engineering toolkit",
-    title: "Tools and fundamentals I use.",
-    intro:
-      "The tools and concepts I use to turn a problem into working software.",
-    categories: [
-      "Languages",
-      "Software Engineering",
-      "Cloud & Infrastructure",
-      "Data, Blockchain & Web",
-    ],
+  chapter: {
+    index: "Contents",
+    repository: "Repository on GitHub",
+    links: {
+      demo: "Live demo",
+      video: "Demo video",
+      onchain: "Payment on Stellar testnet",
+    },
+    problem: "The problem",
+    built: "What we built",
+    building: "What we’re building",
+    contribution: "My part",
+    challenge: "The hard part",
+    highlights: "What I built",
+    learnings: "What I learned",
+    ongoingLearnings: "What I’m learning",
+    next: "What’s next",
+    team: "Team",
+    status: "Status",
+    period: "Date",
+    event: "Event",
+    sources: "Sources",
+    plate: "Plate",
+    conceptual: "Conceptual diagram",
+    teamDiagram: "Service architecture, from the team’s repository",
+    previous: "Previous chapter",
+    following: "Next chapter",
   },
-  education: {
-    label: "Education",
-    title: "My studies.",
-    intro:
-      "Two degrees, with studies in Spain and a Dual U.S. High School Diploma.",
-    university: "University studies",
-    earlier: "Earlier education",
-    primary: "Primary degree",
-    languages: "Spanish · Native / English · C1",
-    languageContext:
-      "Seven years of formal education in English, including the Dual Diploma and much of my Software Engineering degree.",
+  diary: {
+    heading: "Diary",
+    intro: "Short notes on where I am, what I’m building and where I’m going.",
+    read: "Read the entry",
+    back: "All entries",
+    related: "Related chapter",
   },
   about: {
-    label: "About",
-    title: "About Alex.",
-    how: "How I work",
+    heading: "About me",
     intro:
-      "I’m Alejandro, usually Alex. I’m a final-year Software Engineering student in Madrid, also studying Business & Technology.",
-    description:
-      "I like designing, building and improving software systems, then applying what I learn to areas I haven’t worked in before. I’m still exploring which areas to focus on. I want to understand how the software I build works and why.",
+      "Final-year Software Engineering student in Madrid, also studying Business & Technology. Two degrees, seven years of formal education in English and a habit of learning by building.",
+    qualities: "How I work",
+    education: "Education",
+    primary: "Primary degree",
+    experience: "Experience while studying",
+    experienceIntro:
+      "Teaching and customer-facing work taught me to communicate clearly, adapt to different people and take responsibility.",
+    toolkit: "Toolkit",
+    toolkitCategories: [
+      "Languages",
+      "Software engineering",
+      "Cloud & infrastructure",
+      "Data, blockchain & web",
+    ],
+    languages: "Languages",
+    languagesValue: "Spanish · Native / English · C1",
     beyond: "Outside engineering",
     sport:
       "Most of my time outside engineering goes into sport: football, running and strength training.",
-    experience: "Experience while studying",
-    experienceIntro:
-      "Teaching and customer-facing work helped me communicate clearly, adapt to different people and take responsibility.",
   },
   contact: {
-    label: "What’s next",
-    title: ["Let’s build", "something"],
-    description:
-      "Have an engineering opportunity or a project in mind? I’d like to hear about it.",
-    email: "Email Alex",
+    heading: "Contact",
+    intro:
+      "Have an internship, an engineering role or a project in mind? I’d like to hear about it.",
+    email: "Email",
+    cvEn: "CV in English (PDF)",
+    cvEs: "CV in Spanish (PDF)",
+    github: "GitHub",
+    linkedin: "LinkedIn",
     location: "Madrid, Spain",
   },
   footer: {
-    message: "Built by Alex. Learning as I go.",
+    colophon:
+      "Set in Cormorant Garamond and EB Garamond. Written and built by Alex Serrano in Madrid.",
     top: "Back to top",
-  },
-  case: {
-    back: "All projects",
-    repository: "View repository",
-    architecture: "The system, at a glance",
-    conceptual: "Conceptual architecture",
-    problem: "The problem",
-    approach: "The approach",
-    building: "What we’re building",
-    built: "What we built",
-    contribution: "My contribution",
-    learnings: "Key learnings",
-    ongoingLearnings: "Learning in progress",
-    source: "Explore the source on GitHub",
-    next: "Next project",
-    navigation: "Case study sections",
   },
   error: {
     label: "404",
-    title: "This page isn’t here.",
-    description: "Head back to the portfolio to explore the work.",
-    back: "Back to portfolio",
+    title: "This page isn’t in the book.",
+    description: "Head back to the contents to keep reading.",
+    back: "Back to contents",
   },
   seo: {
     title: "Alex Serrano | Software Engineer",
     description:
-      "Software Engineering student in Madrid building projects across algorithms, AI, cloud, data and blockchain.",
+      "Final-year Software Engineering student in Madrid. Projects in zero-knowledge proofs, smart contracts, AI agents, data and cloud.",
     person: "Final-year Software Engineering student in Madrid.",
-    social: "Projects in algorithms, AI, cloud, data and blockchain.",
-  },
-  system: {
-    title: "Software Engineering",
-    foundation: "The foundation",
-    caption: "Algorithms, backend and systems across my projects.",
-    nodes: [
-      {
-        title: "Algorithms",
-        description:
-          "The foundations: data structures, problem solving and algorithm design.",
-      },
-      {
-        title: "Backend",
-        description:
-          "Building behavior, application logic and networked software.",
-      },
-      {
-        title: "Systems",
-        description: "Understanding how components connect and work together.",
-      },
-      {
-        title: "AI",
-        description:
-          "Applying software engineering to agents and shared intelligence.",
-      },
-      {
-        title: "Data",
-        description:
-          "Reproducible pipelines, measurable relationships and graph analysis.",
-      },
-      {
-        title: "Cloud",
-        description:
-          "Taking applications from code to containerized infrastructure.",
-      },
-      {
-        title: "Blockchain",
-        description: "Exploring smart contracts and governance mechanisms.",
-      },
-    ],
+    social: "Projects in ZK proofs, smart contracts, AI, data and cloud.",
   },
   diagrams: {
+    phonendo: {
+      aria: "Sensor readings stay private; only a zero-knowledge proof reaches the Stellar contract, which pays the patient in USDC",
+      private: "Stays private",
+      public: "On-chain",
+      caption: "The data stays. The proof travels.",
+    },
+    algas: {
+      aria: "Sargassum is collected, dried, gasified and turned into electricity; the engine heat dries the next load",
+      heat: "Engine heat",
+      caption: "The engine’s heat dries the next load.",
+    },
     mapping: {
       aria: "Conceptual graph connecting decentralized organizations through shared governance relationships",
       caption: "Data → Relationships → Network",
     },
     agents: {
       aria: "Buyer and seller agents negotiate with information flowing through shared market intelligence",
-      buyer: "Buyer agents",
-      seller: "Seller agents",
-      engine: "Negotiation",
-      intelligence: "Shared market intelligence",
       caption: "Market data informs agent negotiations.",
     },
     embarca: {
       aria: "A company need becomes an AI-drafted challenge that students solve remotely, earning a stamp in their talent passport",
-      company: "Company need",
-      challenge: "AI challenge",
-      students: "Students",
-      passport: "Passport",
       caption: "AI prepares. A person reviews.",
     },
     cloud: {
@@ -193,9 +184,7 @@ const en = {
     },
     voting: {
       aria: "Quadratic voting: one, two and three votes cost one, four and nine tokens",
-      vote: "vote",
       votes: "votes",
-      token: "token",
       tokens: "tokens",
       caption: "Votes² = token cost",
     },
@@ -203,7 +192,6 @@ const en = {
       aria: "Socket connections synchronize a game host with multiplayer clients",
       host: "Game host",
       client: "Client",
-      sockets: "Sockets",
       caption: "Shared game state. Connected players.",
     },
   },
@@ -223,187 +211,178 @@ type TranslationShape<T> = {
 export type Dictionary = TranslationShape<typeof en>;
 
 const es: Dictionary = {
-  cover: {
-    navigation: "Explorar el portfolio",
-    scroll: "Desliza para explorar",
-    positioning: "La ingeniería del software como base.",
-  },
   nav: {
-    projects: "Proyectos",
-    education: "Formación",
+    prologue: "Prólogo",
+    chapters: "Proyectos",
+    diary: "Diario",
     about: "Sobre mí",
     contact: "Contacto",
+    library: "Biblioteca",
+    libraryLabel: "Volver a la biblioteca",
     label: "Navegación principal",
     open: "Abrir navegación",
     close: "Cerrar navegación",
     language: "Idioma del sitio",
     skip: "Saltar al contenido",
   },
-  hero: {
-    location: "Madrid, España · Último curso",
-    role: ["Ingeniero", "de software"],
-    tagline: ["Algoritmos, backend y sistemas.", "Aplicados a mis proyectos."],
-    description:
-      "Desarrollo proyectos de IA, cloud, datos y blockchain, con algoritmos, backend y sistemas como base.",
-    explore: "Explorar proyectos",
+  book: {
+    edition: "Edición en español",
+    running: "Alex Serrano · Portfolio",
+  },
+  title: {
+    exLibris: "Ex libris",
+    role: "Ingeniero de software",
+    tagline: "Backend, IA, datos y blockchain, de principio a fin.",
+    location: "Madrid · Último curso",
+    read: "Empezar a leer",
+  },
+  prologue: {
+    heading: "Prólogo",
+    paragraphs: [
+      "Soy Alejandro Serrano, Alex. Estoy en el último curso de Ingeniería del Software en la Universidad Complutense de Madrid y, en paralelo, estudio Empresa y Tecnología en UDIMA.",
+      "Me gusta construir sistemas completos y llevarlos hasta el final: del circuito criptográfico al contrato que paga, del dato en bruto al grafo que lo explica. En 2026 lideré Phonendo, finalista en HackMeridian Lisboa; ganamos financiación con AlGas en la Escuela de la Energía de Fundación EDP y Ashoka, y Embarca se llevó el Premio al Mejor Pitch y el 2.º puesto general.",
+      "Este libro reúne esos proyectos como capítulos, cada uno con el problema, lo que construimos, mi parte y lo que aprendí. Busco mis primeras prácticas en ingeniería del software, en backend, IA, datos o blockchain.",
+    ],
+    signature: "Alex",
     cv: "Descargar CV",
-    cvEn: "Descargar CV en inglés (EN)",
-    cvEs: "Descargar CV en español (ES)",
-    scroll: "Explora los proyectos",
-    foundations: "Algoritmos / Backend / Sistemas",
+  },
+  index: {
+    heading: "Índice",
+    intro: "Cada proyecto es un capítulo completo. Filtra por tipo o por año.",
+    filters: "Filtrar capítulos",
+    kinds: {
+      all: "Todos",
+      awarded: "Premiados",
+      hackathon: "Hackathons",
+      impact: "Impacto social",
+      research: "Investigación",
+      engineering: "Ingeniería",
+    },
+    years: "Año",
+    anyYear: "Cualquier año",
+    chapter: "Capítulo",
+    chapters: "Capítulos",
+    empty: "Ningún capítulo coincide con estos filtros.",
+    reset: "Ver todos los capítulos",
+    appendices: "Apéndices",
+    latest: "Del diario",
   },
   work: {
-    label: "Proyectos",
-    title: "Lo que estoy desarrollando.",
-    intro: "Proyectos de algoritmos, IA, cloud, datos y blockchain.",
-    detail: "Explorar el proyecto",
-    github: "GitHub",
-    ongoing: "En desarrollo",
+    ongoing: "En curso",
     completed: "Completado",
-    count: "de",
-    technologies: "Tecnologías",
-    awards: "Premios",
+    technologies: "Herramientas",
+    seals: "Distinciones",
   },
-  toolkit: {
-    label: "Herramientas de ingeniería",
-    title: "Herramientas y fundamentos que uso.",
+  chapter: {
+    index: "Índice",
+    repository: "Repositorio en GitHub",
+    links: {
+      demo: "Demo en vivo",
+      video: "Vídeo de la demo",
+      onchain: "Pago en la testnet de Stellar",
+    },
+    problem: "El problema",
+    built: "Lo que construimos",
+    building: "Lo que estamos construyendo",
+    contribution: "Mi parte",
+    challenge: "Lo más difícil",
+    highlights: "Lo que construí",
+    learnings: "Lo que aprendí",
+    ongoingLearnings: "Lo que estoy aprendiendo",
+    next: "Lo siguiente",
+    team: "Equipo",
+    status: "Estado",
+    period: "Fecha",
+    event: "Evento",
+    sources: "Fuentes",
+    plate: "Lámina",
+    conceptual: "Diagrama conceptual",
+    teamDiagram: "Arquitectura de servicios, del repositorio del equipo",
+    previous: "Capítulo anterior",
+    following: "Capítulo siguiente",
+  },
+  diary: {
+    heading: "Diario",
+    intro: "Notas breves sobre dónde estoy, qué construyo y hacia dónde voy.",
+    read: "Leer la entrada",
+    back: "Todas las entradas",
+    related: "Capítulo relacionado",
+  },
+  about: {
+    heading: "Sobre mí",
     intro:
-      "Las herramientas y los conceptos con los que convierto un problema en software funcional.",
-    categories: [
+      "Estudiante de último curso de Ingeniería del Software en Madrid, también de Empresa y Tecnología. Dos grados, siete años de formación en inglés y la costumbre de aprender construyendo.",
+    qualities: "Cómo trabajo",
+    education: "Formación",
+    primary: "Grado principal",
+    experience: "Experiencia durante mis estudios",
+    experienceIntro:
+      "La enseñanza y la atención al cliente me enseñaron a explicar ideas con claridad, adaptarme a distintas personas y asumir responsabilidades.",
+    toolkit: "Herramientas",
+    toolkitCategories: [
       "Lenguajes",
       "Ingeniería del software",
       "Cloud e infraestructura",
       "Datos, blockchain y web",
     ],
-  },
-  education: {
-    label: "Formación",
-    title: "Mis estudios.",
-    intro:
-      "Dos grados, con estudios en España y un Diploma Dual de Bachillerato de EE. UU.",
-    university: "Estudios universitarios",
-    earlier: "Formación previa",
-    primary: "Grado principal",
-    languages: "Español · Nativo / Inglés · C1",
-    languageContext:
-      "Siete años de educación formal en inglés, incluidos el Diploma Dual y gran parte del grado en Ingeniería del Software.",
-  },
-  about: {
-    label: "Sobre mí",
-    title: "Sobre Alex.",
-    how: "Cómo trabajo",
-    intro:
-      "Soy Alejandro, aunque suelo usar Alex. Estoy en el último curso de Ingeniería del Software en Madrid y también estudio Empresa y Tecnología.",
-    description:
-      "Me gusta diseñar, desarrollar y mejorar sistemas de software, y aplicar lo que aprendo a ámbitos en los que aún no he trabajado. Todavía estoy explorando en qué áreas centrarme. Quiero entender cómo funciona el software que construyo y por qué.",
+    languages: "Idiomas",
+    languagesValue: "Español · Nativo / Inglés · C1",
     beyond: "Fuera de la ingeniería",
     sport:
       "Fuera de la ingeniería, dedico gran parte de mi tiempo al deporte: fútbol, running y entrenamiento de fuerza.",
-    experience: "Experiencia durante mis estudios",
-    experienceIntro:
-      "La enseñanza y la atención al cliente me ayudaron a explicar ideas con claridad, adaptarme a distintas personas y asumir responsabilidades.",
   },
   contact: {
-    label: "Lo próximo",
-    title: ["Construyamos", "algo juntos"],
-    description:
-      "¿Tienes una oportunidad de ingeniería o un proyecto en mente? Me gustaría conocerlo.",
-    email: "Escribir a Alex",
+    heading: "Contacto",
+    intro:
+      "¿Tienes unas prácticas, un puesto de ingeniería o un proyecto en mente? Me gustaría conocerlo.",
+    email: "Correo",
+    cvEn: "CV en inglés (PDF)",
+    cvEs: "CV en español (PDF)",
+    github: "GitHub",
+    linkedin: "LinkedIn",
     location: "Madrid, España",
   },
   footer: {
-    message: "Hecho por Alex. Aprendo con cada proyecto.",
+    colophon:
+      "Compuesto en Cormorant Garamond y EB Garamond. Escrito y construido por Alex Serrano en Madrid.",
     top: "Volver arriba",
-  },
-  case: {
-    back: "Todos los proyectos",
-    repository: "Ver repositorio",
-    architecture: "El sistema, de un vistazo",
-    conceptual: "Arquitectura conceptual",
-    problem: "El problema",
-    approach: "El enfoque",
-    building: "Lo que estamos construyendo",
-    built: "Lo que construimos",
-    contribution: "Mi contribución",
-    learnings: "Aprendizajes clave",
-    ongoingLearnings: "Aprendizaje en curso",
-    source: "Explorar el código en GitHub",
-    next: "Siguiente proyecto",
-    navigation: "Secciones del proyecto",
   },
   error: {
     label: "404",
-    title: "Esta página no está aquí.",
-    description: "Vuelve al portfolio para explorar los proyectos.",
-    back: "Volver al portfolio",
+    title: "Esta página no está en el libro.",
+    description: "Vuelve al índice para seguir leyendo.",
+    back: "Volver al índice",
   },
   seo: {
     title: "Alex Serrano | Ingeniero de Software",
     description:
-      "Estudiante de Ingeniería del Software en Madrid con proyectos de algoritmos, IA, cloud, datos y blockchain.",
+      "Estudiante de último curso de Ingeniería del Software en Madrid. Proyectos de pruebas de conocimiento cero, contratos inteligentes, agentes de IA, datos y cloud.",
     person: "Estudiante de último curso de Ingeniería del Software en Madrid.",
-    social: "Proyectos de algoritmos, IA, cloud, datos y blockchain.",
-  },
-  system: {
-    title: "Ingeniería del Software",
-    foundation: "La base",
-    caption: "Algoritmos, backend y sistemas en mis proyectos.",
-    nodes: [
-      {
-        title: "Algoritmos",
-        description:
-          "La base: estructuras de datos, resolución de problemas y diseño de algoritmos.",
-      },
-      {
-        title: "Backend",
-        description: "Desarrollo de lógica de aplicación y software conectado.",
-      },
-      {
-        title: "Sistemas",
-        description:
-          "Entender cómo se conectan los componentes y trabajan juntos.",
-      },
-      {
-        title: "IA",
-        description:
-          "Aplicar ingeniería del software a agentes e inteligencia compartida.",
-      },
-      {
-        title: "Datos",
-        description:
-          "Pipelines reproducibles, relaciones medibles y análisis de grafos.",
-      },
-      {
-        title: "Cloud",
-        description:
-          "Llevar aplicaciones del código a infraestructura con contenedores.",
-      },
-      {
-        title: "Blockchain",
-        description:
-          "Explorar contratos inteligentes y mecanismos de gobernanza.",
-      },
-    ],
+    social:
+      "Proyectos de pruebas ZK, contratos inteligentes, IA, datos y cloud.",
   },
   diagrams: {
+    phonendo: {
+      aria: "Las lecturas del sensor se quedan privadas; solo una prueba de conocimiento cero llega al contrato de Stellar, que paga al paciente en USDC",
+      private: "Se queda privado",
+      public: "On-chain",
+      caption: "Los datos se quedan. La prueba viaja.",
+    },
+    algas: {
+      aria: "El sargazo se recoge, se seca, se gasifica y se convierte en electricidad; el calor del motor seca la siguiente carga",
+      heat: "Calor del motor",
+      caption: "El calor del motor seca la siguiente carga.",
+    },
     mapping: {
       aria: "Grafo conceptual que conecta organizaciones descentralizadas mediante relaciones de gobernanza",
       caption: "Datos → Relaciones → Red",
     },
     agents: {
       aria: "Agentes compradores y vendedores negocian con información compartida sobre el mercado",
-      buyer: "Compradores",
-      seller: "Vendedores",
-      engine: "Negociación",
-      intelligence: "Inteligencia de mercado compartida",
       caption: "Los agentes negocian con datos de mercado.",
     },
     embarca: {
       aria: "La necesidad de una empresa se convierte en un reto generado con IA que los estudiantes resuelven en remoto y que suma un sello a su pasaporte de talento",
-      company: "Empresa",
-      challenge: "Reto con IA",
-      students: "Estudiantes",
-      passport: "Pasaporte",
       caption: "La IA prepara. Valora una persona.",
     },
     cloud: {
@@ -416,9 +395,7 @@ const es: Dictionary = {
     },
     voting: {
       aria: "Votación cuadrática: uno, dos y tres votos cuestan uno, cuatro y nueve tokens",
-      vote: "voto",
       votes: "votos",
-      token: "token",
       tokens: "tokens",
       caption: "Votos² = coste en tokens",
     },
@@ -426,7 +403,6 @@ const es: Dictionary = {
       aria: "Conexiones mediante sockets sincronizan el host del juego con los clientes",
       host: "Host del juego",
       client: "Cliente",
-      sockets: "Sockets",
       caption: "Estado compartido. Jugadores conectados.",
     },
   },

@@ -10,35 +10,154 @@ export const profile = {
   },
 };
 
+export type Seal = {
+  title: string;
+  kind: "winner" | "finalist" | "grant" | "pitch" | "second";
+};
+
+// Index filters group chapters by what kind of work they are.
+export type ProjectKind = "hackathon" | "impact" | "research" | "engineering";
+
+export type ProjectLink = { kind: "demo" | "video" | "onchain"; href: string };
+
 export type Project = {
   slug: string;
   name: string;
   label: string;
   status: "Ongoing" | "Completed";
   period: string;
+  years: number[];
+  kind: ProjectKind;
   category: string;
-  event?: {
-    name: string;
-    awards?: { title: string; medal: "pitch" | "second" }[];
-  };
+  event?: { name: string; seals?: Seal[] };
   summary: string;
-  repository: string;
+  repository?: string;
+  links?: ProjectLink[];
   technologies: string[];
   metrics: { value: string; label: string }[];
   problem: string;
   approach: string;
   contribution: string;
+  challenge?: string;
+  highlights?: string[];
   learnings: string;
+  next?: string;
   steps: string[];
+  team?: string;
 };
 
 export const projects: Project[] = [
+  {
+    slug: "phonendo",
+    name: "Phonendo",
+    label: "Private health data, verifiable payments on Stellar",
+    status: "Completed",
+    period: "October 2026",
+    years: [2026],
+    kind: "hackathon",
+    category: "Stellar hackathon · Team of 5 · Project lead",
+    event: {
+      name: "HackMeridian Lisbon 2026 · Genesis track",
+      seals: [
+        { title: "Shark Tank finalist", kind: "finalist" },
+        { title: "HackMeridian scholarship", kind: "grant" },
+      ],
+    },
+    summary:
+      "A sensor proves that a patient completed their cardiac rehab session without revealing their health data, and a Stellar smart contract verifies the proof and pays them in USDC. I led it from idea to working demo in one weekend.",
+    repository: "https://github.com/ParriCode/phonedo",
+    links: [
+      { kind: "demo", href: "https://phonendo.vercel.app" },
+      { kind: "video", href: "https://youtu.be/nX8ho0uSeZE" },
+      {
+        kind: "onchain",
+        href: "https://stellar.expert/explorer/testnet/tx/084d4e8223cb1a2db2d040920c59b19aa10968352815839e4134836f70fbb1ed",
+      },
+    ],
+    technologies: [
+      "Zero-knowledge proofs",
+      "Circom",
+      "snarkjs",
+      "Rust",
+      "Soroban",
+      "Stellar",
+      "Python",
+      "Docker Compose",
+    ],
+    metrics: [
+      { value: "~2K", label: "circuit constraints" },
+      { value: "9.9 KB", label: "contract WASM" },
+      { value: "2", label: "use cases, one circuit" },
+      { value: "1", label: "weekend, idea to demo" },
+    ],
+    problem:
+      "After a heart event, rehabilitation works: it cuts cardiovascular mortality and hospital readmissions (Cochrane, 2022). Yet most patients never start it or drop out, and in Spain fewer than 1% do it (EUROASPIRE III). Insurers would gladly pay for adherence, but proving it means collecting sensitive health data that patients rightly don’t want to hand over.",
+    approach:
+      "What if the data never had to leave the patient? Phonendo turns sensor readings into a zero-knowledge proof (proving something is true without revealing the data). The insurer learns only that the session was completed, and a Stellar smart contract verifies the proof and pays the patient in USDC, with no middleman. The same infrastructure handles cold chain: proving a shipment stayed between 2 and 8 °C.",
+    contribution:
+      "I led the project and owned the whole critical path: the ZK circuit, the Soroban smart contract (Stellar’s smart contract platform), the integration of the full pipeline and the demo. I also drove the repository, documentation and submission quality. Parri built the Publisher bridge and keys, Cesar the hardware, Manuel the web and Lucia the pitch and video.",
+    challenge:
+      "Circom proves on the BN254 curve by default, but Stellar’s official Groth16 verifier uses BLS12-381. Spotting that early and recompiling saved the project. I also bound every proof to real sensor data through a signed Poseidon hash (a ZK-friendly fingerprint) of each batch, and debugged proving tools that failed silently, under deadline pressure.",
+    highlights: [
+      "Designed a Groth16 circuit in Circom (~2K constraints) on BLS12-381 with a Poseidon commitment, plus the trusted setup and proving scripts.",
+      "Wrote the Soroban contract’s claim(): it checks an ed25519 signature, verifies the proof on-chain, blocks double claims and pays in USDC. Tested, 9.9 KB WASM.",
+      "Made the first on-chain ZK claim on Stellar testnet on 25 October, then ran a second use case, cold chain, on the same Verifier key.",
+      "Built the go-to-market for the pitch: buyer, pricing hypothesis, pilot plan and verified clinical statistics.",
+    ],
+    learnings:
+      "Check compatibility assumptions first: one curve mismatch would have cost the whole weekend. And a demo convinces when it is real end to end: a sensor, a proof and a payment you can open in the block explorer.",
+    next: "Checking gaps between readings inside the circuit, signing at the hardware level on the sensor, and a pilot with a rehabilitation provider in Portugal or Spain.",
+    steps: ["Sensor", "ZK proof", "Soroban contract", "USDC payment"],
+    team: "Alex Serrano (lead), Parri, Cesar, Manuel, Lucia",
+  },
+  {
+    slug: "algas",
+    name: "AlGas",
+    label: "From sargassum to gas: local energy from a waste",
+    status: "Ongoing",
+    period: "2026",
+    years: [2026],
+    kind: "impact",
+    category: "Social impact · Energy · Team of 2",
+    event: {
+      name: "Escuela de la Energía 2026 · Fundación EDP & Ashoka",
+      seals: [{ title: "Winning project · €2,500", kind: "winner" }],
+    },
+    summary:
+      "Turning the sargassum that floods Caribbean beaches, today buried or sent to landfill, into electricity for the coastal communities themselves. A winning, funded project at Fundación EDP and Ashoka’s Escuela de la Energía.",
+    technologies: [
+      "Gasification",
+      "Renewable energy",
+      "Circular economy",
+      "Problem tree",
+      "Pitching",
+      "Branding",
+    ],
+    metrics: [
+      { value: "€2,500", label: "funding won" },
+      { value: "3 min", label: "pitch to a jury" },
+      { value: "9", label: "pitch iterations" },
+    ],
+    problem:
+      "Sargassum is a seaweed that reaches Caribbean shores in huge amounts: in the Dominican Republic alone, more than three million tonnes were reported in 2024. On the beach it rots, empties the coast and hurts local businesses. What is collected is almost always buried or sent to landfill; the Dominican Government itself aims to properly manage only 5% of 2026’s sargassum.",
+    approach:
+      "Handle it right where it lands: collect it, dry it, gasify it (heat it with very little oxygen until it becomes a fuel gas) and use that gas to run an engine that generates electricity. The engine’s heat dries the next load, which arrives soaked. Small, local and repeatable beach by beach, starting with Guayacanes and Juan Dolio, on the south coast of the Dominican Republic.",
+    contribution:
+      "UDIMA chose Ismail Benbdelkhalek and me to represent the university. Together we built the project end to end: the problem analysis, the choice of one concrete community, a three-minute pitch for a non-technical jury with every figure backed by official sources, a call to action to recruit partners, and the brand. We iterated the pitch nine times and defended it before the jury in Madrid.",
+    learnings:
+      "Telling a problem means telling a person: the pitch started working when we opened with a worker cleaning his beach every morning instead of with tonnes. Honesty convinces: saying clearly what still has to be proven built more trust than promising a plant. And it took me outside software, into energy, social impact and real communities.",
+    next: "Getting the first real number: how much energy one tonne of seaweed yields, and whether it pays back the cost of drying it. Before shipping sargassum from the Caribbean, we will test with a similar invasive seaweed on Spain’s Strait of Gibraltar coast, and we have identified research groups at the universities of Cádiz and Seville and at CEDER-CIEMAT.",
+    steps: ["Collect", "Dry", "Gasify", "Electricity"],
+    team: "Alejandro Serrano, Ismail Benbdelkhalek (UDIMA)",
+  },
   {
     slug: "la-abuelita",
     name: "La Abuelita",
     label: "Multi-agent negotiation system",
     status: "Completed",
     period: "October 2026",
+    years: [2026],
+    kind: "hackathon",
     category: "48-hour hackathon · Team of 3",
     event: { name: "Claude Hackathon Madrid" },
     summary:
@@ -81,12 +200,14 @@ export const projects: Project[] = [
     label: "Real company challenges for young talent",
     status: "Completed",
     period: "October 2026",
+    years: [2026],
+    kind: "hackathon",
     category: "One-day hackathon · Team of 5",
     event: {
       name: "Iberoamérica 2030 Hackathon · Club Hispanidad Futura",
-      awards: [
-        { title: "Best Pitch Award", medal: "pitch" },
-        { title: "2nd place overall", medal: "second" },
+      seals: [
+        { title: "Best Pitch Award", kind: "pitch" },
+        { title: "2nd place overall", kind: "second" },
       ],
     },
     summary:
@@ -124,6 +245,8 @@ export const projects: Project[] = [
     label: "Finding relationships in governance data",
     status: "Ongoing",
     period: "2026–2027",
+    years: [2026],
+    kind: "research",
     category: "Final-year research · Software + Data",
     summary:
       "Reproducible pipelines and graph models that turn large, imperfect governance datasets into measurable relationships.",
@@ -164,6 +287,8 @@ export const projects: Project[] = [
     label: "More votes, quadratically higher cost",
     status: "Completed",
     period: "2025–2026",
+    years: [2025, 2026],
+    kind: "engineering",
     category: "Smart contracts · Governance",
     summary:
       "An on-chain governance system exploring quadratic voting through Solidity contracts and ERC-20 tokens.",
@@ -198,6 +323,8 @@ export const projects: Project[] = [
     label: "Algorithms and data structures in C++",
     status: "Ongoing",
     period: "2026",
+    years: [2026],
+    kind: "engineering",
     category: "Core engineering · Algorithms",
     summary:
       "C++ implementations exploring graphs, dynamic programming, greedy strategies and data structures.",
@@ -227,6 +354,8 @@ export const projects: Project[] = [
     label: "From application to infrastructure",
     status: "Ongoing",
     period: "2026",
+    years: [2026],
+    kind: "engineering",
     category: "Cloud · Application delivery",
     summary:
       "Learning deployment workflows by running containerized applications on AWS.",
@@ -264,6 +393,8 @@ export const projects: Project[] = [
     label: "Multiplayer, from the socket up",
     status: "Completed",
     period: "2024–2025",
+    years: [2024, 2025],
+    kind: "engineering",
     category: "Earlier software work · Java",
     summary:
       "A Java desktop multiplayer game with a host/client architecture, networking and a graphical interface.",
@@ -386,8 +517,8 @@ export const toolkit = [
 
 export const qualities = [
   {
-    title: "Build together",
-    text: "Collaborative projects and a three-person hackathon team have shaped how I discuss decisions and move work forward.",
+    title: "Own the critical path",
+    text: "At HackMeridian I took the hardest part, the ZK circuit and the smart contract, and integrated a five-person team’s work into one working demo.",
   },
   {
     title: "Follow the evidence",
@@ -395,11 +526,11 @@ export const qualities = [
   },
   {
     title: "Make ideas clear",
-    text: "Teaching programming and working with international clients have given me practice explaining ideas to different audiences.",
+    text: "Teaching programming, pitching to juries and working with international clients have taught me to explain ideas to very different audiences.",
   },
   {
     title: "Learn through projects",
-    text: "From C++ algorithms to AWS deployments, I learn by building, investigating unfamiliar systems and working through the details.",
+    text: "From C++ algorithms to zero-knowledge proofs, I learn by building, investigating unfamiliar systems and working through the details.",
   },
   {
     title: "Keep a steady pace",

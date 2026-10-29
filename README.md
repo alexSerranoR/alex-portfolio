@@ -1,14 +1,15 @@
 # Alex Serrano — Software Engineer
 
-A project-led personal portfolio for Alejandro “Alex” Serrano Ruibal, a final-year Software Engineering student in Madrid. One scrolling journey through seven engineering projects, explanatory system diagrams, academic background and real English/Spanish CV downloads. The full site is available in English and Spanish, with shared components and content. Built in the repository root for deployment on Vercel.
+The personal portfolio of Alejandro “Alex” Serrano Ruibal, a final-year Software Engineering student in Madrid. The site opens in a hexagonal library inspired by Borges’ _Library of Babel_: a short camera flight down the central shaft ends at a lit shelf holding two books, the Spanish and English editions. Opening a book leads to the portfolio itself, a scrolling site styled like a printed book: a title page and prologue, a table of contents of project chapters with filters, a diary, an about page with experience and education, and contact with CV downloads.
 
 ## Stack
 
 - Next.js App Router, React and strict TypeScript
-- Tailwind CSS v4 plus a custom responsive design system
-- Lucide icons; CSS and SVG animations, with no animation runtime
-- Statically generated project routes and PNG social preview
-- No backend, analytics, remote images, external fonts or contact-form service
+- Three.js for the library entrance, built procedurally (no 3D models or remote textures)
+- `next/font` (Cormorant Garamond and EB Garamond, self-hosted at build time)
+- Lucide icons; CSS and SVG diagrams, no animation runtime in the book
+- Statically generated routes and PNG social previews
+- No backend, analytics or contact-form service
 
 ## Local development
 
@@ -19,7 +20,7 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:3000/en or http://localhost:3000/es. English is the default; `/` permanently redirects to `/en`. The development server uses the repository root.
+Open http://localhost:3000 for the library, or go straight to http://localhost:3000/es or http://localhost:3000/en.
 
 ```sh
 npm run lint
@@ -41,66 +42,64 @@ npm run test:e2e
 npm run format:check
 ```
 
-Playwright starts the server automatically when port 3000 is free. Stop any development server first when testing the production build. The 20-test suite checks both languages and all case studies, same-project language switching, legacy redirects, original facts and repository links, PDF integrity, comparable project section sizes, mobile navigation, keyboard behavior, cover and diagram scroll progress, disclosure animation and reversal, reduced motion, no-JavaScript disclosures, horizontal overflow at five viewport widths and WCAG AA accessibility with axe. Screenshots are saved to the ignored `qa-artifacts/` directory.
+Playwright starts the server automatically when port 3000 is free. Set `PLAYWRIGHT_CHROMIUM` to a Chromium executable to use it instead of Chrome. The suite checks both languages, every chapter, the diary, about and contact pages, filters, the mobile menu, the library with and without JavaScript, language switching, legacy redirects, translated facts, PDF integrity, horizontal overflow and WCAG AA accessibility with axe. Screenshots are saved to the ignored `qa-artifacts/` directory.
 
 Use `npm run format` to format source changes. The full dependency audit currently reports five development-only advisories in the Next.js ESLint glob dependency chain. The production-only audit reports zero vulnerabilities; do not apply the suggested forced Next.js lint-config downgrade.
+
+## The library entrance
+
+`src/components/library/scene.ts` builds the whole scene: stacked hexagonal galleries around a shaft, arched bays filled with instanced books, a field of towers seen from above, fog, lamps and a spotlight that falls on the two portfolio books. `library.tsx` overlays real links on those books, so they work with keyboard and screen readers.
+
+- The intro (about 5 s: aerial view, descent, gallery, light) plays only on the first visit, remembered in `localStorage` under `babel:intro-seen`. It has a skip button and is skipped with reduced motion.
+- Without JavaScript or WebGL a drawn CSS shelf with the same two books is shown instead.
+- For QA, `/?t=2.5` freezes the intro at that second.
 
 ## Project structure
 
 ```text
 src/
   app/
-    globals.css              # Shared design tokens, hero and base styles
-    portfolio.css            # Open project chapters and responsive layouts
-    project-motion.css       # Explanatory scroll motion and reduced-motion fallback
-    opening.css              # Editorial cover, toolkit and progressive disclosure
-    [lang]/
-      layout.tsx             # Document language, navigation, metadata and Person schema
-      page.tsx               # Shared homepage section composition
-      projects/[slug]/page.tsx # Statically generated bilingual case studies
-      opengraph-image.tsx     # Localized 1200 × 630 PNG social preview
-    opengraph-image.tsx       # Preserved English social-preview URL
-    global-not-found.tsx      # Fallback for paths outside locale routes
-    icon.svg                 # Initials favicon
-    robots.ts / sitemap.ts  # Search engine configuration
+    (library)/               # Root layout and page for the library at /
+    [lang]/                  # Root layout for the book in /es and /en
+      page.tsx               # Title page, prologue, contents and diary card
+      projects/[slug]/       # Chapters (one per project)
+      diary/                 # Diary index and entries
+      about/ · contact/      # Experience, education and contact
+    book.css                 # Book design system (paper, type, seals, diagrams)
+    library.css              # Library overlay, fallback shelf and transitions
+    fonts.ts                 # next/font setup
+    global-not-found.tsx     # Fallback for paths outside the routes
   components/
-    sections.tsx             # Homepage sections and footer
-    cover.tsx                # Name-led cover and atmospheric engineering map
-    accordion.tsx            # Native accessible disclosures with measured-height animation
-    project-card.tsx         # Equal-weight project chapters, metrics and status labels
-    diagrams.tsx             # Conceptual technical diagrams
-    ui.tsx                   # Navigation, language switch, scroll scenes and system map
-    social-image.tsx         # Shared localized social-preview artwork
+    library/                 # Three.js scene and its React wrapper
+    book/                    # Running head, contents filters, seals, diagrams, footer
+    social-image.tsx         # Localized social-preview artwork
   data/
-    portfolio.ts             # Typed content, links and chronology
+    portfolio.ts             # Typed project facts, links, seals, education, experience
+    diary.ts                 # Diary entries (ES/EN) with their photos
   i18n/
-    routes.ts                # Supported locales, route helpers and project order
-    copy.ts                  # Typed EN/ES interface, diagram and positioning copy
-    es-content.ts            # Spanish translations of existing portfolio facts
-    content.ts               # Shared localized data and four toolkit categories
-    metadata.ts              # Localized SEO and deployment origin
+    routes.ts                # Locales, route helpers and project order
+    copy.ts                  # EN/ES interface copy and diagram labels
+    es-content.ts            # Spanish translations of the portfolio facts
+    content.ts               # Localized data helpers
+  assets/                    # Diary photos and project figures
 public/cv/                   # Downloadable CV PDFs
 ```
 
 ## Editing content
 
-Edit **`src/data/portfolio.ts`** for English project facts, technologies, metrics, dates, repository URLs, education, professional experience, toolkit and working qualities. Public email, GitHub, LinkedIn and CV paths live in `profile` in that file. Update the corresponding Spanish translation in `src/i18n/es-content.ts`. Interface, positioning, language context and SEO copy live in `src/i18n/copy.ts`. Repository URLs, technologies and numeric metrics are shared across languages.
+Edit **`src/data/portfolio.ts`** for English project facts and **`src/i18n/es-content.ts`** for their Spanish translation. Interface copy lives in `src/i18n/copy.ts`.
 
 To add a project:
 
-1. Add an entry to `projects`, satisfying the `Project` type. Use a stable, unique URL slug.
-2. Add only verifiable metrics and technology claims. An empty `metrics` array is supported. Hackathon projects can set an optional `event` (name and awards), shown on the homepage card and the case study; awards render as animated medals that stay still with reduced motion.
-3. Add its Spanish translation to `src/i18n/es-content.ts`.
-4. Add its slug to `projectOrder` in `src/i18n/routes.ts`. Homepage numbering and both languages' case-study routes are derived from that order on the next build.
-5. Add an accurate conceptual diagram branch in `diagrams.tsx`, with both languages' labels in `copy.ts`.
+1. Add an entry to `projects` with a stable slug, its `years` and `kind` (used by the filters). Awards go in `event.seals` and render as wax seals.
+2. Add its Spanish translation and its slug to `projectOrder` in `src/i18n/routes.ts`.
+3. Optionally add a diagram branch in `src/components/book/diagrams.tsx`, with labels in `copy.ts`.
 
-The diagrams explain concepts rather than claiming a literal deployed architecture. For La Abuelita, contributions remain at team level because individual ownership was not supplied.
+To add a diary entry, add it to `src/data/diary.ts` with both languages and import its photos from `src/assets/diary/`.
 
 ## Language routing
 
-All content uses `/en/...` and `/es/...`, including `/en/projects/la-abuelita` and `/es/projects/la-abuelita`. The navbar language control retains the current project, query string and section fragment. Existing `/projects/:slug` links permanently redirect to the equivalent English case study. The old `#work`, `#building` and `#background` anchors are retained; navigation uses Projects, Education, About and Contact.
-
-Both languages reuse the same components, source facts and diagrams. Metadata, document language, social previews and sitemap alternate-language links are localized. No browser-language detection overrides the English default.
+The book lives at `/es/...` and `/en/...`. The language switch keeps the current page and section. Old `/projects/:slug` links permanently redirect to the English chapter. Metadata, document language, social previews and sitemap alternates are localized.
 
 ## CV PDFs
 
@@ -123,10 +122,4 @@ The origin config enables canonical URLs, absolute social metadata and the bilin
 
 ## Accessibility and performance
 
-Semantic landmarks, a skip link, visible focus rings, keyboard-accessible disclosures, an Escape-dismissable mobile menu, download labels and responsive diagrams. `ScrollScene` updates CSS progress through a passive scroll listener and animation frames only while its diagram is in view. Progress reveals graph relationships, cloud delivery stages, traversal, quadratic costs and socket connections. Reduced-motion mode shows the complete diagrams without animated signals; content also remains visible with JavaScript disabled. Typography uses local system fonts to avoid font downloads and layout shifts. Public contact uses `mailto:`; no phone number is rendered on the site.
-
-The cover reinterprets the existing system map as an abstract connected foundation. Scrolling moves the name and navigation gently while expanding the network; desktop pointer movement is limited to a few pixels. A short positioning statement connects it to the seven-project journey. Toolkit stays open; university education stays visible. Earlier education, working qualities, experience while studying and personal interests use native `<details>` disclosures, enhanced with measured-height, opacity and translate animations. They remain functional without JavaScript, support Enter/Space, and open immediately in reduced-motion mode.
-
-## Content maintenance
-
-Review ongoing project statuses, expected graduation and chronology as the work changes. No production deployments, project users or individual hackathon component ownership are assumed. The supplied project metrics describe the hackathon codebase and governance dataset, not site activity.
+Semantic landmarks, a skip link, visible focus rings and an Escape-dismissable mobile menu. The book links in the library are real anchors positioned over the 3D books. The Three.js code loads only on `/`, after checking WebGL, and the book pages ship no 3D code. Reduced motion skips the intro and the reveal animations. All content stays readable with JavaScript disabled.
