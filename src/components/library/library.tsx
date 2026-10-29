@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import type { Lang, LibraryController, Rect } from "./scene";
 
+// Once per visit: coming back from a book in the same tab skips the intro.
 const SEEN_KEY = "babel:intro-seen";
 const books: { lang: Lang; href: string; label: string; plaque: string }[] = [
   {
@@ -117,7 +118,7 @@ export function Library() {
         ).matches;
         let seen = false;
         try {
-          seen = window.localStorage.getItem(SEEN_KEY) === "1";
+          seen = window.sessionStorage.getItem(SEEN_KEY) === "1";
         } catch {
           // Storage can be blocked; then the intro simply plays again.
         }
@@ -136,7 +137,7 @@ export function Library() {
           onIdle: () => {
             setMode((current) => (current === "opening" ? current : "idle"));
             try {
-              window.localStorage.setItem(SEEN_KEY, "1");
+              window.sessionStorage.setItem(SEEN_KEY, "1");
             } catch {
               // Not remembering the visit is harmless.
             }

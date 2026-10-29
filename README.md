@@ -50,7 +50,7 @@ Use `npm run format` to format source changes. The full dependency audit current
 
 `src/components/library/scene.ts` builds the whole scene: stacked hexagonal galleries around a shaft, arched bays filled with instanced books, a field of towers seen from above, fog, lamps and a spotlight that falls on the two portfolio books. `library.tsx` overlays real links on those books, so they work with keyboard and screen readers.
 
-- The intro (about 5 s: aerial view, descent, gallery, light) plays only on the first visit, remembered in `localStorage` under `babel:intro-seen`. It has a skip button and is skipped with reduced motion.
+- The intro (about 5 s: aerial view, descent, gallery, light) plays once per visit, remembered in `sessionStorage` under `babel:intro-seen`, so returning from a book in the same tab skips it. It has a skip button and is skipped with reduced motion.
 - Without JavaScript or WebGL a drawn CSS shelf with the same two books is shown instead.
 - For QA, `/?t=2.5` freezes the intro at that second.
 

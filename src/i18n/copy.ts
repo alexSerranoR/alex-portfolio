@@ -29,9 +29,10 @@ const en = {
   prologue: {
     heading: "Prologue",
     paragraphs: [
-      "I’m Alejandro Serrano, Alex. I’m in the final year of Software Engineering at the Complutense University of Madrid, and I also study Business & Technology at UDIMA.",
-      "I like building complete systems and seeing them through: from the first idea to something that works and can be shown. I enjoy taking on the hardest part, working in a team and explaining clearly what we have built. Hackathons, research and social impact projects have been my best school.",
-      "This book collects those projects as chapters, each with the problem, what we built, my part and what I learned. I’m looking for my first software engineering internship, in backend, AI, data or blockchain.",
+      "Borges imagined a library that held every possible book. This one is more modest: it collects what I have built so far, and what I am building now.",
+      "I’m Alejandro Serrano, Alex. I’m in my final year of Software Engineering at the Complutense University of Madrid, and I also study Business & Technology at UDIMA. That double view shapes how I work: understand the problem before writing code, and don’t call anything finished until it works and can be explained.",
+      "I’m drawn to complete systems: the backend that holds everything up, the data that shows what is really happening, and AI and blockchain when they solve something real. Each chapter of this book is a project: the problem, what we built, my part and what I learned.",
+      "I’m looking for my first software engineering internship. If, after reading, you think I would fit in your team, the last page is where to find me.",
     ],
     signature: "Alex",
     cv: "Download CV",
@@ -242,9 +243,10 @@ const es: Dictionary = {
   prologue: {
     heading: "Prólogo",
     paragraphs: [
-      "Soy Alejandro Serrano, Alex. Estoy en el último curso de Ingeniería del Software en la Universidad Complutense de Madrid y, en paralelo, estudio Empresa y Tecnología en UDIMA.",
-      "Me gusta construir sistemas completos y llevarlos hasta el final: de la primera idea a algo que funciona y se puede enseñar. Disfruto encargándome de la parte más difícil, trabajando en equipo y explicando con claridad lo que hemos construido. Los hackathons, la investigación y los proyectos de impacto social han sido mi mejor escuela.",
-      "Este libro reúne esos proyectos como capítulos, cada uno con el problema, lo que construimos, mi parte y lo que aprendí. Busco mis primeras prácticas en ingeniería del software, en backend, IA, datos o blockchain.",
+      "Borges imaginó una biblioteca que guardaba todos los libros posibles. Esta es más modesta: reúne lo que he construido hasta ahora y lo que estoy construyendo.",
+      "Soy Alejandro Serrano, Alex. Estoy en el último curso de Ingeniería del Software en la Universidad Complutense de Madrid y, en paralelo, estudio Empresa y Tecnología en UDIMA. Esa doble mirada define cómo trabajo: entender el problema antes de escribir código, y no dar nada por terminado hasta que funciona y se puede explicar.",
+      "Me atraen los sistemas completos: el backend que lo sostiene todo, los datos que muestran lo que de verdad ocurre, y la IA y blockchain cuando resuelven algo real. Cada capítulo de este libro es un proyecto: el problema, lo que construimos, mi parte y lo que aprendí.",
+      "Busco mis primeras prácticas en ingeniería del software. Si después de leer crees que encajaría en tu equipo, en la última página sabrás dónde encontrarme.",
     ],
     signature: "Alex",
     cv: "Descargar CV",

@@ -56,15 +56,11 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     category: "Impacto social · Energía · Equipo de 2",
     event: {
       name: "Escuela de la Energía 2026 · Fundación EDP y Ashoka",
-      seals: [{ title: "Proyecto ganador · 2.500 €", kind: "winner" }],
+      seals: [{ title: "Proyecto ganador", kind: "winner" }],
     },
     summary:
       "Convertir el sargazo que llega a las playas del Caribe, y que hoy se entierra o acaba en el vertedero, en electricidad para las propias comunidades costeras. Proyecto ganador y financiado en la Escuela de la Energía de Fundación EDP y Ashoka.",
-    metricLabels: [
-      "de financiación",
-      "de pitch ante el jurado",
-      "versiones del pitch",
-    ],
+    metricLabels: ["de pitch ante el jurado", "versiones del pitch"],
     problem:
       "El sargazo es un alga que llega en cantidades enormes a las costas del Caribe: solo en República Dominicana se habló de más de tres millones de toneladas en 2024. En la orilla se pudre, vacía las playas y castiga a los negocios locales. Lo que se recoge casi siempre se entierra o va al vertedero; el propio Gobierno dominicano se marca como meta gestionar bien solo el 5 % del sargazo de 2026.",
     approach:

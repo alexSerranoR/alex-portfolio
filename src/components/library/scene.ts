@@ -160,34 +160,44 @@ function spineTexture() {
 }
 
 function featureSpine(lang: Lang, base: string) {
-  return canvasTexture(160, 900, (ctx) => {
+  // Drawn large so the lettering stays sharp in the close final shot.
+  const W = 256;
+  const H = 1440;
+  return canvasTexture(W, H, (ctx) => {
     ctx.fillStyle = base;
-    ctx.fillRect(0, 0, 160, 900);
-    const g = ctx.createLinearGradient(0, 0, 160, 0);
-    g.addColorStop(0, "rgba(0,0,0,0.55)");
-    g.addColorStop(0.38, "rgba(255,255,255,0.16)");
-    g.addColorStop(0.62, "rgba(255,255,255,0.08)");
-    g.addColorStop(1, "rgba(0,0,0,0.6)");
+    ctx.fillRect(0, 0, W, H);
+    const g = ctx.createLinearGradient(0, 0, W, 0);
+    g.addColorStop(0, "rgba(0,0,0,0.5)");
+    g.addColorStop(0.38, "rgba(255,255,255,0.14)");
+    g.addColorStop(0.62, "rgba(255,255,255,0.06)");
+    g.addColorStop(1, "rgba(0,0,0,0.55)");
     ctx.fillStyle = g;
-    ctx.fillRect(0, 0, 160, 900);
-    ctx.fillStyle = "#e7cf8e";
-    for (const y of [60, 74, 826, 840]) ctx.fillRect(0, y, 160, 5);
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#ecd595";
+    for (const y of [96, 118, 1322, 1344]) ctx.fillRect(0, y, W, 8);
+    // Gilt lettering with a dark edge, so it reads against the leather.
+    const letter = (text: string, x: number, y: number) => {
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "rgba(20,12,6,0.55)";
+      ctx.strokeText(text, x, y);
+      ctx.fillText(text, x, y);
+    };
     ctx.save();
-    ctx.translate(80, 450);
+    ctx.translate(W / 2, H / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "#f1e2b8";
-    // Title near the head, author below it, edition at the foot: no overlaps.
-    ctx.font = "600 56px Georgia, serif";
-    ctx.fillText("PORTFOLIO", 120, 0);
-    ctx.font = "italic 42px Georgia, serif";
-    ctx.fillText("Alex Serrano", -185, 2);
+    ctx.fillStyle = "#fbefc8";
+    ctx.font = "700 96px Georgia, serif";
+    letter("PORTFOLIO", 230, 0);
+    ctx.font = "italic 600 64px Georgia, serif";
+    letter("Alex Serrano", -330, 4);
     ctx.restore();
-    ctx.fillStyle = "#e7cf8e";
-    ctx.font = "700 44px Georgia, serif";
+    ctx.fillStyle = "#f0d68e";
+    ctx.font = "700 72px Georgia, serif";
     ctx.textAlign = "center";
-    ctx.fillText(lang.toUpperCase(), 80, 806);
+    ctx.textBaseline = "alphabetic";
+    letter(lang.toUpperCase(), W / 2, 1290);
   });
 }
 
@@ -241,20 +251,26 @@ function endpaperTexture(lang: Lang) {
 }
 
 function plaqueTexture() {
-  return canvasTexture(512, 80, (ctx) => {
-    const g = ctx.createLinearGradient(0, 0, 0, 80);
-    g.addColorStop(0, "#efe0b0");
-    g.addColorStop(0.5, "#c6a65e");
-    g.addColorStop(1, "#8a6b2e");
+  const W = 1024;
+  const H = 168;
+  return canvasTexture(W, H, (ctx) => {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#f6e8bd");
+    g.addColorStop(0.45, "#d8b96c");
+    g.addColorStop(1, "#a27f37");
     ctx.fillStyle = g;
-    ctx.fillRect(0, 0, 512, 80);
-    ctx.strokeStyle = "rgba(60,40,10,0.6)";
-    ctx.strokeRect(4, 4, 504, 72);
-    ctx.fillStyle = "#3a2a12";
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = "rgba(70,46,12,0.75)";
+    ctx.lineWidth = 6;
+    ctx.strokeRect(10, 10, W - 20, H - 20);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = "600 34px Georgia, serif";
-    ctx.fillText("ESPAÑOL  ·  ENGLISH", 256, 42);
+    ctx.font = "700 76px Georgia, serif";
+    // Engraved: a light lip under dark letters.
+    ctx.fillStyle = "rgba(255,248,224,0.7)";
+    ctx.fillText("ESPAÑOL  ·  ENGLISH", W / 2, H / 2 + 6);
+    ctx.fillStyle = "#2b1d08";
+    ctx.fillText("ESPAÑOL  ·  ENGLISH", W / 2, H / 2 + 3);
   });
 }
 
@@ -437,8 +453,9 @@ export function createLibrary(
   });
   // Resolution adapts to the machine: start modest and drop further if
   // frames come in slow (see the loop), so older laptops stay smooth.
-  const maxRatio = Math.min(window.devicePixelRatio, 1.25);
-  let pixelRatio = maxRatio;
+  const maxRatio = Math.min(window.devicePixelRatio, 1.5);
+  // The intro runs a little softer; the still final shot gets full sharpness.
+  let pixelRatio = Math.min(maxRatio, 1.1);
   renderer.setPixelRatio(pixelRatio);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -1081,17 +1098,26 @@ export function createLibrary(
     });
   });
 
+  // Lit from within a little, so it reads even outside the spotlight.
+  const plaqueMap = plaqueTexture();
   const plaque = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.34, 0.053),
+    new THREE.PlaneGeometry(0.4, 0.066),
     new THREE.MeshStandardMaterial({
-      map: plaqueTexture(),
-      roughness: 0.35,
-      metalness: 0.65,
+      map: plaqueMap,
+      emissiveMap: plaqueMap,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.35,
+      roughness: 0.4,
+      metalness: 0.2,
     }),
   );
+  // Tilted up towards the camera, which looks down on the shelf.
   plaque.applyMatrix4(
     new THREE.Matrix4()
-      .makeTranslation(featureCenter, rowY - 0.026, -0.03)
+      .makeRotationX(-0.32)
+      .premultiply(
+        new THREE.Matrix4().makeTranslation(featureCenter, rowY - 0.03, -0.02),
+      )
       .premultiply(featureBase),
   );
   world.add(plaque);
@@ -1351,16 +1377,22 @@ export function createLibrary(
       return;
     }
     skipped = false;
-    const dt = Math.min(0.05, elapsed / 1000);
+    const dt = Math.min(0.1, elapsed / 1000);
     last = now;
     // Count frames well below 60 fps (or 30 at rest) and lower the resolution.
     if (elapsed > (resting ? 45 : 26)) slowFrames++;
     else slowFrames = Math.max(0, slowFrames - 1);
-    if (slowFrames > 12 && pixelRatio > 0.6) {
-      pixelRatio = Math.max(0.6, pixelRatio - 0.2);
+    if (!resting && slowFrames > 12 && pixelRatio > 0.7) {
+      pixelRatio = Math.max(0.7, pixelRatio - 0.15);
       renderer.setPixelRatio(pixelRatio);
       resize();
       slowFrames = 0;
+    }
+    // Once the camera settles, go back to full sharpness for the lettering.
+    if (resting && clock >= INTRO && pixelRatio < maxRatio) {
+      pixelRatio = maxRatio;
+      renderer.setPixelRatio(pixelRatio);
+      resize();
     }
     if (playing) {
       clock += dt;

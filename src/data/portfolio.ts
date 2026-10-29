@@ -115,7 +115,7 @@ export const projects: Project[] = [
     category: "Social impact · Energy · Team of 2",
     event: {
       name: "Escuela de la Energía 2026 · Fundación EDP & Ashoka",
-      seals: [{ title: "Winning project · €2,500", kind: "winner" }],
+      seals: [{ title: "Winning project", kind: "winner" }],
     },
     summary:
       "Turning the sargassum that floods Caribbean beaches, today buried or sent to landfill, into electricity for the coastal communities themselves. A winning, funded project at Fundación EDP and Ashoka’s Escuela de la Energía.",
@@ -128,7 +128,6 @@ export const projects: Project[] = [
       "Branding",
     ],
     metrics: [
-      { value: "€2,500", label: "funding won" },
       { value: "3 min", label: "pitch to a jury" },
       { value: "9", label: "pitch iterations" },
     ],

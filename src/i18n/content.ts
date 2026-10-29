@@ -28,7 +28,6 @@ export function localizeDate(date: string, locale: Locale) {
 const spanishValues: Record<string, string> = {
   Millions: "Millones",
   "9.9 KB": "9,9 KB",
-  "€2,500": "2.500 €",
 };
 
 // Tool names stay as written; only plain-language skills are translated.

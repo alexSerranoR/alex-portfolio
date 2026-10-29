@@ -77,15 +77,7 @@ export default async function DiaryEntryPage({
         <div className="entry-body prose">
           {entry.body[lang].map((paragraph, index) => (
             <Fragment key={index}>
-              <p
-                className={
-                  index === 0
-                    ? "drop-cap"
-                    : index === entry.body[lang].length - 1
-                      ? "coda"
-                      : undefined
-                }
-              >
+              <p className={index === 0 ? "drop-cap" : undefined}>
                 {paragraph}
               </p>
               {entry.figure && entry.figure.after === index && (
@@ -101,6 +93,12 @@ export default async function DiaryEntryPage({
               )}
             </Fragment>
           ))}
+          {entry.promise && (
+            <blockquote className="promise">
+              <p className="promise-line">{entry.promise.line[lang]}</p>
+              <p className="promise-coda">{entry.promise.coda[lang]}</p>
+            </blockquote>
+          )}
           <p className="signature">Alex</p>
         </div>
         {related && (
