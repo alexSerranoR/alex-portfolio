@@ -60,7 +60,6 @@ test("facts, translations, downloads and legacy URLs hold", async ({
       expect(translated.repository).toBe(project.repository);
       expect(translated.technologies).toHaveLength(project.technologies.length);
       expect(translated.status).toBe(project.status);
-      expect(translated.years).toEqual(project.years);
       expect(translated.metrics).toHaveLength(project.metrics.length);
       expect(translated.steps).toHaveLength(project.steps.length);
       expect(translated.event?.seals?.length).toBe(
@@ -72,7 +71,7 @@ test("facts, translations, downloads and legacy URLs hold", async ({
     }
   }
   expect(education).toHaveLength(4);
-  expect(experience).toHaveLength(2);
+  expect(experience).toHaveLength(1);
   for (const locale of locales) {
     const response = await request.get(profile.cv[locale]);
     expect(response.status()).toBe(200);
@@ -147,6 +146,13 @@ for (const locale of locales) {
     for (const [index, project] of localized.entries())
       await expect(entries.nth(index)).toContainText(project.name);
 
+    for (const status of ["Ongoing", "Completed", "Paused"] as const)
+      await expect(
+        page.getByRole("heading", {
+          name: t.index.groups[status],
+          exact: true,
+        }),
+      ).toBeVisible();
     const filters = page.getByRole("group", { name: t.index.filters });
     await filters
       .getByRole("button", { name: new RegExp(`^${t.index.kinds.awarded}`) })
@@ -160,9 +166,9 @@ for (const locale of locales) {
     await expect(page.locator(".toc-entry:visible")).toHaveCount(
       localized.filter((p) => p.kind === "hackathon").length,
     );
-    await filters.getByRole("button", { name: "2024", exact: true }).click();
-    await expect(page.locator(".toc-entry:visible")).toHaveCount(0);
-    await page.getByRole("button", { name: t.index.reset }).click();
+    await filters
+      .getByRole("button", { name: new RegExp(`^${t.index.kinds.all}`) })
+      .click();
     await expect(page.locator(".toc-entry:visible")).toHaveCount(
       projectOrder.length,
     );

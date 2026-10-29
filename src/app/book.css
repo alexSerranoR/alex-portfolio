@@ -538,25 +538,15 @@ a:hover {
   display: none;
 }
 .toc-entry > a {
-  display: grid;
-  grid-template-columns: 4.5rem minmax(0, auto) minmax(2rem, 1fr) auto;
-  align-items: start;
-  gap: 0.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
   padding: 1.3rem 0;
   color: var(--ink);
   text-decoration: none;
 }
-.toc-numeral {
-  font-family: var(--serif-display);
-  font-size: 1.9rem;
-  color: var(--accent);
-  line-height: 1;
-  padding-top: 0.2rem;
-}
-.toc-title {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+.toc-group[hidden] {
+  display: none;
 }
 .toc-name {
   font-family: var(--serif-display);
@@ -630,15 +620,6 @@ a:hover {
 .appendix-list .toc-page {
   align-self: baseline;
   padding-top: 0;
-}
-
-@media (max-width: 640px) {
-  .toc-entry > a {
-    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
-  }
-  .toc-entry .toc-leader {
-    display: none;
-  }
 }
 
 /* ---------- Diary teaser and entries ---------- */

@@ -63,6 +63,11 @@ export default async function ChapterPage({
   const previous = localized[(index - 1 + localized.length) % localized.length];
   const next = localized[(index + 1) % localized.length];
   const ongoing = project.status === "Ongoing";
+  const status = {
+    Ongoing: t.work.ongoing,
+    Completed: t.work.completed,
+    Paused: t.work.paused,
+  }[project.status];
 
   const sections = [
     { id: "problem", title: c.problem, text: project.problem },
@@ -93,9 +98,7 @@ export default async function ChapterPage({
     <main id="main" className="page-pad">
       <header className="chapter-head">
         <div>
-          <p className="small-caps numeral">
-            {t.index.chapter} {roman(index + 1)}
-          </p>
+          <p className="small-caps numeral">{status}</p>
           <h1 className="display">
             <ChapterTitle slug={project.slug} name={project.name} />
           </h1>
@@ -183,7 +186,7 @@ export default async function ChapterPage({
         <aside className="chapter-aside" aria-label={project.name}>
           <div>
             <h2 className="small-caps">{c.status}</h2>
-            {ongoing ? t.work.ongoing : t.work.completed}
+            {status}
           </div>
           <div>
             <h2 className="small-caps">{c.period}</h2>

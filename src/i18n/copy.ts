@@ -30,7 +30,7 @@ const en = {
     heading: "Prologue",
     paragraphs: [
       "I’m Alejandro Serrano, Alex. I’m in the final year of Software Engineering at the Complutense University of Madrid, and I also study Business & Technology at UDIMA.",
-      "I like building complete systems and seeing them through: from the cryptographic circuit to the contract that pays, from raw data to the graph that explains it. In 2026 I led Phonendo, a finalist at HackMeridian Lisbon; we won funding with AlGas at Fundación EDP and Ashoka’s Escuela de la Energía; and Embarca took the Best Pitch Award and 2nd place overall.",
+      "I like building complete systems and seeing them through: from the first idea to something that works and can be shown. I enjoy taking on the hardest part, working in a team and explaining clearly what we have built. Hackathons, research and social impact projects have been my best school.",
       "This book collects those projects as chapters, each with the problem, what we built, my part and what I learned. I’m looking for my first software engineering internship, in backend, AI, data or blockchain.",
     ],
     signature: "Alex",
@@ -38,7 +38,7 @@ const en = {
   },
   index: {
     heading: "Contents",
-    intro: "Every project is a full chapter. Filter by kind or year.",
+    intro: "Every project is a full chapter, grouped by where it stands today.",
     filters: "Filter chapters",
     kinds: {
       all: "All",
@@ -48,9 +48,11 @@ const en = {
       research: "Research",
       engineering: "Engineering",
     },
-    years: "Year",
-    anyYear: "Any year",
-    chapter: "Chapter",
+    groups: {
+      Ongoing: "In development",
+      Completed: "Completed",
+      Paused: "On hold",
+    },
     chapters: "Chapters",
     empty: "No chapter matches these filters.",
     reset: "Show all chapters",
@@ -58,8 +60,9 @@ const en = {
     latest: "From the diary",
   },
   work: {
-    ongoing: "In progress",
+    ongoing: "In development",
     completed: "Completed",
+    paused: "On hold",
     technologies: "Tools",
     seals: "Distinctions",
   },
@@ -107,7 +110,7 @@ const en = {
     primary: "Primary degree",
     experience: "Experience while studying",
     experienceIntro:
-      "Teaching and customer-facing work taught me to communicate clearly, adapt to different people and take responsibility.",
+      "Teaching taught me to explain technical ideas clearly, adapt to different audiences and take responsibility for a group.",
     toolkit: "Toolkit",
     toolkitCategories: [
       "Languages",
@@ -240,7 +243,7 @@ const es: Dictionary = {
     heading: "Prólogo",
     paragraphs: [
       "Soy Alejandro Serrano, Alex. Estoy en el último curso de Ingeniería del Software en la Universidad Complutense de Madrid y, en paralelo, estudio Empresa y Tecnología en UDIMA.",
-      "Me gusta construir sistemas completos y llevarlos hasta el final: del circuito criptográfico al contrato que paga, del dato en bruto al grafo que lo explica. En 2026 lideré Phonendo, finalista en HackMeridian Lisboa; ganamos financiación con AlGas en la Escuela de la Energía de Fundación EDP y Ashoka, y Embarca se llevó el Premio al Mejor Pitch y el 2.º puesto general.",
+      "Me gusta construir sistemas completos y llevarlos hasta el final: de la primera idea a algo que funciona y se puede enseñar. Disfruto encargándome de la parte más difícil, trabajando en equipo y explicando con claridad lo que hemos construido. Los hackathons, la investigación y los proyectos de impacto social han sido mi mejor escuela.",
       "Este libro reúne esos proyectos como capítulos, cada uno con el problema, lo que construimos, mi parte y lo que aprendí. Busco mis primeras prácticas en ingeniería del software, en backend, IA, datos o blockchain.",
     ],
     signature: "Alex",
@@ -248,7 +251,8 @@ const es: Dictionary = {
   },
   index: {
     heading: "Índice",
-    intro: "Cada proyecto es un capítulo completo. Filtra por tipo o por año.",
+    intro:
+      "Cada proyecto es un capítulo completo, agrupado según en qué punto está hoy.",
     filters: "Filtrar capítulos",
     kinds: {
       all: "Todos",
@@ -258,9 +262,11 @@ const es: Dictionary = {
       research: "Investigación",
       engineering: "Ingeniería",
     },
-    years: "Año",
-    anyYear: "Cualquier año",
-    chapter: "Capítulo",
+    groups: {
+      Ongoing: "En desarrollo",
+      Completed: "Terminados",
+      Paused: "En pausa",
+    },
     chapters: "Capítulos",
     empty: "Ningún capítulo coincide con estos filtros.",
     reset: "Ver todos los capítulos",
@@ -268,8 +274,9 @@ const es: Dictionary = {
     latest: "Del diario",
   },
   work: {
-    ongoing: "En curso",
-    completed: "Completado",
+    ongoing: "En desarrollo",
+    completed: "Terminado",
+    paused: "En pausa",
     technologies: "Herramientas",
     seals: "Distinciones",
   },
@@ -317,7 +324,7 @@ const es: Dictionary = {
     primary: "Grado principal",
     experience: "Experiencia durante mis estudios",
     experienceIntro:
-      "La enseñanza y la atención al cliente me enseñaron a explicar ideas con claridad, adaptarme a distintas personas y asumir responsabilidades.",
+      "Enseñar me ayudó a explicar ideas técnicas con claridad, adaptarme a públicos distintos y hacerme responsable de un grupo.",
     toolkit: "Herramientas",
     toolkitCategories: [
       "Lenguajes",

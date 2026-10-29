@@ -27,7 +27,7 @@ const SLAB = 0.35;
 const APOTHEM = 5.5; // centre to wall
 const R = APOTHEM / Math.cos(Math.PI / 6); // centre to corner = side length
 const WELL = 1.8; // shaft corner radius
-const LEVELS = { below: 4, above: 3 };
+const LEVELS = { below: 2, above: 3 };
 const TOP = (LEVELS.above + 1) * H;
 const BAY = { width: 1.7, base: 0.25, top: H - SLAB - 0.45, depth: 0.5 };
 const ROWS = [0.3, 0.7, 1.1, 1.5, 1.9, 2.3];
@@ -178,15 +178,16 @@ function featureSpine(lang: Lang, base: string) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#f1e2b8";
-    ctx.font = "600 64px Georgia, serif";
-    ctx.fillText("PORTFOLIO", 40, 0);
-    ctx.font = "italic 52px Georgia, serif";
-    ctx.fillText("Alex Serrano", -300, 2);
+    // Title near the head, author below it, edition at the foot: no overlaps.
+    ctx.font = "600 56px Georgia, serif";
+    ctx.fillText("PORTFOLIO", 120, 0);
+    ctx.font = "italic 42px Georgia, serif";
+    ctx.fillText("Alex Serrano", -185, 2);
     ctx.restore();
     ctx.fillStyle = "#e7cf8e";
-    ctx.font = "700 54px Georgia, serif";
+    ctx.font = "700 44px Georgia, serif";
     ctx.textAlign = "center";
-    ctx.fillText(lang.toUpperCase(), 80, 790);
+    ctx.fillText(lang.toUpperCase(), 80, 806);
   });
 }
 
@@ -434,7 +435,11 @@ export function createLibrary(
     antialias: true,
     powerPreference: "high-performance",
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+  // Resolution adapts to the machine: start modest and drop further if
+  // frames come in slow (see the loop), so older laptops stay smooth.
+  const maxRatio = Math.min(window.devicePixelRatio, 1.25);
+  let pixelRatio = maxRatio;
+  renderer.setPixelRatio(pixelRatio);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.95;
@@ -845,7 +850,7 @@ export function createLibrary(
       if (i === 0 && j === 0) continue;
       const x = (i + (j % 2 ? 0.5 : 0)) * spacing;
       const z = j * spacing * 0.866;
-      if (Math.hypot(x, z) > 300) continue;
+      if (Math.hypot(x, z) > 230) continue;
       const top =
         TOP - 22 + fr() ** 1.6 * 52 + (Math.hypot(x, z) < 40 ? -8 : 0);
       fieldPositions.push(
@@ -1178,21 +1183,33 @@ export function createLibrary(
   world.add(dust);
 
   // ---------- Camera path ----------
-  const lookFinal = bookTarget.clone().add(new THREE.Vector3(-0.15, 0.5, 0));
-  const finalPose = () => {
-    const portrait = camera.aspect < 0.9;
-    const distance = portrait ? 3.6 : 4.0;
-    camera.fov = portrait ? 60 : 55;
-    camera.updateProjectionMatrix();
-    return {
+  // First the gallery from the shaft, then a slow push in to the shelf until
+  // only a few books fill the frame and the two editions read clearly.
+  const lookWide = bookTarget.clone().add(new THREE.Vector3(-0.15, 0.5, 0));
+  const lookClose = bookTarget.clone().add(new THREE.Vector3(0, 0.02, 0));
+  const posesFor = (portrait: boolean) => ({
+    wide: {
       // A little off-axis so the side walls and the floor give depth.
       pos: bookTarget
         .clone()
-        .addScaledVector(wallNormal, distance)
+        .addScaledVector(wallNormal, portrait ? 3.6 : 4.0)
         .add(new THREE.Vector3(portrait ? 0.35 : 1.05, 0.42, 0)),
-      look: lookFinal,
-    };
-  };
+      look: lookWide,
+      fov: portrait ? 60 : 55,
+    },
+    close: {
+      pos: bookTarget
+        .clone()
+        .addScaledVector(wallNormal, portrait ? 1.3 : 1.05)
+        .add(
+          new THREE.Vector3(portrait ? 0.06 : 0.2, portrait ? 0.02 : 0.1, 0),
+        ),
+      look: portrait
+        ? lookClose.clone().add(new THREE.Vector3(0, -0.07, 0))
+        : lookClose,
+      fov: portrait ? 50 : 42,
+    },
+  });
   const aerialStart = new THREE.Vector3(70, TOP + 85, 120);
   const aerialEnd = new THREE.Vector3(0.4, TOP + 16, 3.5);
   const shaftBottom = new THREE.Vector3(0, 2.1, 0.6);
@@ -1200,7 +1217,8 @@ export function createLibrary(
   const pos = new THREE.Vector3();
 
   const pose = (t: number) => {
-    const fin = finalPose();
+    const { wide, close } = posesFor(camera.aspect < 0.9);
+    let fov = wide.fov;
     if (t < 1.6) {
       const k = ease(t / 1.6);
       pos.lerpVectors(aerialStart, aerialEnd, k);
@@ -1225,15 +1243,24 @@ export function createLibrary(
       const dz = look.z - pos.z;
       look.x = pos.x + dx * Math.cos(yaw) - dz * Math.sin(yaw);
       look.z = pos.z + dx * Math.sin(yaw) + dz * Math.cos(yaw);
-    } else {
-      const k = ease(span(t, 3.35, 4.3));
-      pos.lerpVectors(shaftBottom, fin.pos, k);
+    } else if (t < 3.95) {
+      const k = ease(span(t, 3.35, 3.95));
+      pos.lerpVectors(shaftBottom, wide.pos, k);
       const lookFrom = new THREE.Vector3(
         shaftBottom.x,
         shaftBottom.y - 3.4,
         shaftBottom.z - 9.4,
       );
-      look.lerpVectors(lookFrom, fin.look, k);
+      look.lerpVectors(lookFrom, wide.look, k);
+    } else {
+      const k = ease(span(t, 3.95, INTRO));
+      pos.lerpVectors(wide.pos, close.pos, k);
+      look.lerpVectors(wide.look, close.look, k);
+      fov = THREE.MathUtils.lerp(wide.fov, close.fov, k);
+    }
+    if (camera.fov !== fov) {
+      camera.fov = fov;
+      camera.updateProjectionMatrix();
     }
     camera.position.copy(pos);
     camera.lookAt(look);
@@ -1247,7 +1274,7 @@ export function createLibrary(
     );
     (sky.material as THREE.ShaderMaterial).uniforms.fade.value = inside;
     field.visible = inside < 1;
-    const light = easeOut(span(t, 4.15, INTRO));
+    const light = easeOut(span(t, 3.9, INTRO - 0.1));
     spot.intensity = 30 * light;
     for (const book of featureBooks)
       book.spine.emissiveIntensity = 0.22 * light + book.out * 2;
@@ -1308,11 +1335,33 @@ export function createLibrary(
     };
   };
 
+  let slowFrames = 0;
+  let skipped = false;
   const tick = (now: number) => {
     if (disposed) return;
     frame = requestAnimationFrame(tick);
-    const dt = Math.min(0.05, (now - last) / 1000);
+    const elapsed = now - last;
+    // At rest only the dust moves, so half the frame rate is enough.
+    const resting =
+      !playing &&
+      !opening &&
+      featureBooks.every((b) => Math.abs(b.target - b.out) < 0.001);
+    if (resting && !skipped) {
+      skipped = true;
+      return;
+    }
+    skipped = false;
+    const dt = Math.min(0.05, elapsed / 1000);
     last = now;
+    // Count frames well below 60 fps (or 30 at rest) and lower the resolution.
+    if (elapsed > (resting ? 45 : 26)) slowFrames++;
+    else slowFrames = Math.max(0, slowFrames - 1);
+    if (slowFrames > 12 && pixelRatio > 0.6) {
+      pixelRatio = Math.max(0.6, pixelRatio - 0.2);
+      renderer.setPixelRatio(pixelRatio);
+      resize();
+      slowFrames = 0;
+    }
     if (playing) {
       clock += dt;
       if (clock >= INTRO) {

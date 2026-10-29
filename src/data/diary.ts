@@ -41,14 +41,14 @@ export const diary: DiaryEntry[] = [
     body: {
       en: [
         "Some bridges look like a dress rehearsal. The 25 de Abril crosses the Tagus with the same red and almost the same silhouette as the Golden Gate, and that is no accident: it was built by American Bridge Company, the same firm behind San Francisco’s Bay Bridge.",
-        "I went to Lisbon on a scholarship to compete at HackMeridian, the Stellar hackathon. In one weekend I led a team of five to build Phonendo: a sensor that proves a patient completed their cardiac rehab without revealing their health data, and a smart contract that verifies that proof and pays them automatically. We made it to the Shark Tank final.",
+        "I went to Lisbon on a scholarship to compete at HackMeridian, the Stellar hackathon. In one weekend I led a team of five to build Phonendo: a sensor that proves a patient completed their cardiac rehab without revealing their health data, and a smart contract that verifies that proof and pays them automatically.",
         "I am in the last year of my degree and looking for my first internship. Backend, AI, data and blockchain all pull at me, and Lisbon confirmed something about how I work best: on hard problems, with short deadlines and people who care. I built against the clock, owned the hardest part of the system and came home sure I am on the right path.",
         "Standing in front of that bridge, I made myself a promise. The level, the curiosity and the drive that brought me here are only the starting point. This is Lisbon’s bridge. The next one will be San Francisco’s.",
         "I am writing it down here so that it comes true.",
       ],
       es: [
         "Hay puentes que parecen un ensayo general. El 25 de Abril cruza el Tajo con el mismo rojo y casi la misma silueta que el Golden Gate, y no es casualidad: lo construyó American Bridge Company, la misma empresa que levantó el Bay Bridge de San Francisco.",
-        "Fui a Lisboa con una beca para competir en HackMeridian, el hackathon de Stellar. En un fin de semana lideré a un equipo de cinco para construir Phonendo: un sensor que demuestra que un paciente ha completado su rehabilitación cardiaca sin revelar sus datos de salud, y un contrato inteligente que verifica esa prueba y le paga automáticamente. Llegamos a la final del Shark Tank.",
+        "Fui a Lisboa con una beca para competir en HackMeridian, el hackathon de Stellar. En un fin de semana lideré a un equipo de cinco para construir Phonendo: un sensor que demuestra que un paciente ha completado su rehabilitación cardiaca sin revelar sus datos de salud, y un contrato inteligente que verifica esa prueba y le paga automáticamente.",
         "Estoy en el último año de carrera y buscando mis primeras prácticas. Me atraen el backend, la IA, los datos y blockchain, y Lisboa me confirmó algo sobre cómo trabajo mejor: en problemas difíciles, con plazos cortos y con gente que se implica. Construí contra reloj, me encargué de la parte más difícil del sistema y volví con la certeza de que voy por el camino correcto.",
         "Delante de ese puente me hice una promesa. El nivel, la curiosidad y las ganas que me han traído hasta aquí son solo el punto de partida. Este es el puente de Lisboa. El siguiente será el de San Francisco.",
         "Lo dejo escrito aquí para que se cumpla.",

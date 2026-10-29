@@ -24,9 +24,8 @@ export type Project = {
   slug: string;
   name: string;
   label: string;
-  status: "Ongoing" | "Completed";
+  status: "Ongoing" | "Completed" | "Paused";
   period: string;
-  years: number[];
   kind: ProjectKind;
   category: string;
   event?: { name: string; seals?: Seal[] };
@@ -53,15 +52,11 @@ export const projects: Project[] = [
     label: "Private health data, verifiable payments on Stellar",
     status: "Completed",
     period: "October 2026",
-    years: [2026],
     kind: "hackathon",
     category: "Stellar hackathon · Team of 5 · Project lead",
     event: {
       name: "HackMeridian Lisbon 2026 · Genesis track",
-      seals: [
-        { title: "Shark Tank finalist", kind: "finalist" },
-        { title: "HackMeridian scholarship", kind: "grant" },
-      ],
+      seals: [{ title: "HackMeridian scholarship", kind: "grant" }],
     },
     summary:
       "A sensor proves that a patient completed their cardiac rehab session without revealing their health data, and a Stellar smart contract verifies the proof and pays them in USDC. I led it from idea to working demo in one weekend.",
@@ -116,7 +111,6 @@ export const projects: Project[] = [
     label: "From sargassum to gas: local energy from a waste",
     status: "Ongoing",
     period: "2026",
-    years: [2026],
     kind: "impact",
     category: "Social impact · Energy · Team of 2",
     event: {
@@ -156,7 +150,6 @@ export const projects: Project[] = [
     label: "Multi-agent negotiation system",
     status: "Completed",
     period: "October 2026",
-    years: [2026],
     kind: "hackathon",
     category: "48-hour hackathon · Team of 3",
     event: { name: "Claude Hackathon Madrid" },
@@ -200,7 +193,6 @@ export const projects: Project[] = [
     label: "Real company challenges for young talent",
     status: "Completed",
     period: "October 2026",
-    years: [2026],
     kind: "hackathon",
     category: "One-day hackathon · Team of 5",
     event: {
@@ -245,7 +237,6 @@ export const projects: Project[] = [
     label: "Finding relationships in governance data",
     status: "Ongoing",
     period: "2026–2027",
-    years: [2026],
     kind: "research",
     category: "Final-year research · Software + Data",
     summary:
@@ -287,7 +278,6 @@ export const projects: Project[] = [
     label: "More votes, quadratically higher cost",
     status: "Completed",
     period: "2025–2026",
-    years: [2025, 2026],
     kind: "engineering",
     category: "Smart contracts · Governance",
     summary:
@@ -323,7 +313,6 @@ export const projects: Project[] = [
     label: "Algorithms and data structures in C++",
     status: "Ongoing",
     period: "2026",
-    years: [2026],
     kind: "engineering",
     category: "Core engineering · Algorithms",
     summary:
@@ -352,9 +341,8 @@ export const projects: Project[] = [
     slug: "aws-cloud-devops-lab",
     name: "AWS Cloud & DevOps Lab",
     label: "From application to infrastructure",
-    status: "Ongoing",
+    status: "Paused",
     period: "2026",
-    years: [2026],
     kind: "engineering",
     category: "Cloud · Application delivery",
     summary:
@@ -393,7 +381,6 @@ export const projects: Project[] = [
     label: "Multiplayer, from the socket up",
     status: "Completed",
     period: "2024–2025",
-    years: [2024, 2025],
     kind: "engineering",
     category: "Earlier software work · Java",
     summary:
@@ -462,13 +449,6 @@ export const education = [
 
 export const experience = [
   {
-    role: "Brand Representative",
-    company: "Wilde & Partners",
-    dates: "Jul 2024 – Feb 2026",
-    detail:
-      "Worked alongside university studies in hospitality and luxury customer experience, representing Louis Vuitton, Tiffany & Co. and Prada. Supported international clients in Spanish and English.",
-  },
-  {
     role: "Robotics & Programming Teacher",
     company: "Camp Tecnológico",
     dates: "Sep 2022 – Jun 2023",
@@ -518,22 +498,22 @@ export const toolkit = [
 export const qualities = [
   {
     title: "Own the critical path",
-    text: "At HackMeridian I took the hardest part, the ZK circuit and the smart contract, and integrated a five-person team’s work into one working demo.",
+    text: "I look for the hardest piece of a project, take responsibility for it and make sure it ends up working together with everyone else’s work.",
   },
   {
     title: "Follow the evidence",
-    text: "La Abuelita taught us to question the bottleneck. Better market information mattered more than faster responses.",
+    text: "Before building, I check what the real problem is. Data and the people who will use the product weigh more than my first idea.",
   },
   {
     title: "Make ideas clear",
-    text: "Teaching programming, pitching to juries and working with international clients have taught me to explain ideas to very different audiences.",
+    text: "I explain technical ideas to very different audiences: teammates, juries, students and people without a technical background.",
   },
   {
     title: "Learn through projects",
-    text: "From C++ algorithms to zero-knowledge proofs, I learn by building, investigating unfamiliar systems and working through the details.",
+    text: "When something is new to me, I learn it by building with it, reading the documentation and working through the details.",
   },
   {
     title: "Keep a steady pace",
-    text: "Hackathon deadlines and demanding customer-facing work have taught me to make decisions calmly under pressure.",
+    text: "Tight deadlines have taught me to prioritise, decide calmly and deliver something that works.",
   },
 ];

@@ -22,10 +22,7 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     category: "Hackathon de Stellar · Equipo de 5 · Líder del proyecto",
     event: {
       name: "HackMeridian Lisboa 2026 · Genesis track",
-      seals: [
-        { title: "Finalista del Shark Tank", kind: "finalist" },
-        { title: "Beca HackMeridian", kind: "grant" },
-      ],
+      seals: [{ title: "Beca HackMeridian", kind: "grant" }],
     },
     summary:
       "Un sensor demuestra que un paciente ha completado su sesión de rehabilitación cardiaca sin revelar sus datos de salud, y un contrato inteligente en Stellar verifica la prueba y le paga en USDC. Lo lideré de la idea a la demo funcional en un fin de semana.",
@@ -260,11 +257,6 @@ export const spanishEducation = [
 
 export const spanishExperience = [
   {
-    role: "Representante de marca",
-    detail:
-      "Trabajo simultáneo a los estudios universitarios en hostelería y atención al cliente de lujo, representando a Louis Vuitton, Tiffany & Co. y Prada. Atención a clientes internacionales en español e inglés.",
-  },
-  {
     role: "Profesor de robótica y programación",
     detail:
       "Enseñé robótica y programación a estudiantes de primaria y secundaria en español e inglés, haciendo accesibles las ideas técnicas para distintas edades.",
@@ -274,22 +266,22 @@ export const spanishExperience = [
 export const spanishQualities = [
   {
     title: "Asumir el camino crítico",
-    text: "En HackMeridian me encargué de la parte más difícil, el circuito ZK y el contrato inteligente, e integré el trabajo de un equipo de cinco en una demo funcional.",
+    text: "Busco la pieza más difícil de un proyecto, me hago responsable de ella y me aseguro de que acabe funcionando junto al trabajo de los demás.",
   },
   {
     title: "Seguir la evidencia",
-    text: "La Abuelita nos enseñó a cuestionar el cuello de botella. Una mejor información de mercado importaba más que responder más rápido.",
+    text: "Antes de construir, compruebo cuál es el problema real. Los datos y las personas que van a usar el producto pesan más que mi primera idea.",
   },
   {
     title: "Explicar con claridad",
-    text: "Enseñar programación, defender pitches ante jurados y trabajar con clientes internacionales me han enseñado a explicar ideas a públicos muy distintos.",
+    text: "Explico ideas técnicas a públicos muy distintos: compañeros de equipo, jurados, estudiantes y personas sin perfil técnico.",
   },
   {
     title: "Aprender con proyectos",
-    text: "Desde algoritmos en C++ hasta pruebas de conocimiento cero, aprendo construyendo, investigando sistemas desconocidos y trabajando en los detalles.",
+    text: "Cuando algo es nuevo para mí, lo aprendo construyendo con ello, leyendo la documentación y trabajando los detalles.",
   },
   {
     title: "Mantener la calma",
-    text: "Los plazos de los hackathons y la atención al cliente en entornos exigentes me han enseñado a tomar decisiones con calma bajo presión.",
+    text: "Los plazos ajustados me han enseñado a priorizar, decidir con calma y entregar algo que funcione.",
   },
 ];

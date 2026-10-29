@@ -1,6 +1,6 @@
 # Alex Serrano — Software Engineer
 
-The personal portfolio of Alejandro “Alex” Serrano Ruibal, a final-year Software Engineering student in Madrid. The site opens in a hexagonal library inspired by Borges’ _Library of Babel_: a short camera flight down the central shaft ends at a lit shelf holding two books, the Spanish and English editions. Opening a book leads to the portfolio itself, a scrolling site styled like a printed book: a title page and prologue, a table of contents of project chapters with filters, a diary, an about page with experience and education, and contact with CV downloads.
+The personal portfolio of Alejandro “Alex” Serrano Ruibal, a final-year Software Engineering student in Madrid. The site opens in a hexagonal library inspired by Borges’ _Library of Babel_: a short camera flight down the central shaft ends at a lit shelf holding two books, the Spanish and English editions. Opening a book leads to the portfolio itself, a scrolling site styled like a printed book: a title page and prologue, a table of contents of project chapters grouped by status, with filters, a diary, an about page with experience and education, and contact with CV downloads.
 
 ## Stack
 
@@ -91,7 +91,7 @@ Edit **`src/data/portfolio.ts`** for English project facts and **`src/i18n/es-co
 
 To add a project:
 
-1. Add an entry to `projects` with a stable slug, its `years` and `kind` (used by the filters). Awards go in `event.seals` and render as wax seals.
+1. Add an entry to `projects` with a stable slug, its `kind` (used by the filters) and its `status` (`Ongoing`, `Completed` or `Paused`, which sets its group in the contents). Awards go in `event.seals` and render as wax seals.
 2. Add its Spanish translation and its slug to `projectOrder` in `src/i18n/routes.ts`.
 3. Optionally add a diagram branch in `src/components/book/diagrams.tsx`, with labels in `copy.ts`.
 
