@@ -90,7 +90,7 @@ export const projects: Project[] = [
     approach:
       "What if the data never had to leave the patient? Phonendo turns sensor readings into a zero-knowledge proof (proving something is true without revealing the data). The insurer learns only that the session was completed, and a Stellar smart contract verifies the proof and pays the patient in USDC, with no middleman. The same infrastructure handles cold chain: proving a shipment stayed between 2 and 8 °C.",
     contribution:
-      "I led the project and owned the whole critical path: the ZK circuit, the Soroban smart contract (Stellar’s smart contract platform), the integration of the full pipeline and the demo. I also drove the repository, documentation and submission quality. Parri built the Publisher bridge and keys, Cesar the hardware, Manuel the web and Lucia the pitch and video.",
+      "I led the project and owned its whole critical path. I designed the ZK circuit, wrote the Soroban smart contract (Stellar’s smart contract platform) that verifies each proof and pays in USDC, integrated the full pipeline from sensor to payment and built the demo. I also drove the repository, the documentation and the quality of the submission.",
     challenge:
       "Circom proves on the BN254 curve by default, but Stellar’s official Groth16 verifier uses BLS12-381. Spotting that early and recompiling saved the project. I also bound every proof to real sensor data through a signed Poseidon hash (a ZK-friendly fingerprint) of each batch, and debugged proving tools that failed silently, under deadline pressure.",
     highlights: [
@@ -112,34 +112,34 @@ export const projects: Project[] = [
     status: "Ongoing",
     period: "2026",
     kind: "impact",
-    category: "Social impact · Energy · Team of 2",
+    category: "Energy · Circular economy · Team of 2",
     event: {
       name: "Escuela de la Energía 2026 · Fundación EDP & Ashoka",
       seals: [{ title: "Winning project", kind: "winner" }],
     },
     summary:
-      "Turning the sargassum that floods Caribbean beaches, today buried or sent to landfill, into electricity for the coastal communities themselves. A winning, funded project at Fundación EDP and Ashoka’s Escuela de la Energía.",
+      "AlGas turns the sargassum that floods Caribbean beaches, today buried or sent to landfill, into electricity for the coastal communities themselves, with small gasification units right on the coast. The project is now in its validation phase, backed by Fundación EDP and Ashoka.",
     technologies: [
       "Gasification",
       "Renewable energy",
+      "Biomass",
       "Circular economy",
-      "Problem tree",
-      "Pitching",
       "Branding",
     ],
     metrics: [
-      { value: "3 min", label: "pitch to a jury" },
-      { value: "9", label: "pitch iterations" },
+      { value: "3M+", label: "tonnes of sargassum, Dominican Republic 2024" },
+      { value: "5%", label: "official management target for 2026" },
+      { value: "4", label: "steps from beach to electricity" },
     ],
     problem:
       "Sargassum is a seaweed that reaches Caribbean shores in huge amounts: in the Dominican Republic alone, more than three million tonnes were reported in 2024. On the beach it rots, empties the coast and hurts local businesses. What is collected is almost always buried or sent to landfill; the Dominican Government itself aims to properly manage only 5% of 2026’s sargassum.",
     approach:
       "Handle it right where it lands: collect it, dry it, gasify it (heat it with very little oxygen until it becomes a fuel gas) and use that gas to run an engine that generates electricity. The engine’s heat dries the next load, which arrives soaked. Small, local and repeatable beach by beach, starting with Guayacanes and Juan Dolio, on the south coast of the Dominican Republic.",
     contribution:
-      "UDIMA chose Ismail Benbdelkhalek and me to represent the university. Together we built the project end to end: the problem analysis, the choice of one concrete community, a three-minute pitch for a non-technical jury with every figure backed by official sources, a call to action to recruit partners, and the brand. We iterated the pitch nine times and defended it before the jury in Madrid.",
+      "I lead AlGas together with Ismail Benbdelkhalek, and we have built it end to end: the analysis of the problem, the choice of a first community, Guayacanes and Juan Dolio, the design of the solution with every figure backed by official sources, and the brand. We presented it at Fundación EDP and Ashoka’s Escuela de la Energía, where it was selected and funded to start its validation phase.",
     learnings:
-      "Telling a problem means telling a person: the pitch started working when we opened with a worker cleaning his beach every morning instead of with tonnes. Honesty convinces: saying clearly what still has to be proven built more trust than promising a plant. And it took me outside software, into energy, social impact and real communities.",
-    next: "Getting the first real number: how much energy one tonne of seaweed yields, and whether it pays back the cost of drying it. Before shipping sargassum from the Caribbean, we will test with a similar invasive seaweed on Spain’s Strait of Gibraltar coast, and we have identified research groups at the universities of Cádiz and Seville and at CEDER-CIEMAT.",
+      "Turning an idea into a project others can back: choosing one real community instead of “the Caribbean”, putting a person before the tonnes, backing every figure with a source and saying clearly what still has to be proven. Being honest about the stage of a project builds more trust than promising a plant. And it took me beyond software, into energy, social impact and real communities.",
+    next: "Getting the first real number: how much energy one tonne of seaweed yields, and whether it pays back the cost of drying it. Before shipping sargassum from the Caribbean, we will test with a similar invasive seaweed on Spain’s Strait of Gibraltar coast, and we have identified research groups at the universities of Cádiz and Seville and at CEDER-CIEMAT. Through UDIMA, which has a campus in Santo Domingo, we are also in contact with a Dominican company that collects sargassum at sea.",
     steps: ["Collect", "Dry", "Gasify", "Electricity"],
     team: "Alejandro Serrano, Ismail Benbdelkhalek (UDIMA)",
   },

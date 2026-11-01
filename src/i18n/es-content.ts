@@ -37,7 +37,7 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     approach:
       "¿Y si los datos nunca tuvieran que salir del paciente? Phonendo convierte las lecturas del sensor en una prueba de conocimiento cero (demostrar que algo es cierto sin revelar los datos). La aseguradora solo sabe que la sesión se completó, y un contrato inteligente en Stellar verifica la prueba y paga al paciente en USDC, sin intermediarios. La misma infraestructura sirve para la cadena de frío: demostrar que un envío se mantuvo entre 2 y 8 °C.",
     contribution:
-      "Lideré el proyecto y asumí todo el camino crítico: el circuito ZK, el contrato inteligente en Soroban (la plataforma de contratos de Stellar), la integración del pipeline completo y la demo. También llevé el repositorio, la documentación y la calidad de la entrega. Parri construyó el puente del Publisher y las claves, César el hardware, Manuel la web y Lucía el pitch y el vídeo.",
+      "Lideré el proyecto y asumí todo su camino crítico. Diseñé el circuito ZK, escribí el contrato inteligente en Soroban (la plataforma de contratos de Stellar) que verifica cada prueba y paga en USDC, integré el pipeline completo del sensor al pago y construí la demo. También llevé el repositorio, la documentación y la calidad de la entrega.",
     challenge:
       "Circom genera las pruebas por defecto sobre la curva BN254, pero el verificador Groth16 oficial de Stellar usa BLS12-381. Detectarlo pronto y recompilar salvó el proyecto. Además, até cada prueba a datos reales del sensor mediante un hash Poseidon firmado (una huella digital pensada para ZK) de cada lote, y depuré herramientas de prueba que fallaban en silencio, todo contra reloj.",
     highlights: [
@@ -53,23 +53,27 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
   },
   algas: {
     label: "Del sargazo al gas: energía local a partir de un residuo",
-    category: "Impacto social · Energía · Equipo de 2",
+    category: "Energía · Economía circular · Equipo de 2",
     event: {
       name: "Escuela de la Energía 2026 · Fundación EDP y Ashoka",
       seals: [{ title: "Proyecto ganador", kind: "winner" }],
     },
     summary:
-      "Convertir el sargazo que llega a las playas del Caribe, y que hoy se entierra o acaba en el vertedero, en electricidad para las propias comunidades costeras. Proyecto ganador y financiado en la Escuela de la Energía de Fundación EDP y Ashoka.",
-    metricLabels: ["de pitch ante el jurado", "versiones del pitch"],
+      "AlGas convierte el sargazo que llega a las playas del Caribe, y que hoy se entierra o acaba en el vertedero, en electricidad para las propias comunidades costeras, con pequeñas unidades de gasificación en la misma costa. El proyecto está en fase de validación, con el respaldo de Fundación EDP y Ashoka.",
+    metricLabels: [
+      "toneladas de sargazo, República Dominicana 2024",
+      "meta oficial de gestión para 2026",
+      "pasos de la playa a la electricidad",
+    ],
     problem:
       "El sargazo es un alga que llega en cantidades enormes a las costas del Caribe: solo en República Dominicana se habló de más de tres millones de toneladas en 2024. En la orilla se pudre, vacía las playas y castiga a los negocios locales. Lo que se recoge casi siempre se entierra o va al vertedero; el propio Gobierno dominicano se marca como meta gestionar bien solo el 5 % del sargazo de 2026.",
     approach:
       "Gestionarlo allí mismo, en la costa: se recoge, se seca, se gasifica (se calienta con muy poco oxígeno hasta convertirlo en un gas combustible) y ese gas mueve un motor que genera electricidad. El calor del motor seca la siguiente carga, que llega empapada. Algo pequeño, local y replicable playa a playa, empezando por Guayacanes y Juan Dolio, en el sur de República Dominicana.",
     contribution:
-      "UDIMA nos eligió a Ismail Benbdelkhalek y a mí para representar a la universidad. Juntos construimos el proyecto de principio a fin: el análisis del problema, la elección de una comunidad concreta, un pitch de tres minutos para un jurado no técnico con cada cifra respaldada por fuentes oficiales, una llamada a la acción para sumar aliados y la marca. Iteramos el pitch nueve veces y lo defendimos ante el jurado en Madrid.",
+      "Lidero AlGas junto a Ismail Benbdelkhalek, y lo hemos construido de principio a fin: el análisis del problema, la elección de una primera comunidad, Guayacanes y Juan Dolio, el diseño de la solución con cada cifra respaldada por fuentes oficiales, y la marca. Lo presentamos en la Escuela de la Energía de Fundación EDP y Ashoka, donde fue seleccionado y financiado para empezar su fase de validación.",
     learnings:
-      "Contar un problema es contar una persona: el pitch empezó a funcionar cuando abrimos con un trabajador que limpia su playa cada mañana, y no con toneladas. La honestidad convence: decir con claridad qué falta por demostrar generó más confianza que prometer una planta. Y me sacó del software, hacia la energía, el impacto social y las comunidades reales.",
-    next: "Conseguir el primer dato real: cuánta energía sale de una tonelada de alga y si compensa el coste de secarla. Antes de traer sargazo del Caribe, ensayaremos con el alga asiática (Rugulopteryx okamurae), que invade las playas del Estrecho, y ya hemos identificado grupos de investigación en la Universidad de Cádiz, la Universidad de Sevilla y el CEDER-CIEMAT.",
+      "Convertir una idea en un proyecto que otros puedan respaldar: elegir una comunidad real en lugar de «el Caribe», poner a una persona por delante de las toneladas, respaldar cada cifra con una fuente y decir con claridad qué falta por demostrar. Ser honesto sobre la fase de un proyecto genera más confianza que prometer una planta. Y me llevó más allá del software, hacia la energía, el impacto social y las comunidades reales.",
+    next: "Conseguir el primer dato real: cuánta energía sale de una tonelada de alga y si compensa el coste de secarla. Antes de traer sargazo del Caribe, ensayaremos con el alga asiática (Rugulopteryx okamurae), que invade las playas del Estrecho, y ya hemos identificado grupos de investigación en la Universidad de Cádiz, la Universidad de Sevilla y el CEDER-CIEMAT. A través de UDIMA, que tiene sede en Santo Domingo, estamos además en contacto con una empresa dominicana que recoge sargazo en el mar.",
     steps: ["Recoger", "Secar", "Gasificar", "Electricidad"],
   },
   "mapping-blockchain-ecosystem": {

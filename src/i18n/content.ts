@@ -28,6 +28,7 @@ export function localizeDate(date: string, locale: Locale) {
 const spanishValues: Record<string, string> = {
   Millions: "Millones",
   "9.9 KB": "9,9 KB",
+  "3M+": "+3 M",
 };
 
 // Tool names stay as written; only plain-language skills are translated.
@@ -35,8 +36,7 @@ const spanishTechnologies: Record<string, string> = {
   Gasification: "Gasificación",
   "Renewable energy": "Energía renovable",
   "Circular economy": "Economía circular",
-  "Problem tree": "Árbol de problemas",
-  Pitching: "Pitch",
+  Biomass: "Biomasa",
   Branding: "Marca",
 };
 
