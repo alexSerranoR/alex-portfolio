@@ -11,9 +11,71 @@ type ProjectTranslation = Pick<
   | "learnings"
   | "steps"
   | "event"
+  | "challenge"
+  | "highlights"
+  | "next"
 > & { metricLabels: string[] };
 
 export const spanishProjects: Record<string, ProjectTranslation> = {
+  phonendo: {
+    label: "Datos de salud privados, pagos verificables en Stellar",
+    category: "Hackathon de Stellar · Equipo de 5 · Líder del proyecto",
+    event: {
+      name: "HackMeridian Lisboa 2026 · Genesis track",
+      seals: [{ title: "Beca HackMeridian", kind: "grant" }],
+    },
+    summary:
+      "Un sensor demuestra que un paciente ha completado su sesión de rehabilitación cardiaca sin revelar sus datos de salud, y un contrato inteligente en Stellar verifica la prueba y le paga en USDC. Lo lideré de la idea a la demo funcional en un fin de semana.",
+    metricLabels: [
+      "restricciones del circuito",
+      "WASM del contrato",
+      "casos de uso, un circuito",
+      "fin de semana, de la idea a la demo",
+    ],
+    problem:
+      "Tras un evento cardiaco, la rehabilitación funciona: reduce la mortalidad cardiovascular y los reingresos hospitalarios (Cochrane, 2022). Aun así, la mayoría de pacientes no la empieza o la abandona, y en España la hace menos del 1 % (EUROASPIRE III). Las aseguradoras pagarían encantadas por esa adherencia, pero demostrarla obliga a recoger datos de salud muy sensibles que el paciente, con razón, no quiere entregar.",
+    approach:
+      "¿Y si los datos nunca tuvieran que salir del paciente? Phonendo convierte las lecturas del sensor en una prueba de conocimiento cero (demostrar que algo es cierto sin revelar los datos). La aseguradora solo sabe que la sesión se completó, y un contrato inteligente en Stellar verifica la prueba y paga al paciente en USDC, sin intermediarios. La misma infraestructura sirve para la cadena de frío: demostrar que un envío se mantuvo entre 2 y 8 °C.",
+    contribution:
+      "Lideré el proyecto y asumí todo su camino crítico. Diseñé el circuito ZK, escribí el contrato inteligente en Soroban (la plataforma de contratos de Stellar) que verifica cada prueba y paga en USDC, integré el pipeline completo del sensor al pago y construí la demo. También llevé el repositorio, la documentación y la calidad de la entrega.",
+    challenge:
+      "Circom genera las pruebas por defecto sobre la curva BN254, pero el verificador Groth16 oficial de Stellar usa BLS12-381. Detectarlo pronto y recompilar salvó el proyecto. Además, até cada prueba a datos reales del sensor mediante un hash Poseidon firmado (una huella digital pensada para ZK) de cada lote, y depuré herramientas de prueba que fallaban en silencio, todo contra reloj.",
+    highlights: [
+      "Diseñé un circuito Groth16 en Circom (~2.000 restricciones) sobre BLS12-381 con un compromiso Poseidon, además del trusted setup y los scripts de prueba.",
+      "Programé claim() en el contrato Soroban: comprueba una firma ed25519, verifica la prueba on-chain, impide cobros dobles y paga en USDC. Con tests y un WASM de 9,9 KB.",
+      "Conseguí el primer cobro on-chain con prueba ZK en la testnet de Stellar el 25 de octubre, y después un segundo caso de uso, la cadena de frío, con la misma clave del Verifier.",
+      "Preparé el go-to-market del pitch: comprador, hipótesis de precio, plan piloto y estadísticas clínicas verificadas.",
+    ],
+    learnings:
+      "Comprobar primero las suposiciones de compatibilidad: un solo desajuste de curva nos habría costado el fin de semana entero. Y una demo convence cuando es real de principio a fin: un sensor, una prueba y un pago que se puede abrir en el explorador de bloques.",
+    next: "Comprobar dentro del circuito los huecos entre lecturas, firmar a nivel de hardware en el propio sensor y un piloto con un centro de rehabilitación en Portugal o España.",
+    steps: ["Sensor", "Prueba ZK", "Contrato Soroban", "Pago en USDC"],
+  },
+  algas: {
+    label: "Del sargazo al gas: energía local a partir de un residuo",
+    category: "Energía · Economía circular · Equipo de 2",
+    event: {
+      name: "Escuela de la Energía 2026 · Fundación EDP y Ashoka",
+      seals: [{ title: "Proyecto ganador", kind: "winner" }],
+    },
+    summary:
+      "AlGas convierte el sargazo que llega a las playas del Caribe, y que hoy se entierra o acaba en el vertedero, en electricidad para las propias comunidades costeras, con pequeñas unidades de gasificación en la misma costa. El proyecto está en fase de validación, con el respaldo de Fundación EDP y Ashoka.",
+    metricLabels: [
+      "toneladas de sargazo, República Dominicana 2024",
+      "meta oficial de gestión para 2026",
+      "pasos de la playa a la electricidad",
+    ],
+    problem:
+      "El sargazo es un alga que llega en cantidades enormes a las costas del Caribe: solo en República Dominicana se habló de más de tres millones de toneladas en 2024. En la orilla se pudre, vacía las playas y castiga a los negocios locales. Lo que se recoge casi siempre se entierra o va al vertedero; el propio Gobierno dominicano se marca como meta gestionar bien solo el 5 % del sargazo de 2026.",
+    approach:
+      "Gestionarlo allí mismo, en la costa: se recoge, se seca, se gasifica (se calienta con muy poco oxígeno hasta convertirlo en un gas combustible) y ese gas mueve un motor que genera electricidad. El calor del motor seca la siguiente carga, que llega empapada. Algo pequeño, local y replicable playa a playa, empezando por Guayacanes y Juan Dolio, en el sur de República Dominicana.",
+    contribution:
+      "Lidero AlGas junto a Ismail Benbdelkhalek, y lo hemos construido de principio a fin: el análisis del problema, la elección de una primera comunidad, Guayacanes y Juan Dolio, el diseño de la solución con cada cifra respaldada por fuentes oficiales, y la marca. Lo presentamos en la Escuela de la Energía de Fundación EDP y Ashoka, donde fue seleccionado y financiado para empezar su fase de validación.",
+    learnings:
+      "Convertir una idea en un proyecto que otros puedan respaldar: elegir una comunidad real en lugar de «el Caribe», poner a una persona por delante de las toneladas, respaldar cada cifra con una fuente y decir con claridad qué falta por demostrar. Ser honesto sobre la fase de un proyecto genera más confianza que prometer una planta. Y me llevó más allá del software, hacia la energía, el impacto social y las comunidades reales.",
+    next: "Conseguir el primer dato real: cuánta energía sale de una tonelada de alga y si compensa el coste de secarla. Antes de traer sargazo del Caribe, ensayaremos con el alga asiática (Rugulopteryx okamurae), que invade las playas del Estrecho, y ya hemos identificado grupos de investigación en la Universidad de Cádiz, la Universidad de Sevilla y el CEDER-CIEMAT. A través de UDIMA, que tiene sede en Santo Domingo, estamos además en contacto con una empresa dominicana que recoge sargazo en el mar.",
+    steps: ["Recoger", "Secar", "Gasificar", "Electricidad"],
+  },
   "mapping-blockchain-ecosystem": {
     label: "Encontrar relaciones en los datos de gobernanza",
     category: "Proyecto de fin de grado · Software y datos",
@@ -61,9 +123,9 @@ export const spanishProjects: Record<string, ProjectTranslation> = {
     category: "Hackathon de un día · Equipo de 5",
     event: {
       name: "Hackathon Iberoamérica 2030 · Club Hispanidad Futura",
-      awards: [
-        { title: "Premio al Mejor Pitch", medal: "pitch" },
-        { title: "2.º puesto general", medal: "second" },
+      seals: [
+        { title: "Premio al Mejor Pitch", kind: "pitch" },
+        { title: "2.º puesto general", kind: "second" },
       ],
     },
     summary:
@@ -195,11 +257,6 @@ export const spanishEducation = [
 
 export const spanishExperience = [
   {
-    role: "Representante de marca",
-    detail:
-      "Trabajo simultáneo a los estudios universitarios en hostelería y atención al cliente de lujo, representando a Louis Vuitton, Tiffany & Co. y Prada. Atención a clientes internacionales en español e inglés.",
-  },
-  {
     role: "Profesor de robótica y programación",
     detail:
       "Enseñé robótica y programación a estudiantes de primaria y secundaria en español e inglés, haciendo accesibles las ideas técnicas para distintas edades.",
@@ -208,23 +265,23 @@ export const spanishExperience = [
 
 export const spanishQualities = [
   {
-    title: "Construir en equipo",
-    text: "Los proyectos colaborativos y un hackathon en equipo de tres han influido en cómo debatimos las decisiones y hacemos avanzar el trabajo.",
+    title: "Asumir el camino crítico",
+    text: "Busco la pieza más difícil de un proyecto, me hago responsable de ella y me aseguro de que acabe funcionando junto al trabajo de los demás.",
   },
   {
     title: "Seguir la evidencia",
-    text: "La Abuelita nos enseñó a cuestionar el cuello de botella. Una mejor información de mercado importaba más que responder más rápido.",
+    text: "Antes de construir, compruebo cuál es el problema real. Los datos y las personas que van a usar el producto pesan más que mi primera idea.",
   },
   {
     title: "Explicar con claridad",
-    text: "Enseñar programación y trabajar con clientes internacionales me ha dado práctica para explicar ideas a públicos distintos.",
+    text: "Explico ideas técnicas a públicos muy distintos: compañeros de equipo, jurados, estudiantes y personas sin perfil técnico.",
   },
   {
     title: "Aprender con proyectos",
-    text: "Desde algoritmos en C++ hasta despliegues en AWS, aprendo construyendo, investigando sistemas desconocidos y trabajando en los detalles.",
+    text: "Cuando algo es nuevo para mí, lo aprendo construyendo con ello, leyendo la documentación y trabajando los detalles.",
   },
   {
     title: "Mantener la calma",
-    text: "Los plazos de los hackathons y la atención al cliente en entornos exigentes me han enseñado a tomar decisiones con calma bajo presión.",
+    text: "Los plazos ajustados me han enseñado a priorizar, decidir con calma y entregar algo que funcione.",
   },
 ];

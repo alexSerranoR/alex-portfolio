@@ -3,10 +3,11 @@ import { dictionaries } from "@/i18n/copy";
 import type { Locale } from "@/i18n/routes";
 
 export const alt =
-  "Alex Serrano | Software Engineer. Projects in algorithms, AI, cloud, data and blockchain.";
+  "Alex Serrano | Software Engineer. Portfolio in Spanish and English.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// A title page: the same paper, ink and oxblood as the book.
 export function createSocialImage(locale: Locale) {
   const t = dictionaries[locale];
   return new ImageResponse(
@@ -15,83 +16,71 @@ export function createSocialImage(locale: Locale) {
         width: "100%",
         height: "100%",
         display: "flex",
-        background: "#10130f",
-        color: "#edf0e7",
-        padding: "70px 80px",
-        flexDirection: "column",
-        fontFamily: "sans-serif",
+        background: "#f3ecdc",
+        color: "#241c14",
+        padding: 40,
+        fontFamily: "serif",
       }}
     >
       <div
         style={{
-          display: "flex",
-          fontSize: 22,
-          letterSpacing: 5,
-          color: "#c7ef81",
-        }}
-      >
-        ALEX SERRANO / MADRID
-      </div>
-      <div
-        style={{
+          flex: 1,
           display: "flex",
           flexDirection: "column",
-          marginTop: 65,
-          fontSize: locale === "es" ? 88 : 104,
-          fontWeight: 600,
-          letterSpacing: -6,
-          lineHeight: 1.02,
-        }}
-      >
-        <span>{t.hero.role[0]}</span>
-        <div style={{ display: "flex" }}>
-          {t.hero.role[1]}
-          <span style={{ color: "#c7ef81" }}>.</span>
-        </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          marginTop: 45,
-          color: "#a1aa98",
-          fontSize: 26,
-        }}
-      >
-        {t.seo.social}
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          right: 70,
-          top: 155,
-          width: 260,
-          height: 260,
-          border: "1px solid #455a30",
-          borderRadius: "50%",
-          display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          border: "2px solid #d3c39f",
         }}
       >
         <div
           style={{
-            width: 170,
-            height: 170,
-            border: "1px solid #667e4a",
-            borderRadius: "50%",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            fontSize: 22,
+            letterSpacing: 8,
+            color: "#6b573d",
           }}
         >
-          <div
-            style={{
-              width: 16,
-              height: 16,
-              background: "#c7ef81",
-              borderRadius: "50%",
-            }}
-          />
+          {`EX LIBRIS · ${t.book.edition.toUpperCase()}`}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 128,
+            marginTop: 30,
+            letterSpacing: -2,
+          }}
+        >
+          Alex Serrano
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 46,
+            fontStyle: "italic",
+            color: "#7a2a20",
+            marginTop: 10,
+          }}
+        >
+          {t.title.role}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            width: 90,
+            height: 2,
+            background: "#a8843f",
+            marginTop: 34,
+          }}
+        />
+        <div
+          style={{
+            display: "flex",
+            fontSize: 30,
+            color: "#4a3c2d",
+            marginTop: 30,
+          }}
+        >
+          {t.seo.social}
         </div>
       </div>
     </div>,

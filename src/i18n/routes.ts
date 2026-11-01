@@ -14,12 +14,16 @@ export function switchLocalePath(pathname: string, locale: Locale) {
   return localePath(locale, path === "/" ? "" : path);
 }
 
+// Grouped by status in the contents (in development, completed, on hold),
+// most recent first within each group.
 export const projectOrder = [
+  "algas",
   "mapping-blockchain-ecosystem",
+  "algorithmic-techniques",
+  "phonendo",
   "embarca",
   "la-abuelita",
-  "aws-cloud-devops-lab",
-  "algorithmic-techniques",
   "quadratic-voting-dao",
   "wheel-of-fortune",
+  "aws-cloud-devops-lab",
 ] as const;

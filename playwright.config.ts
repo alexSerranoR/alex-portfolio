@@ -7,7 +7,17 @@ export default defineConfig({
   reporter: "list",
   use: {
     baseURL: "http://localhost:3000",
-    channel: "chrome",
+    // Set PLAYWRIGHT_CHROMIUM to use a local Chromium build instead of Chrome.
+    ...(process.env.PLAYWRIGHT_CHROMIUM ? {} : { channel: "chrome" }),
+    launchOptions: {
+      executablePath: process.env.PLAYWRIGHT_CHROMIUM,
+      // Software WebGL, so the library scene renders on machines without a GPU.
+      args: [
+        "--use-gl=angle",
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader",
+      ],
+    },
     headless: true,
     trace: "retain-on-failure",
   },
