@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin || "http://localhost:3000"),
   title: "Alex Serrano · Portfolio",
   description:
-    "A library of hexagonal galleries. Choose a book: the portfolio of Alex Serrano, software engineer, in Spanish or English.",
+    "An endless library. Choose a volume: the portfolio of Alex Serrano, software engineer, in Spanish or English.",
   alternates: {
     ...(siteOrigin ? { canonical: "/" } : {}),
     languages: { es: "/es", en: "/en", "x-default": "/" },
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   icons: { icon: "/icon.svg" },
 };
 
-export const viewport: Viewport = { themeColor: "#9aa1a6" };
+export const viewport: Viewport = { themeColor: "#0c0b0a" };
 
 export default function LibraryLayout({
   children,

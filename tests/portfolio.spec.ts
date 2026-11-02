@@ -110,11 +110,10 @@ test("the library opens a book and lands in that edition", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const en = page.locator(".book-links").getByRole("link", {
+  const en = page.locator(".volumes").getByRole("link", {
     name: "Open the portfolio in English",
   });
   await expect(en).toBeVisible({ timeout: 20_000 });
-  await expect(page.locator(".skip-intro")).toHaveCount(0);
   await page.waitForTimeout(600);
   await page.screenshot({ path: "qa-artifacts/library-desktop.png" });
   await accessible(page);

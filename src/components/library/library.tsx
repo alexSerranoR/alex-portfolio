@@ -1,275 +1,209 @@
 "use client";
 
-import { useEffect, useRef, useState, type MouseEvent } from "react";
-import type { Lang, LibraryController, Rect } from "./scene";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type MouseEvent,
+} from "react";
+import type { Gallery } from "./gallery";
 
-// Once per visit: coming back from a book in the same tab skips the intro.
-const SEEN_KEY = "babel:intro-seen";
-const books: { lang: Lang; href: string; label: string; plaque: string }[] = [
+type Lang = "es" | "en";
+
+const volumes: {
+  lang: Lang;
+  href: string;
+  label: string;
+  number: string;
+  name: string;
+}[] = [
   {
     lang: "es",
     href: "/es",
     label: "Abrir el portfolio en español",
-    plaque: "Español",
+    number: "Tomo I",
+    name: "Español",
   },
   {
     lang: "en",
     href: "/en",
     label: "Open the portfolio in English",
-    plaque: "English",
+    number: "Volume II",
+    name: "English",
   },
 ];
 
-type Mode = "static" | "loading" | "intro" | "idle" | "opening";
+// The page around the volumes speaks the visitor's language.
+const copy = {
+  en: {
+    eyebrow: "The Library of Babel",
+    role: "Software engineer · backend, AI, data and blockchain",
+    nav: "Portfolio editions",
+  },
+  es: {
+    eyebrow: "La Biblioteca de Babel",
+    role: "Ingeniero de software · backend, IA, datos y blockchain",
+    nav: "Ediciones del portfolio",
+  },
+} as const;
 
-function webglAvailable() {
-  try {
-    const canvas = document.createElement("canvas");
-    return Boolean(canvas.getContext("webgl2") || canvas.getContext("webgl"));
-  } catch {
-    return false;
-  }
-}
+const NAME = "Alex Serrano";
 
-// Deterministic spines for the drawn fallback shelf (no JavaScript or no WebGL).
-function spines(seed: number, count: number) {
-  let a = seed;
-  const next = () => {
-    a = (a * 9301 + 49297) % 233280;
-    return a / 233280;
-  };
-  const tones = [
-    "#4a3a2c",
-    "#5b4632",
-    "#3a3530",
-    "#6b5a44",
-    "#2f2a26",
-    "#54443a",
-    "#5a3a2e",
-    "#33322c",
-    "#463c36",
-    "#2c3a2e",
-  ];
-  return Array.from({ length: count }, () => ({
-    width: 7 + Math.round(next() * 9),
-    height: 72 + Math.round(next() * 24),
-    background: tones[Math.floor(next() * tones.length)],
-  }));
-}
-
-function Shelf({
-  seed,
-  children,
-}: {
-  seed: number;
-  children?: React.ReactNode;
-}) {
-  const left = spines(seed, 9);
-  const right = spines(seed + 50, 9);
-  return (
-    <div className="fallback-shelf">
-      {left.map((style, i) => (
-        <span
-          key={`l${i}`}
-          className="spine"
-          style={{
-            width: style.width,
-            height: `${style.height}%`,
-            background: style.background,
-          }}
-        />
-      ))}
-      {children}
-      {right.map((style, i) => (
-        <span
-          key={`r${i}`}
-          className="spine"
-          style={{
-            width: style.width,
-            height: `${style.height}%`,
-            background: style.background,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
+// The browser's language never changes while the page is open.
+const noSubscription = () => () => {};
+const browserLang = (): Lang =>
+  navigator.language?.toLowerCase().startsWith("es") ? "es" : "en";
+const serverLang = (): Lang => "en";
 
 export function Library() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const controllerRef = useRef<LibraryController | null>(null);
-  const linkRefs = useRef<Record<Lang, HTMLAnchorElement | null>>({
-    es: null,
-    en: null,
-  });
-  const [mode, setMode] = useState<Mode>("static");
-  const [chosen, setChosen] = useState<Lang | null>(null);
+  const hallRef = useRef<HTMLCanvasElement>(null);
+  const dustRef = useRef<HTMLCanvasElement>(null);
+  const galleryRef = useRef<Gallery | null>(null);
+  const [ready, setReady] = useState(false);
+  const [entering, setEntering] = useState<Lang | null>(null);
+  const lang = useSyncExternalStore(noSubscription, browserLang, serverLang);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !webglAvailable()) return;
+    const hall = hallRef.current;
+    const dust = dustRef.current;
+    if (!hall || !dust) return;
     let cancelled = false;
-    setMode("loading");
-    import("./scene")
-      .then(({ createLibrary }) => {
-        if (cancelled) return;
-        const reduced = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        ).matches;
-        let seen = false;
-        try {
-          seen = window.sessionStorage.getItem(SEEN_KEY) === "1";
-        } catch {
-          // Storage can be blocked; then the intro simply plays again.
-        }
-        const intro = !reduced && !seen;
-        const controller = createLibrary(canvas, {
-          onFrame: (rects: Record<Lang, Rect>) => {
-            for (const lang of ["es", "en"] as const) {
-              const link = linkRefs.current[lang];
-              if (!link) continue;
-              const r = rects[lang];
-              link.style.transform = `translate(${r.x}px, ${r.y}px)`;
-              link.style.width = `${r.w}px`;
-              link.style.height = `${r.h}px`;
-            }
-          },
-          onIdle: () => {
-            setMode((current) => (current === "opening" ? current : "idle"));
-            try {
-              window.sessionStorage.setItem(SEEN_KEY, "1");
-            } catch {
-              // Not remembering the visit is harmless.
-            }
-          },
-        });
-        controllerRef.current = controller;
-        const still = new URLSearchParams(window.location.search).get("t");
-        if (still !== null) {
-          controller.freeze(Number(still));
-          setMode("idle");
-          return;
-        }
-        controller.play(intro);
-        setMode(intro ? "intro" : "idle");
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    import("./gallery")
+      .then(({ createGallery }) => createGallery(hall, dust, { reducedMotion }))
+      .then((gallery) => {
+        if (cancelled) return gallery.dispose();
+        galleryRef.current = gallery;
+        setReady(true);
       })
-      .catch(() => setMode("static"));
+      .catch(() => {
+        // The still photograph behind the canvas stays in place.
+      });
     return () => {
       cancelled = true;
-      controllerRef.current?.dispose();
-      controllerRef.current = null;
+      galleryRef.current?.dispose();
+      galleryRef.current = null;
     };
   }, []);
 
+  // Coming back with the browser's back button restores the page as it was left.
+  useEffect(() => {
+    const reset = (event: PageTransitionEvent) => {
+      if (event.persisted) setEntering(null);
+    };
+    window.addEventListener("pageshow", reset);
+    return () => window.removeEventListener("pageshow", reset);
+  }, []);
+
   const open =
-    (lang: Lang, href: string) => (event: MouseEvent<HTMLAnchorElement>) => {
-      const controller = controllerRef.current;
+    (target: Lang, href: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+      const gallery = galleryRef.current;
       if (
-        !controller ||
+        !gallery ||
         event.metaKey ||
         event.ctrlKey ||
         event.shiftKey ||
+        event.altKey ||
         event.button !== 0
       )
         return;
       event.preventDefault();
-      if (mode === "opening") return;
-      setMode("opening");
-      setChosen(lang);
-      controller.hover(null);
-      controller.open(lang).then(() => {
-        window.setTimeout(() => window.location.assign(href), 520);
-      });
+      if (entering) return;
+      setEntering(target);
+      const reduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (reduced) {
+        window.location.assign(href);
+        return;
+      }
+      gallery.enter(1500);
+      window.setTimeout(() => window.location.assign(href), 1400);
     };
 
-  const live = mode !== "static";
+  const t = copy[lang];
 
   return (
-    <main className={`library mode-${mode}`} id="main">
-      <h1 className="sr-only">Alex Serrano · Portfolio</h1>
-
-      <div className="fallback" aria-hidden={live}>
-        <div className="fallback-vault" />
-        <div className="fallback-wall">
-          {[11, 23, 37].map((seed, bay) => (
-            <div className="fallback-bay" key={seed}>
-              {[0, 1, 2, 3, 4].map((row) =>
-                bay === 1 && row === 2 ? (
-                  <Shelf seed={seed + row} key={row}>
-                    {books.map((book) => (
-                      <a
-                        key={book.lang}
-                        href={book.href}
-                        hrefLang={book.lang}
-                        lang={book.lang}
-                        className={`fallback-book book-${book.lang}`}
-                        aria-label={book.label}
-                        tabIndex={live ? -1 : undefined}
-                      >
-                        <span>Portfolio · {book.lang.toUpperCase()}</span>
-                      </a>
-                    ))}
-                  </Shelf>
-                ) : (
-                  <Shelf seed={seed + row * 7} key={row} />
-                ),
-              )}
-              {bay === 1 && (
-                <span className="fallback-plaque">Español · English</span>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="fallback-light" />
+    <main
+      className={`library${ready ? " is-ready" : ""}${entering ? " is-entering" : ""}`}
+      id="main"
+      lang={lang}
+    >
+      <canvas ref={hallRef} className="library-canvas" aria-hidden="true" />
+      <div className="library-beams" aria-hidden="true">
+        <span />
+        <span />
       </div>
-
-      <canvas ref={canvasRef} className="library-canvas" aria-hidden="true" />
-
-      {live && (
-        <nav className="book-links" aria-label="Portfolio">
-          {books.map((book) => (
-            <a
-              key={book.lang}
-              ref={(node) => {
-                linkRefs.current[book.lang] = node;
-              }}
-              href={book.href}
-              hrefLang={book.lang}
-              lang={book.lang}
-              className="book-link"
-              aria-label={book.label}
-              onClick={open(book.lang, book.href)}
-              onPointerEnter={() => controllerRef.current?.hover(book.lang)}
-              onPointerLeave={() => controllerRef.current?.hover(null)}
-              onFocus={() => controllerRef.current?.hover(book.lang)}
-              onBlur={() => controllerRef.current?.hover(null)}
-            >
-              <span className="book-tip">{book.plaque}</span>
-            </a>
-          ))}
-        </nav>
-      )}
-
-      {mode === "intro" && (
-        <button
-          type="button"
-          className="skip-intro"
-          onClick={() => {
-            controllerRef.current?.skip();
-          }}
-        >
-          <span lang="es">Saltar</span> · <span lang="en">Skip</span>
-        </button>
-      )}
-
-      <div className="vignette" aria-hidden="true" />
-      <div
-        className={chosen ? "paper-fade is-on" : "paper-fade"}
+      <div className="library-shade" aria-hidden="true" />
+      <canvas
+        ref={dustRef}
+        className="library-canvas library-dust"
         aria-hidden="true"
-      >
-        <span className="small">Ex libris</span>
-        <span className="name">Alex Serrano</span>
-      </div>
+      />
+
+      <header className="library-title">
+        <p className="library-eyebrow">{t.eyebrow}</p>
+        <h1 aria-label={NAME}>
+          {[...NAME].map((ch, i) => (
+            <span
+              key={i}
+              aria-hidden="true"
+              style={{ animationDelay: `${0.9 + i * 0.07}s` }}
+            >
+              {ch === " " ? " " : ch}
+            </span>
+          ))}
+        </h1>
+        <p className="library-role">{t.role}</p>
+      </header>
+
+      <nav className="volumes" aria-label={t.nav}>
+        {volumes.map((volume) => (
+          <a
+            key={volume.lang}
+            className="volume"
+            href={volume.href}
+            hrefLang={volume.lang}
+            lang={volume.lang}
+            aria-label={volume.label}
+            onClick={open(volume.lang, volume.href)}
+          >
+            <span className="volume-number">{volume.number}</span>
+            <span className="volume-name">{volume.name}</span>
+            <span className="volume-rule" aria-hidden="true" />
+            <span className="volume-kind">Portfolio</span>
+          </a>
+        ))}
+      </nav>
+
+      <p className="library-quote" lang="es">
+        «La Biblioteca es ilimitada y periódica.» <cite>J. L. Borges</cite>
+      </p>
+
+      <p className="library-credit">
+        Photo:{" "}
+        <a
+          href="https://commons.wikimedia.org/wiki/File:Austria_-_Admont_Abbey_Library_-_1267.jpg"
+          rel="noopener"
+          target="_blank"
+        >
+          Admont Abbey Library, Jorge Royan
+        </a>
+        ,{" "}
+        <a
+          href="https://creativecommons.org/licenses/by-sa/3.0/"
+          rel="noopener license"
+          target="_blank"
+        >
+          CC BY-SA 3.0
+        </a>
+        , retouched.
+      </p>
+
+      <div className="library-veil" aria-hidden="true" />
     </main>
   );
 }

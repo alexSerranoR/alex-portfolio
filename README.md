@@ -5,7 +5,7 @@ The personal portfolio of Alejandro “Alex” Serrano Ruibal, a final-year Soft
 ## Stack
 
 - Next.js App Router, React and strict TypeScript
-- Three.js for the library entrance, built procedurally (no 3D models or remote textures)
+- A canvas-animated photograph for the library entrance (no 3D library)
 - `next/font` (Cormorant Garamond and EB Garamond, self-hosted at build time)
 - Lucide icons; CSS and SVG diagrams, no animation runtime in the book
 - Statically generated routes and PNG social previews
@@ -48,11 +48,11 @@ Use `npm run format` to format source changes. The full dependency audit current
 
 ## The library entrance
 
-`src/components/library/scene.ts` builds the whole scene: stacked hexagonal galleries around a shaft, arched bays filled with instanced books, a field of towers seen from above, fog, lamps and a spotlight that falls on the two portfolio books. `library.tsx` overlays real links on those books, so they work with keyboard and screen readers.
+`/` is a single animated landing. A photograph of the Admont Abbey library (Jorge Royan, Wikimedia Commons, CC BY-SA 3.0), graded to pale stone and cold light, holds in its far room a soft-edged copy of itself, which holds another, without end. `src/components/library/gallery.ts` draws it on a 2D canvas and walks slowly toward the fixed point of that self-similarity, so the walk loops without a seam, with light beams, dust and a slight mouse parallax.
 
-- The intro (about 5 s: aerial view, descent, gallery, light) plays once per visit, remembered in `sessionStorage` under `babel:intro-seen`, so returning from a book in the same tab skips it. It has a skip button and is skipped with reduced motion.
-- Without JavaScript or WebGL a drawn CSS shelf with the same two books is shown instead.
-- For QA, `/?t=2.5` freezes the intro at that second.
+- Two real links, "Tomo I · Español" and "Volume II · English", open `/es` and `/en`. Choosing one speeds up the walk and fades to the paper of the book before navigating. Modified clicks and reduced motion navigate straight away.
+- The title and role follow the browser language (Spanish or English).
+- Without JavaScript the still photograph and the same two links are shown. The images live in `public/library/`; keep the photo credit on the page.
 
 ## Project structure
 
@@ -70,7 +70,7 @@ src/
     fonts.ts                 # next/font setup
     global-not-found.tsx     # Fallback for paths outside the routes
   components/
-    library/                 # Three.js scene and its React wrapper
+    library/                 # Endless-gallery canvas and its React wrapper
     book/                    # Running head, contents filters, seals, diagrams, footer
     social-image.tsx         # Localized social-preview artwork
   data/
@@ -122,4 +122,4 @@ The origin config enables canonical URLs, absolute social metadata and the bilin
 
 ## Accessibility and performance
 
-Semantic landmarks, a skip link, visible focus rings and an Escape-dismissable mobile menu. The book links in the library are real anchors positioned over the 3D books. The Three.js code loads only on `/`, after checking WebGL, and the book pages ship no 3D code. Reduced motion skips the intro and the reveal animations. All content stays readable with JavaScript disabled.
+Semantic landmarks, a skip link, visible focus rings and an Escape-dismissable mobile menu. The two volumes in the library are real anchors. The gallery code loads only on `/`, and the book pages ship none of it. Reduced motion stops the walk and skips the reveal animations. All content stays readable with JavaScript disabled.
