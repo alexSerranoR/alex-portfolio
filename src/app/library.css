@@ -1,0 +1,393 @@
+:root {
+  --night: #0c0b0a;
+  --ivory: #f2ede3;
+  --ivory-dim: rgba(242, 237, 227, 0.76);
+  --gold: #d8bb7c;
+  --paper: #f3ecdc;
+  --serif-display: var(--font-display), "Cormorant Garamond", Georgia, serif;
+  --serif-text: var(--font-text), "EB Garamond", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--night);
+  color: var(--ivory);
+  font-family: var(--serif-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- The hall ---------- */
+
+.library {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  /* The still photograph: what shows before the canvas, or without JavaScript. */
+  background: var(--night) url("/library/hall-1600.jpg") 49% 66% / cover
+    no-repeat;
+}
+
+.library-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+.library-canvas:not(.library-dust) {
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+.library.is-ready .library-canvas {
+  opacity: 1;
+}
+
+.library-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(12, 11, 10, 0.86) 0%,
+      rgba(12, 11, 10, 0.55) 28%,
+      rgba(12, 11, 10, 0.05) 48%,
+      rgba(12, 11, 10, 0) 58%,
+      rgba(12, 11, 10, 0.35) 78%,
+      rgba(12, 11, 10, 0.84) 100%
+    ),
+    radial-gradient(
+      ellipse 80% 75% at 50% 60%,
+      rgba(0, 0, 0, 0) 45%,
+      rgba(12, 11, 10, 0.55) 100%
+    );
+}
+
+.library-beams {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.library-beams span {
+  position: absolute;
+  top: -20%;
+  width: 20%;
+  height: 150%;
+  background: linear-gradient(
+    to bottom,
+    rgba(236, 242, 250, 0),
+    rgba(236, 242, 250, 0.22) 38%,
+    rgba(236, 242, 250, 0) 85%
+  );
+  filter: blur(20px);
+  animation: library-beam 10s ease-in-out infinite alternate;
+}
+.library-beams span:first-child {
+  left: 6%;
+  transform: rotate(-26deg);
+}
+.library-beams span:last-child {
+  left: 74%;
+  transform: rotate(26deg);
+  animation-delay: -4s;
+}
+
+/* ---------- Title ---------- */
+
+.library-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(56px, 12vh, 120px);
+  padding: 0 16px;
+  text-align: center;
+  pointer-events: none;
+}
+.library-eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--serif-display);
+  font-weight: 600;
+  font-size: clamp(11px, 1vw, 13px);
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  animation: library-rise 1.4s 0.6s ease-out forwards;
+}
+.library-title h1 {
+  margin: 0;
+  font-weight: 500;
+  line-height: 0.95;
+  font-size: clamp(52px, 9vw, 128px);
+  text-shadow:
+    0 2px 30px rgba(0, 0, 0, 0.55),
+    0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.library-title h1 span {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(12px);
+  transform: translateY(18px);
+  animation: library-letter 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.library-role {
+  margin: 18px auto 0;
+  max-width: 34em;
+  font-style: italic;
+  font-size: clamp(17px, 1.7vw, 23px);
+  color: var(--ivory-dim);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  animation: library-rise 1.4s 1.5s ease-out forwards;
+}
+
+/* ---------- The two volumes ---------- */
+
+.volumes {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(64px, 11vh, 110px);
+  translate: -50% 0;
+  display: flex;
+  gap: clamp(14px, 2.4vw, 32px);
+  width: max-content;
+  max-width: calc(100vw - 32px);
+}
+.volume {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: clamp(150px, 17vw, 220px);
+  padding: 18px 14px 16px;
+  color: var(--ivory);
+  text-decoration: none;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 18, 16, 0.74),
+    rgba(12, 11, 10, 0.84)
+  );
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(216, 187, 124, 0.55);
+  outline: 1px solid rgba(216, 187, 124, 0.22);
+  outline-offset: 4px;
+  opacity: 0;
+  animation: library-rise 1.2s 2.3s ease-out forwards;
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.5s,
+    outline-color 0.5s,
+    box-shadow 0.5s;
+}
+.volume + .volume {
+  animation-delay: 2.45s;
+}
+.volume-number {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.volume-name {
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 500;
+  line-height: 1.05;
+}
+.volume-rule {
+  width: 34px;
+  height: 1px;
+  margin: 4px 0 2px;
+  background: var(--gold);
+  opacity: 0.7;
+  transition: width 0.5s;
+}
+.volume-kind {
+  font-family: var(--serif-text);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ivory-dim);
+}
+.volume:hover,
+.volume:focus-visible {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  outline-color: rgba(216, 187, 124, 0.5);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.55),
+    0 0 36px rgba(216, 187, 124, 0.18);
+}
+.volume:hover .volume-rule,
+.volume:focus-visible .volume-rule {
+  width: 70px;
+}
+.volume:focus-visible {
+  outline: 2px solid var(--gold);
+}
+
+.library-quote {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  margin: 0;
+  padding: 0 16px;
+  text-align: center;
+  font-family: var(--serif-text);
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(242, 237, 227, 0.68);
+  opacity: 0;
+  animation: library-rise 1.4s 3s ease-out forwards;
+}
+.library-quote cite {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.library-credit {
+  position: absolute;
+  right: 12px;
+  bottom: 6px;
+  margin: 0;
+  font-family: var(--serif-text);
+  font-size: 11px;
+  color: rgba(242, 237, 227, 0.62);
+}
+.library-credit a {
+  color: inherit;
+}
+
+/* ---------- Stepping into a volume ---------- */
+
+.library-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.85s ease 0.5s;
+}
+.library.is-entering .library-veil {
+  opacity: 1;
+}
+.library.is-entering .library-title,
+.library.is-entering .volumes,
+.library.is-entering .library-quote,
+.library.is-entering .library-credit {
+  opacity: 0 !important;
+  transition: opacity 0.6s;
+  pointer-events: none;
+}
+
+@keyframes library-letter {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+@keyframes library-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes library-beam {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+
+@media (max-width: 640px) {
+  .volumes {
+    bottom: 76px;
+  }
+  .volume {
+    width: calc(50vw - 24px);
+    padding: 14px 8px 12px;
+  }
+  .library-quote {
+    bottom: 30px;
+    font-size: 13px;
+  }
+  .library-credit {
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    text-align: center;
+    font-size: 10px;
+  }
+}
+
+@media (max-height: 560px) {
+  .library-title {
+    top: 24px;
+  }
+  .library-role {
+    display: none;
+  }
+  .volumes {
+    bottom: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-beams span {
+    animation: none;
+  }
+  .library-title h1 span,
+  .library-eyebrow,
+  .library-role,
+  .volume,
+  .library-quote {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
+}
+
+/* Without scripting the animations never start, so show everything at once. */
+@media (scripting: none) {
+  .library-title h1 span,
+  .library-eyebrow,
+  .library-role,
+  .volume,
+  .library-quote {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}

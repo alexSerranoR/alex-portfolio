@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/ui";
-import { Footer } from "@/components/sections";
-import { profile } from "@/data/portfolio";
 import { notFound } from "next/navigation";
+import { RunningHead } from "@/components/book/header";
+import { Colophon } from "@/components/book/colophon";
+import { profile } from "@/data/portfolio";
 import { dictionaries } from "@/i18n/copy";
 import { isLocale, locales } from "@/i18n/routes";
 import { localizedMetadata, siteOrigin } from "@/i18n/metadata";
-import "../globals.css";
-import "../portfolio.css";
-import "../project-motion.css";
-import "../opening.css";
+import { fontVariables } from "../fonts";
+import "../book.css";
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -25,7 +23,7 @@ export async function generateMetadata({
   return localizedMetadata(lang);
 }
 
-export default async function RootLayout({
+export default async function BookLayout({
   children,
   params,
 }: Readonly<{ children: React.ReactNode; params: Promise<{ lang: string }> }>) {
@@ -43,14 +41,16 @@ export default async function RootLayout({
     knowsLanguage: ["Spanish", "English"],
   };
   return (
-    <html lang={lang}>
+    <html lang={lang} className={fontVariables}>
       <body>
         <a href="#main" className="skip-link">
           {t.nav.skip}
         </a>
-        <Header locale={lang} />
-        {children}
-        <Footer locale={lang} />
+        <div className="sheet sheet-in">
+          <RunningHead locale={lang} />
+          {children}
+          <Colophon locale={lang} />
+        </div>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
