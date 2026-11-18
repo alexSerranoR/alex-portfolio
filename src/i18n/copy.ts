@@ -133,7 +133,7 @@ const en = {
   contact: {
     heading: "Contact",
     intro:
-      "Have an internship, an engineering role or a project in mind? I’d like to hear about it.",
+      "Have a project in mind, or want to build something together? I’d like to hear about it.",
     email: "Email",
     cvEn: "CV in English (PDF)",
     cvEs: "CV in Spanish (PDF)",
@@ -353,7 +353,7 @@ const es: Dictionary = {
   contact: {
     heading: "Contacto",
     intro:
-      "¿Tienes unas prácticas, un puesto de ingeniería o un proyecto en mente? Me gustaría conocerlo.",
+      "¿Tienes un proyecto en mente o quieres que hagamos algo juntos? Me gustaría conocerlo.",
     email: "Correo",
     cvEn: "CV en inglés (PDF)",
     cvEs: "CV en español (PDF)",
