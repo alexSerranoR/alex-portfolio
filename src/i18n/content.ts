@@ -17,6 +17,7 @@ export function localizeDate(date: string, locale: Locale) {
   if (locale === "en") return date;
   return date
     .replace(/October/g, "Octubre")
+    .replace(/November/g, "Noviembre")
     .replace(/Sep/g, "Sep")
     .replace(/Jul/g, "Jul")
     .replace(/Jun/g, "Jun")
@@ -29,6 +30,7 @@ const spanishValues: Record<string, string> = {
   Millions: "Millones",
   "9.9 KB": "9,9 KB",
   "3M+": "+3 M",
+  "1,000+": "+1.000",
 };
 
 // Tool names stay as written; only plain-language skills are translated.

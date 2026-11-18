@@ -6,6 +6,7 @@ const tilts = ["-5deg", "4deg", "-2deg"];
 
 function Emblem({ seal, size }: { seal: Seal; size: number }) {
   if (seal.kind === "second") return <span className="rank">2</span>;
+  if (seal.kind === "third") return <span className="rank">3</span>;
   const Icon = {
     winner: Trophy,
     finalist: Award,
@@ -17,6 +18,7 @@ function Emblem({ seal, size }: { seal: Seal; size: number }) {
 
 function waxTone(seal: Seal) {
   if (seal.kind === "second" || seal.kind === "winner") return "wax gold";
+  if (seal.kind === "third") return "wax bronze";
   if (seal.kind === "grant") return "wax green";
   return "wax";
 }
