@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Github } from "lucide-react";
+import idoneoInfra from "@/assets/projects/idoneo-infra.png";
 import phonendoArchitecture from "@/assets/projects/phonendo-arquitectura.png";
 import { projects } from "@/data/portfolio";
 import { getProjects } from "@/i18n/content";
@@ -10,6 +11,7 @@ import { dictionaries } from "@/i18n/copy";
 import { isLocale, localePath } from "@/i18n/routes";
 import { localizedMetadata } from "@/i18n/metadata";
 import { diagramCaption, ProjectDiagram } from "@/components/book/diagrams";
+import { PostEmbed, Reel } from "@/components/book/media";
 import { Reveal } from "@/components/book/reveal";
 import { Seals } from "@/components/book/seals";
 import { roman } from "@/lib/roman";
@@ -76,6 +78,7 @@ export default async function ChapterPage({
       title: ongoing ? c.building : c.built,
       text: project.approach,
     },
+    ...(project.deepDive ?? []),
     { id: "contribution", title: c.contribution, text: project.contribution },
     ...(project.challenge
       ? [{ id: "challenge", title: c.challenge, text: project.challenge }]
@@ -93,6 +96,7 @@ export default async function ChapterPage({
       : []),
   ];
   let plate = 0;
+  const post = project.links?.find((link) => link.kind === "post");
 
   return (
     <main id="main" className="page-pad">
@@ -111,6 +115,22 @@ export default async function ChapterPage({
           <Seals project={project} label={t.work.seals} />
         </Reveal>
       </header>
+
+      {project.slug === "idoneo" && (
+        <figure className="plate reel-plate">
+          <Reel
+            label={c.idoneoDemo}
+            poster="/projects/idoneo/aura-poster.jpg"
+            sources={[
+              { src: "/projects/idoneo/aura.webm", type: "video/webm" },
+              { src: "/projects/idoneo/aura.mp4", type: "video/mp4" },
+            ]}
+          />
+          <figcaption>
+            {c.plate} {++plate} · {c.idoneoDemo}
+          </figcaption>
+        </figure>
+      )}
 
       <p className="chapter-summary">{project.summary}</p>
       <div className="chapter-links">
@@ -149,6 +169,9 @@ export default async function ChapterPage({
           ))}
         </dl>
       )}
+      {project.metricsNote && (
+        <p className="metrics-note">{project.metricsNote}</p>
+      )}
 
       <div className="chapter-grid">
         <article className="chapter-article prose">
@@ -161,9 +184,17 @@ export default async function ChapterPage({
                 </h2>
                 {"list" in section && section.list ? (
                   <ul className="highlights">
-                    {section.list.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
+                    {section.list.map((item) => {
+                      // Architecture entries open with the component's name.
+                      const [lead, ...rest] = item.split(". ");
+                      return section.id === "architecture" && rest.length ? (
+                        <li key={item}>
+                          <strong>{lead}.</strong> {rest.join(". ")}
+                        </li>
+                      ) : (
+                        <li key={item}>{item}</li>
+                      );
+                    })}
                   </ul>
                 ) : (
                   <p className={i === 0 ? "drop-cap" : undefined}>
@@ -171,7 +202,25 @@ export default async function ChapterPage({
                   </p>
                 )}
               </section>
-              {section.id === "approach" && (
+              {section.id === "approach" && project.slug === "idoneo" && (
+                <figure className="plate photo-plate">
+                  <a
+                    href={idoneoInfra.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      src={idoneoInfra}
+                      alt={c.idoneoInfra}
+                      sizes="(max-width: 900px) 94vw, 900px"
+                    />
+                  </a>
+                  <figcaption>
+                    {c.plate} {++plate} · {c.idoneoInfra}
+                  </figcaption>
+                </figure>
+              )}
+              {section.id === "approach" && project.slug !== "idoneo" && (
                 <Reveal as="figure" className="plate">
                   <ProjectDiagram project={project} locale={lang} />
                   <figcaption>
@@ -251,6 +300,15 @@ export default async function ChapterPage({
             {c.plate} {++plate} · {c.teamDiagram}
           </figcaption>
         </figure>
+      )}
+
+      {post && (
+        <section className="post-section" aria-labelledby="post-title">
+          <h2 id="post-title" className="small-caps">
+            {c.post}
+          </h2>
+          <PostEmbed href={post.href} fallback={c.postFallback} locale={lang} />
+        </section>
       )}
 
       <nav className="chapter-nav" aria-label={t.index.chapters}>

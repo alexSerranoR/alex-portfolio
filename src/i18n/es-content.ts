@@ -14,9 +14,58 @@ type ProjectTranslation = Pick<
   | "challenge"
   | "highlights"
   | "next"
+  | "deepDive"
+  | "metricsNote"
 > & { metricLabels: string[] };
 
 export const spanishProjects: Record<string, ProjectTranslation> = {
+  idoneo: {
+    label: "Agente de IA por voz para el perfil inversor MiFID II",
+    category: "Hackathon de IA y finanzas · Equipo de 6 · Arquitectura de IA",
+    event: {
+      name: "HackFinance UC3M 2026",
+      seals: [{ title: "3.er puesto", kind: "third" }],
+    },
+    summary:
+      "idóneo cambia el test de casillas de MiFID II por una conversación por voz o por escrito, comprueba lo que el cliente entiende de verdad frente a lo que declara y entrega al banco un perfil vivo en el que cada dato lleva la cita que lo prueba. Un asesor lo valida y los agentes de IA de la entidad lo consultan por MCP. Yo diseñé su arquitectura de IA.",
+    metricLabels: [
+      "sobrevaloraciones detectadas (el test: 0/5)",
+      "datos correctos en 20 entrevistas",
+      "falsas alarmas del verificador",
+      "de mediana por respuesta",
+      "tests automatizados",
+    ],
+    metricsNote:
+      "Medido con clientes simulados, interpretados por Claude o con guion del equipo, en muestras pequeñas.",
+    problem:
+      "Antes de ofrecer una inversión, el banco tiene que comprobar que es idónea y conveniente para el cliente (MiFID II). Hoy eso es un test de casillas: se basa en lo que el cliente declara y nadie lo comprueba. Carmen, una clienta simulada, marca que conoce bien los fondos de renta variable y, cuando le preguntan si podría perder dinero, responde: «Eso no puede pasar, el fondo es del banco.» Y la inversión ya se busca en chats con IA: si el perfil está mal, la mejor recomendación también lo está.",
+    approach:
+      "Todo el sistema sigue una regla: el modelo lee y el código decide. Claude y ElevenLabs interpretan la conversación y proponen; Python determinista comprueba cada cita, pone la confianza y calcula el perfil; una persona lo valida antes de que ningún agente pueda usarlo. idóneo no recomienda productos: entrega los límites que cualquier propuesta debe respetar (riesgo máximo, familias de producto convenientes, liquidez y divisa).",
+    deepDive: [
+      {
+        id: "architecture",
+        title: "La arquitectura",
+        list: [
+          "Entrevistador. Por voz con ElevenLabs Agents y por texto con Claude, con el mismo prompt versionado en Git. La herramienta de cliente datos_pendientes le dice qué falta por preguntar. La sesión se abre con URL firmada y el webhook de la llamada se verifica con HMAC.",
+          "Extractor. Claude con salida estructurada (Pydantic) en categorías cerradas, y cada dato con su cita. El código descarta toda cita que no esté palabra por palabra en los turnos del cliente. El nivel y la confianza los pone una rúbrica en Python, nunca el modelo.",
+          "Verificador. Reglas fijas más una revisión de Claude en categorías cerradas. Es el que abre el aviso declarado ≠ demostrado.",
+          "Capa de reglas. POST /turns responde 202 y la extracción corre en BackgroundTasks con un asyncio.Lock por sesión, así que nunca retrasa la respuesta. Guardas de contexto, cálculos deterministas de idoneidad, conveniencia y límites, y validación humana antes de activar el perfil.",
+          "Memoria en Postgres, en cuatro capas. Semántica (perfil versionado), episódica (turnos append-only), personal (con consentimiento aparte y ETag) y procedimental (prompts en Git).",
+          "Integración. Servidor MCP propio con FastMCP y cuatro herramientas de solo lectura. Un agente con Claude cruza los límites del cliente con el MCP público de MyInvestor dentro de la conversación, porque sus términos no permiten llamarlo desde un backend.",
+        ],
+      },
+      {
+        id: "llmops",
+        title: "LLMOps",
+        text: "Trazas por llamada (versión de prompt, tokens, caché, latencia y coste, sin guardar nada de lo que dice el cliente), métricas p50/p95, un laboratorio donde Claude hace de cliente con ficha oculta y semilla, un juez LLM calibrado con notas humanas y evals con umbrales en GitHub Actions. El laboratorio destapó preguntas dobles y jerga en el entrevistador, y se corrigieron en el prompt.",
+      },
+    ],
+    contribution:
+      "Diseñé la arquitectura de IA y monté el extractor, el verificador, el agente de voz, el servidor MCP, el LLMOps y el despliegue (Render, Vercel y Supabase, con límites diarios de gasto).",
+    learnings:
+      "En un sector regulado, un modelo de lenguaje es excelente entendiendo a las personas, pero no debe ponerse su propia confianza ni hacer las cuentas. Separar interpretar (modelo), decidir (código) y firmar (persona) hizo el sistema auditable y fácil de probar. Las citas literales funcionan como antídoto contra las alucinaciones: si el extractor no puede señalar las palabras exactas del cliente, el dato no entra. Y evaluar es mejor que suponer: el laboratorio con clientes simulados sacó fallos reales que nadie había visto a mano.",
+    steps: ["Conversación", "Extracción", "Verificación", "Perfil validado"],
+  },
   phonendo: {
     label: "Datos de salud privados, pagos verificables en Stellar",
     category: "Hackathon de Stellar · Equipo de 5 · Líder del proyecto",

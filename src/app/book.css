@@ -1037,6 +1037,43 @@ a:hover {
 .wide-plate {
   margin: 4rem 0 0;
 }
+.metrics-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.plate.reel-plate {
+  margin: 2.5rem 0 0;
+  padding: 0.75rem;
+  background: #fff;
+}
+.reel {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+.post-section {
+  margin: 4rem auto 0;
+  max-width: 34rem;
+}
+.post-section h2 {
+  margin: 0 0 1rem;
+  text-align: center;
+  color: var(--muted);
+}
+.post-embed .twitter-tweet:not(.twitter-tweet-rendered) {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  background: var(--paper-deep);
+  font-style: italic;
+}
+.post-embed iframe {
+  max-width: 100%;
+}
 .plate.photo-plate {
   padding: 0.75rem;
   background: #fff;
@@ -1176,6 +1213,12 @@ a:hover {
   --wax-light: #c9a45c;
   --wax-dark: #6b4e1c;
   color: #fff6e0;
+}
+.wax.bronze {
+  --wax-color: #7d4a26;
+  --wax-light: #a86a3c;
+  --wax-dark: #4f2c14;
+  color: #fbe9d8;
 }
 .wax.green {
   --wax-color: #2f4f43;

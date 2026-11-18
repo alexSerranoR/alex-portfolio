@@ -20,6 +20,7 @@ export const projectOrder = [
   "algas",
   "mapping-blockchain-ecosystem",
   "algorithmic-techniques",
+  "idoneo",
   "phonendo",
   "embarca",
   "la-abuelita",

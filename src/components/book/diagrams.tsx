@@ -449,6 +449,7 @@ export function diagramCaption(slug: string, locale: Locale) {
   const t = dictionaries[locale].diagrams;
   const captions: Record<string, string> = {
     phonendo: t.phonendo.caption,
+    idoneo: dictionaries[locale].chapter.idoneoInfra,
     algas: t.algas.caption,
     embarca: t.embarca.caption,
     "la-abuelita": t.agents.caption,

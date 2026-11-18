@@ -12,13 +12,24 @@ export const profile = {
 
 export type Seal = {
   title: string;
-  kind: "winner" | "finalist" | "grant" | "pitch" | "second";
+  kind: "winner" | "finalist" | "grant" | "pitch" | "second" | "third";
 };
 
 // Index filters group chapters by what kind of work they are.
 export type ProjectKind = "hackathon" | "impact" | "research" | "engineering";
 
-export type ProjectLink = { kind: "demo" | "video" | "onchain"; href: string };
+export type ProjectLink = {
+  kind: "demo" | "video" | "onchain" | "post";
+  href: string;
+};
+
+// Extra chapter sections for projects that need a deeper technical read.
+export type ChapterSection = {
+  id: string;
+  title: string;
+  text?: string;
+  list?: string[];
+};
 
 export type Project = {
   slug: string;
@@ -34,8 +45,10 @@ export type Project = {
   links?: ProjectLink[];
   technologies: string[];
   metrics: { value: string; label: string }[];
+  metricsNote?: string;
   problem: string;
   approach: string;
+  deepDive?: ChapterSection[];
   contribution: string;
   challenge?: string;
   highlights?: string[];
@@ -46,6 +59,81 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "idoneo",
+    name: "idóneo",
+    label: "A voice AI agent for the MiFID II investor profile",
+    status: "Completed",
+    period: "November 2026",
+    kind: "hackathon",
+    category: "AI & finance hackathon · Team of 6 · AI architecture",
+    event: {
+      name: "HackFinance UC3M 2026",
+      seals: [{ title: "3rd place", kind: "third" }],
+    },
+    summary:
+      "idóneo replaces the MiFID II tick-box questionnaire with a voice or text conversation, checks what the client actually understands against what they declare, and hands the bank a living profile in which every data point carries the quote that proves it. An adviser signs it off and the bank’s AI agents read it over MCP. I designed its AI architecture.",
+    repository: "https://github.com/fernanrama/idoneo",
+    links: [
+      { kind: "demo", href: "https://idoneo-app.vercel.app" },
+      { kind: "video", href: "https://youtu.be/pHuOet5q8R0" },
+      {
+        kind: "post",
+        href: "https://x.com/AlexSer22436070/status/2121318506700439556",
+      },
+    ],
+    technologies: [
+      "Python",
+      "FastAPI",
+      "Claude API",
+      "ElevenLabs Agents",
+      "MCP",
+      "PostgreSQL",
+      "Next.js",
+      "GitHub Actions",
+    ],
+    metrics: [
+      {
+        value: "5/5",
+        label: "overstated profiles caught (questionnaire: 0/5)",
+      },
+      { value: "165/166", label: "data points right across 20 interviews" },
+      { value: "0", label: "false alarms from the verifier" },
+      { value: "~2 s", label: "median response time" },
+      { value: "1,000+", label: "automated tests" },
+    ],
+    metricsNote:
+      "Measured with simulated clients, played by Claude or scripted by the team, on small samples.",
+    problem:
+      "Before offering an investment, a bank must check that it is suitable and appropriate for the client (MiFID II). Today that is a tick-box questionnaire: it rests on what the client declares and nobody verifies it. Carmen, a simulated client, ticks that she knows equity funds well, and when asked whether she could lose money she answers: “That can’t happen, the fund belongs to the bank.” And investing now happens inside AI chats: if the profile is wrong, the best recommendation is wrong too.",
+    approach:
+      "One rule runs through the whole system: the model reads, the code decides. Claude and ElevenLabs interpret the conversation and propose; deterministic Python checks every quote, sets confidence and computes the profile; a person signs it off before any agent can use it. idóneo does not recommend products: it delivers the limits any proposal must respect (maximum risk, suitable product families, liquidity, currency).",
+    deepDive: [
+      {
+        id: "architecture",
+        title: "The architecture",
+        list: [
+          "Interviewer. By voice with ElevenLabs Agents and by text with Claude, both from the same prompt versioned in Git. The client tool datos_pendientes tells it what is still missing. Sessions open through a signed URL and the call webhook is verified with HMAC.",
+          "Extractor. Claude with structured output (Pydantic) into closed categories, each data point with its quote. The code drops any quote that does not appear word for word in the client’s turns. Level and confidence come from a Python rubric, never from the model.",
+          "Verifier. Fixed rules plus a Claude review in closed categories. It raises the declared ≠ demonstrated warning.",
+          "Rules layer. POST /turns answers 202 and extraction runs in BackgroundTasks behind a per-session asyncio.Lock, so it never delays the reply. Context guards, deterministic suitability, appropriateness and limit calculations, and human validation before the profile goes live.",
+          "Memory in Postgres, in four layers. Semantic (versioned profile), episodic (append-only turns), personal (separate consent, with ETag) and procedural (prompts in Git).",
+          "Integration. A custom MCP server built with FastMCP and four read-only tools. A Claude agent crosses the client’s limits with MyInvestor’s public MCP inside the conversation, because its terms do not allow calling it from a backend.",
+        ],
+      },
+      {
+        id: "llmops",
+        title: "LLMOps",
+        text: "Per-call traces (prompt version, tokens, cache, latency and cost, without storing anything the client says), p50/p95 metrics, a lab where Claude plays a client with a hidden profile card and a seed, an LLM judge calibrated against human scores, and threshold-gated evals in GitHub Actions. The lab exposed double questions and jargon in the interviewer, and both were fixed in the prompt.",
+      },
+    ],
+    contribution:
+      "I designed the AI architecture and built the extractor, the verifier, the voice agent, the MCP server, the LLMOps and the deployment (Render, Vercel and Supabase, with daily spending limits).",
+    learnings:
+      "In a regulated domain, a language model is excellent at understanding people but should not set its own confidence or do the maths. Splitting interpreting (model), deciding (code) and signing (person) made the system auditable and easy to test. Verbatim quotes work as an antidote to hallucination: if the extractor cannot point to the client’s exact words, the data point does not get in. And evaluating beats guessing: the simulated-client lab found real flaws no one had seen by hand.",
+    steps: ["Conversation", "Extraction", "Verification", "Signed profile"],
+    team: "Alex Serrano, Juan, Fernán, Pablo, Hammad, Rodrigo",
+  },
   {
     slug: "phonendo",
     name: "Phonendo",
